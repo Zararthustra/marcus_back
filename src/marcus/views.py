@@ -1,17 +1,16 @@
 from rest_framework.response import Response
 from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
 
-from .services import movie_details, search_movie
+from .services import MasterpieceService, WatchlistService, movie_details, movie_search
 
 # from .models import xxx
 from django.contrib.auth.models import User
-from .serializers import UserSerializer
+from .serializers import MasterpieceSerializer, UserSerializer, WatchlistSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.shortcuts import get_object_or_404
 
 
 class RegisterView(APIView):
@@ -47,16 +46,66 @@ class Users(APIView):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class SearchMovie(APIView):
+
+class MovieSearch(APIView):
 
     def get(self, request):
         query = self.request.query_params.get('movie')
         page = self.request.query_params.get('page')
-        response = search_movie(query=query, page=page)
+        response = movie_search(query=query, page=page)
         return Response(response, status=status.HTTP_200_OK)
+
 
 class MovieDetails(APIView):
 
     def get(self, request, movie_id):
         response = movie_details(movie_id=movie_id)
         return Response(response, status=status.HTTP_200_OK)
+
+
+class MasterpiecesView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        if not user_id:
+            response = {
+                "total": MasterpieceService.count(user_id=None)
+            }
+        else:
+            masterpieces = MasterpieceService.retrieve(user_id=user_id)
+            serialized_data = MasterpieceSerializer(masterpieces, many=True)
+            response = {
+                "total": MasterpieceService.count(user_id=user_id),
+                "data": serialized_data.data
+            }
+        return Response(response, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data, status = MasterpieceService.create(
+            payload=request.data, user_id=request.user)
+        return Response(data, status=status)
+
+
+class WatchlistsView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        if not user_id:
+            response = {
+                "total": WatchlistService.count(user_id=None)
+            }
+        else:
+            watchlists = WatchlistService.retrieve(user_id=user_id)
+            serialized_data = WatchlistSerializer(watchlists, many=True)
+            response = {
+                "total": WatchlistService.count(user_id=user_id),
+                "data": serialized_data.data
+            }
+        return Response(response, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data, status = WatchlistService.create(
+            payload=request.data, user_id=request.user)
+        return Response(data, status=status)

@@ -6,28 +6,29 @@ import uuid
 class Critic(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     content = models.CharField(max_length=1000)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE)
-    movie_id = models.IntegerField(unique=True)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE, null=True)
+    movie_id = models.IntegerField()
 
 class Vote(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     value = models.IntegerField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE)
-    movie_id = models.IntegerField(unique=True)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE, null=True)
+    movie_id = models.IntegerField()
 
 class Masterpiece(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    movie_id = models.IntegerField(unique=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE)
+    position = models.IntegerField()
+    movie_id = models.IntegerField()
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE, null=True)
 
 class Watchlist(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    movie_id = models.IntegerField(unique=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE)
+    movie_id = models.IntegerField()
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE, null=True)
 
 # class Movie(models.Model):
 #     id = models.IntegerField(primary_key=True)
