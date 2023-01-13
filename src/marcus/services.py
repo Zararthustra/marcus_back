@@ -26,8 +26,14 @@ def movie_details(movie_id: int):
 
 
 class MasterpieceService():
+    """
+        Masterpiece service class
+    """
 
     def retrieve(*, user_id: int):
+        """
+            Retrieve by user_id
+        """
         return Masterpiece.objects.filter(user_id=user_id)
 
     def create(*, payload: dict, user_id: int):
@@ -55,6 +61,9 @@ class MasterpieceService():
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
     def count(*, user_id: int):
+        """
+            Count all rows or by user_id
+        """
         if not user_id:
             return Masterpiece.objects.all().count()
         return Masterpiece.objects.filter(user_id=user_id).count()
@@ -62,13 +71,19 @@ class MasterpieceService():
 
 class WatchlistService():
     """
-            Create if not exist
+        Watchlist service class
     """
 
     def retrieve(*, user_id: int):
+        """
+            Retrieve by user_id
+        """
         return Watchlist.objects.filter(user_id=user_id)
 
     def create(*, payload: dict, user_id: int):
+        """
+            Create if not exist
+        """
         try:
             # Find row where: user_id & movie_id
             watchlist = Watchlist.objects.get(
@@ -90,6 +105,9 @@ class WatchlistService():
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
     def count(*, user_id: int):
+        """
+            Count all rows or by user_id
+        """
         if not user_id:
             return Watchlist.objects.all().count()
         return Watchlist.objects.filter(user_id=user_id).count()
@@ -97,13 +115,19 @@ class WatchlistService():
 
 class VoteService():
     """
-            Create if not exist
+        Vote service class
     """
 
     def retrieve(*, user_id: int):
+        """
+            Retrieve by user_id
+        """
         return Vote.objects.filter(user_id=user_id)
 
     def create(*, payload: dict, user_id: int):
+        """
+            Create if not exist
+        """
         try:
             # Find row where: user_id & movie_id
             vote = Vote.objects.get(
@@ -125,11 +149,17 @@ class VoteService():
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
     def count(*, user_id: int):
+        """
+            Count all rows or by user_id
+        """
         if not user_id:
             return Vote.objects.all().count()
         return Vote.objects.filter(user_id=user_id).count()
     
     def check_enum_value(*, value: float):
+        """
+            Check if value is in enum_values
+        """
         enum_values = [x * 0.5 for x in range(0, 11)]
         print(enum_values)
         if value in enum_values:
@@ -139,13 +169,19 @@ class VoteService():
 
 class CriticService():
     """
-            Create if not exist
+        Critic service class
     """
 
     def retrieve(*, user_id: int):
+        """
+            Retrieve by user_id
+        """
         return Critic.objects.filter(user_id=user_id)
 
     def create(*, payload: dict, user_id: int):
+        """
+            Create if not exist
+        """
         try:
             # Find row where: user_id & movie_id
             critic = Critic.objects.get(
@@ -167,6 +203,9 @@ class CriticService():
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
     def count(*, user_id: int):
+        """
+            Count all rows or by user_id
+        """
         if not user_id:
             return Critic.objects.all().count()
         return Critic.objects.filter(user_id=user_id).count()
