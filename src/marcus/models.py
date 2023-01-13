@@ -12,7 +12,7 @@ class Critic(models.Model):
 
 class Vote(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    value = models.IntegerField()
+    value = models.FloatField()
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, null=True)
     movie_id = models.IntegerField()

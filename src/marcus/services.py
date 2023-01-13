@@ -6,9 +6,9 @@ from rest_framework import status
 
 from django.db.models import Q
 from django.contrib.auth.models import User
-from marcus.models import Masterpiece, Watchlist
+from marcus.models import Critic, Masterpiece, Watchlist, Vote
 
-from marcus.serializers import MasterpieceSerializer, WatchlistSerializer
+from marcus.serializers import CriticSerializer, MasterpieceSerializer, WatchlistSerializer, VoteSerializer
 
 tmdb.API_KEY = settings.TMDB_API_KEY
 
@@ -34,21 +34,22 @@ class MasterpieceService():
         """
             Create if not exist
         """
+
         try:
             # Find row where: user_id & (movie_id | position)
-            Masterpiece.objects.get(
+            masterpiece = Masterpiece.objects.get(
                 Q(user_id=user_id) &
                 (Q(movie_id=payload.get('movie_id')) |
                  Q(position=payload.get('position')))
             )
-            return {"error": "Movie or Position already exists."}, status.HTTP_400_BAD_REQUEST
+            return {"error": f"Movie {masterpiece.movie_id} with Position {masterpiece.position} already exists."}, status.HTTP_400_BAD_REQUEST
         except Masterpiece.DoesNotExist:
             serializer = MasterpieceSerializer(data=payload)
             if serializer.is_valid():
                 serializer.save(user_id=user_id)
                 return {
-                    "message": f"Movie {payload.get('movie_id')} with position {payload.get('position')} successfully added to Masterpiece."
-                    }, status.HTTP_201_CREATED
+                    "message": f"Movie {payload.get('movie_id')} with Position {payload.get('position')} successfully added to Masterpiece."
+                }, status.HTTP_201_CREATED
             return serializer.errors, status.HTTP_400_BAD_REQUEST
         except Exception as e:
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
@@ -60,6 +61,9 @@ class MasterpieceService():
 
 
 class WatchlistService():
+    """
+            Create if not exist
+    """
 
     def retrieve(*, user_id: int):
         return Watchlist.objects.filter(user_id=user_id)
@@ -67,16 +71,20 @@ class WatchlistService():
     def create(*, payload: dict, user_id: int):
         try:
             # Find row where: user_id & movie_id
-            Watchlist.objects.get(
+            watchlist = Watchlist.objects.get(
                 Q(user_id=user_id) &
                 Q(movie_id=payload.get('movie_id'))
             )
-            return {"error": f"Movie {payload.get('movie_id')} already exists in Watchlist."}, status.HTTP_400_BAD_REQUEST
+            return {
+                "error": f"Movie {watchlist.movie_id} already exists in Watchlist."
+            }, status.HTTP_400_BAD_REQUEST
         except Watchlist.DoesNotExist:
             serializer = WatchlistSerializer(data=payload)
             if serializer.is_valid():
                 serializer.save(user_id=user_id)
-                return {"message": f"Movie {payload.get('movie_id')} successfully added to Watchlist."}, status.HTTP_201_CREATED
+                return {
+                    "message": f"Movie {payload.get('movie_id')} successfully added to Watchlist."
+                }, status.HTTP_201_CREATED
             return serializer.errors, status.HTTP_400_BAD_REQUEST
         except Exception as e:
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
@@ -85,3 +93,80 @@ class WatchlistService():
         if not user_id:
             return Watchlist.objects.all().count()
         return Watchlist.objects.filter(user_id=user_id).count()
+
+
+class VoteService():
+    """
+            Create if not exist
+    """
+
+    def retrieve(*, user_id: int):
+        return Vote.objects.filter(user_id=user_id)
+
+    def create(*, payload: dict, user_id: int):
+        try:
+            # Find row where: user_id & movie_id
+            vote = Vote.objects.get(
+                Q(user_id=user_id) &
+                Q(movie_id=payload.get('movie_id'))
+            )
+            return {
+                "error": f"Movie {vote.movie_id} with value {vote.value} already exists in Vote."
+            }, status.HTTP_400_BAD_REQUEST
+        except Vote.DoesNotExist:
+            serializer = VoteSerializer(data=payload)
+            if serializer.is_valid():
+                serializer.save(user_id=user_id)
+                return {
+                    "message": f"Movie {payload.get('movie_id')} with Value {payload.get('value')} successfully added to Vote."
+                }, status.HTTP_201_CREATED
+            return serializer.errors, status.HTTP_400_BAD_REQUEST
+        except Exception as e:
+            return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
+
+    def count(*, user_id: int):
+        if not user_id:
+            return Vote.objects.all().count()
+        return Vote.objects.filter(user_id=user_id).count()
+    
+    def check_enum_value(*, value: float):
+        enum_values = [x * 0.5 for x in range(0, 11)]
+        print(enum_values)
+        if value in enum_values:
+            return True
+        return False
+
+
+class CriticService():
+    """
+            Create if not exist
+    """
+
+    def retrieve(*, user_id: int):
+        return Critic.objects.filter(user_id=user_id)
+
+    def create(*, payload: dict, user_id: int):
+        try:
+            # Find row where: user_id & movie_id
+            critic = Critic.objects.get(
+                Q(user_id=user_id) &
+                Q(movie_id=payload.get('movie_id'))
+            )
+            return {
+                "error": f"Movie {critic.movie_id} already exists in Critic."
+            }, status.HTTP_400_BAD_REQUEST
+        except Critic.DoesNotExist:
+            serializer = CriticSerializer(data=payload)
+            if serializer.is_valid():
+                serializer.save(user_id=user_id)
+                return {
+                    "message": f"Movie {payload.get('movie_id')} successfully added to Critic."
+                }, status.HTTP_201_CREATED
+            return serializer.errors, status.HTTP_400_BAD_REQUEST
+        except Exception as e:
+            return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
+
+    def count(*, user_id: int):
+        if not user_id:
+            return Critic.objects.all().count()
+        return Critic.objects.filter(user_id=user_id).count()

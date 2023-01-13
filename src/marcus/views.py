@@ -4,11 +4,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.views import APIView
 from rest_framework import status
 
-from .services import MasterpieceService, WatchlistService, movie_details, movie_search
+from .services import CriticService, MasterpieceService, VoteService, WatchlistService, movie_details, movie_search
 
 # from .models import xxx
 from django.contrib.auth.models import User
-from .serializers import MasterpieceSerializer, UserSerializer, WatchlistSerializer
+from .serializers import CriticSerializer, MasterpieceSerializer, UserSerializer, VoteSerializer, WatchlistSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -107,5 +107,61 @@ class WatchlistsView(APIView):
 
     def post(self, request):
         data, status = WatchlistService.create(
+            payload=request.data, user_id=request.user)
+        return Response(data, status=status)
+
+
+class VotesView(APIView):
+    
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        if not user_id:
+            response = {
+                "total": VoteService.count(user_id=None)
+            }
+        else:
+            votes = VoteService.retrieve(user_id=user_id)
+            serialized_data = VoteSerializer(votes, many=True)
+            response = {
+                "total": VoteService.count(user_id=user_id),
+                "data": serialized_data.data
+            }
+        return Response(response, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        isCorrectValue = VoteService.check_enum_value(value=request.data.get('value'))
+        if not isCorrectValue:
+            response = {
+            "error": "Value must be in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]"
+            }
+            status_code=status.HTTP_400_BAD_REQUEST
+        else:
+            response, status_code = VoteService.create(
+                payload=request.data, user_id=request.user)
+        return Response(response, status=status_code)
+
+
+class CriticsView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        if not user_id:
+            response = {
+                "total": CriticService.count(user_id=None)
+            }
+        else:
+            critics = CriticService.retrieve(user_id=user_id)
+            serialized_data = CriticSerializer(critics, many=True)
+            response = {
+                "total": CriticService.count(user_id=user_id),
+                "data": serialized_data.data
+            }
+        return Response(response, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data, status = CriticService.create(
             payload=request.data, user_id=request.user)
         return Response(data, status=status)

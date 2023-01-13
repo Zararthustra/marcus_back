@@ -19,4 +19,8 @@ urlpatterns = [
     # path('masterpieces/<int:masterpiece_id>', views.MasterpieceView.as_view()),
 
     path('watchlists', views.WatchlistsView.as_view()),
+
+    path('votes', views.VotesView.as_view()),
+
+    path('critics', views.CriticsView.as_view()),
 ]

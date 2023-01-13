@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from marcus.models import Masterpiece, Watchlist
+from marcus.models import Masterpiece, Watchlist, Vote, Critic
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,3 +19,15 @@ class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Watchlist
         fields = ('movie_id',)
+
+
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = ('movie_id', 'value')
+
+
+class CriticSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Critic
+        fields = ('movie_id', 'content')
