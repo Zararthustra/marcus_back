@@ -9,6 +9,10 @@ class Critic(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, null=True)
     movie_id = models.IntegerField()
+    movie_name = models.CharField(max_length=100)
+
+    def user_name(self):
+        return self.user_id.username
 
 class Vote(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)

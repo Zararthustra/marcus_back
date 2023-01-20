@@ -30,4 +30,4 @@ class VoteSerializer(serializers.ModelSerializer):
 class CriticSerializer(serializers.ModelSerializer):
     class Meta:
         model = Critic
-        fields = ('movie_id', 'content')
+        fields = ('movie_id', 'movie_name', 'content', 'user_id', 'user_name')

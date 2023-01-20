@@ -155,7 +155,7 @@ class VoteService():
         if not user_id:
             return Vote.objects.all().count()
         return Vote.objects.filter(user_id=user_id).count()
-    
+
     def check_enum_value(*, value: float):
         """
             Check if value is in enum_values
@@ -176,6 +176,8 @@ class CriticService():
         """
             Retrieve by user_id
         """
+        if not user_id:
+            return Critic.objects.all()
         return Critic.objects.filter(user_id=user_id)
 
     def create(*, payload: dict, user_id: int):

@@ -112,7 +112,7 @@ class WatchlistsView(APIView):
 
 
 class VotesView(APIView):
-    
+
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
@@ -131,12 +131,13 @@ class VotesView(APIView):
         return Response(response, status=status.HTTP_200_OK)
 
     def post(self, request):
-        isCorrectValue = VoteService.check_enum_value(value=request.data.get('value'))
+        isCorrectValue = VoteService.check_enum_value(
+            value=request.data.get('value'))
         if not isCorrectValue:
             response = {
-            "error": "Value must be in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]"
+                "error": "Value must be in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]"
             }
-            status_code=status.HTTP_400_BAD_REQUEST
+            status_code = status.HTTP_400_BAD_REQUEST
         else:
             response, status_code = VoteService.create(
                 payload=request.data, user_id=request.user)
@@ -148,17 +149,12 @@ class CriticsView(APIView):
 
     def get(self, request):
         user_id = request.query_params.get('user_id')
-        if not user_id:
-            response = {
-                "total": CriticService.count(user_id=None)
-            }
-        else:
-            critics = CriticService.retrieve(user_id=user_id)
-            serialized_data = CriticSerializer(critics, many=True)
-            response = {
-                "total": CriticService.count(user_id=user_id),
-                "data": serialized_data.data
-            }
+        critics = CriticService.retrieve(user_id=user_id)
+        serialized_data = CriticSerializer(critics, many=True)
+        response = {
+            "total": CriticService.count(user_id=user_id),
+            "data": serialized_data.data
+        }
         return Response(response, status=status.HTTP_200_OK)
 
     def post(self, request):
