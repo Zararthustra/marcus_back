@@ -67,23 +67,23 @@ class MasterpiecesView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
-        user_id = request.query_params.get('user_id')
-        if not user_id:
+        user = request.query_params.get('user_id')
+        if not user:
             response = {
-                "total": MasterpieceService.count(user_id=None)
+                "total": MasterpieceService.count(user=None)
             }
         else:
-            masterpieces = MasterpieceService.retrieve(user_id=user_id)
+            masterpieces = MasterpieceService.retrieve(user=user)
             serialized_data = MasterpieceSerializer(masterpieces, many=True)
             response = {
-                "total": MasterpieceService.count(user_id=user_id),
+                "total": MasterpieceService.count(user=user),
                 "data": serialized_data.data
             }
         return Response(response, status=status.HTTP_200_OK)
 
     def post(self, request):
         data, status = MasterpieceService.create(
-            payload=request.data, user_id=request.user)
+            payload=request.data, user=request.user)
         return Response(data, status=status)
 
 
@@ -91,23 +91,23 @@ class WatchlistsView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
-        user_id = request.query_params.get('user_id')
-        if not user_id:
+        user = request.query_params.get('user_id')
+        if not user:
             response = {
-                "total": WatchlistService.count(user_id=None)
+                "total": WatchlistService.count(user=None)
             }
         else:
-            watchlists = WatchlistService.retrieve(user_id=user_id)
+            watchlists = WatchlistService.retrieve(user=user)
             serialized_data = WatchlistSerializer(watchlists, many=True)
             response = {
-                "total": WatchlistService.count(user_id=user_id),
+                "total": WatchlistService.count(user=user),
                 "data": serialized_data.data
             }
         return Response(response, status=status.HTTP_200_OK)
 
     def post(self, request):
         data, status = WatchlistService.create(
-            payload=request.data, user_id=request.user)
+            payload=request.data, user=request.user)
         return Response(data, status=status)
 
 
@@ -116,16 +116,16 @@ class VotesView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
-        user_id = request.query_params.get('user_id')
-        if not user_id:
+        user = request.query_params.get('user_id')
+        if not user:
             response = {
-                "total": VoteService.count(user_id=None)
+                "total": VoteService.count(user=None)
             }
         else:
-            votes = VoteService.retrieve(user_id=user_id)
+            votes = VoteService.retrieve(user=user)
             serialized_data = VoteSerializer(votes, many=True)
             response = {
-                "total": VoteService.count(user_id=user_id),
+                "total": VoteService.count(user=user),
                 "data": serialized_data.data
             }
         return Response(response, status=status.HTTP_200_OK)
@@ -140,7 +140,7 @@ class VotesView(APIView):
             status_code = status.HTTP_400_BAD_REQUEST
         else:
             response, status_code = VoteService.create(
-                payload=request.data, user_id=request.user)
+                payload=request.data, user=request.user)
         return Response(response, status=status_code)
 
 
@@ -148,11 +148,18 @@ class CriticsView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
-        user_id = request.query_params.get('user_id')
-        critics = CriticService.list(user_id=user_id)
+        # Sanity check
+        try:
+            user = int(request.query_params.get('user_id'))
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        # Service
+        critics = CriticService.list(user=user)
+        # Serialize
         serialized_data = CriticSerializer(critics, many=True)
+        # Response
         response = {
-            "total": CriticService.count(user_id=user_id),
+            "total": CriticService.count(user=user),
             "data": serialized_data.data
         }
         return Response(response, status=status.HTTP_200_OK)
@@ -172,7 +179,7 @@ class CriticsView(APIView):
             movie_id=payload["movie_id"],
             movie_name=payload["movie_name"],
             content=payload["content"],
-            user_id=request.user
+            user=request.user
         )
         # Response
         return Response(data, status=status_code)

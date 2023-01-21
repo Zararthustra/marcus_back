@@ -6,18 +6,18 @@ import uuid
 class Critic(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     content = models.CharField(max_length=1000)
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, null=True)
     movie_id = models.IntegerField()
     movie_name = models.CharField(max_length=100)
 
     def user_name(self):
-        return self.user_id.username
+        return self.user.username
 
 class Vote(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     value = models.FloatField()
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, null=True)
     movie_id = models.IntegerField()
 
@@ -25,13 +25,13 @@ class Masterpiece(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     position = models.IntegerField()
     movie_id = models.IntegerField()
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, null=True)
 
 class Watchlist(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     movie_id = models.IntegerField()
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, null=True)
 
 # class Movie(models.Model):

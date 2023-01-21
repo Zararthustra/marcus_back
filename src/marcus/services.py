@@ -30,21 +30,21 @@ class MasterpieceService():
         Masterpiece service class
     """
 
-    def retrieve(*, user_id: int):
+    def retrieve(*, user: int):
         """
-            Retrieve by user_id
+            Retrieve by user
         """
-        return Masterpiece.objects.filter(user_id=user_id)
+        return Masterpiece.objects.filter(user=user)
 
-    def create(*, payload: dict, user_id: int):
+    def create(*, payload: dict, user: int):
         """
             Create if not exist
         """
 
         try:
-            # Find row where: user_id & (movie_id | position)
+            # Find row where: user & (movie_id | position)
             masterpiece = Masterpiece.objects.get(
-                Q(user_id=user_id) &
+                Q(user=user) &
                 (Q(movie_id=payload.get('movie_id')) |
                  Q(position=payload.get('position')))
             )
@@ -52,7 +52,7 @@ class MasterpieceService():
         except Masterpiece.DoesNotExist:
             serializer = MasterpieceSerializer(data=payload)
             if serializer.is_valid():
-                serializer.save(user_id=user_id)
+                serializer.save(user=user)
                 return {
                     "message": f"Movie {payload.get('movie_id')} with Position {payload.get('position')} successfully added to Masterpiece."
                 }, status.HTTP_201_CREATED
@@ -60,13 +60,13 @@ class MasterpieceService():
         except Exception as e:
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
-    def count(*, user_id: int):
+    def count(*, user: int):
         """
-            Count all rows or by user_id
+            Count all rows or by user
         """
-        if not user_id:
+        if not user:
             return Masterpiece.objects.all().count()
-        return Masterpiece.objects.filter(user_id=user_id).count()
+        return Masterpiece.objects.filter(user=user).count()
 
 
 class WatchlistService():
@@ -74,20 +74,20 @@ class WatchlistService():
         Watchlist service class
     """
 
-    def retrieve(*, user_id: int):
+    def retrieve(*, user: int):
         """
-            Retrieve by user_id
+            Retrieve by user
         """
-        return Watchlist.objects.filter(user_id=user_id)
+        return Watchlist.objects.filter(user=user)
 
-    def create(*, payload: dict, user_id: int):
+    def create(*, payload: dict, user: int):
         """
             Create if not exist
         """
         try:
-            # Find row where: user_id & movie_id
+            # Find row where: user & movie_id
             watchlist = Watchlist.objects.get(
-                Q(user_id=user_id) &
+                Q(user=user) &
                 Q(movie_id=payload.get('movie_id'))
             )
             return {
@@ -96,7 +96,7 @@ class WatchlistService():
         except Watchlist.DoesNotExist:
             serializer = WatchlistSerializer(data=payload)
             if serializer.is_valid():
-                serializer.save(user_id=user_id)
+                serializer.save(user=user)
                 return {
                     "message": f"Movie {payload.get('movie_id')} successfully added to Watchlist."
                 }, status.HTTP_201_CREATED
@@ -104,13 +104,13 @@ class WatchlistService():
         except Exception as e:
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
-    def count(*, user_id: int):
+    def count(*, user: int):
         """
-            Count all rows or by user_id
+            Count all rows or by user
         """
-        if not user_id:
+        if not user:
             return Watchlist.objects.all().count()
-        return Watchlist.objects.filter(user_id=user_id).count()
+        return Watchlist.objects.filter(user=user).count()
 
 
 class VoteService():
@@ -118,20 +118,20 @@ class VoteService():
         Vote service class
     """
 
-    def retrieve(*, user_id: int):
+    def retrieve(*, user: int):
         """
-            Retrieve by user_id
+            Retrieve by user
         """
-        return Vote.objects.filter(user_id=user_id)
+        return Vote.objects.filter(user=user)
 
-    def create(*, payload: dict, user_id: int):
+    def create(*, payload: dict, user: int):
         """
             Create if not exist
         """
         try:
-            # Find row where: user_id & movie_id
+            # Find row where: user & movie_id
             vote = Vote.objects.get(
-                Q(user_id=user_id) &
+                Q(user=user) &
                 Q(movie_id=payload.get('movie_id'))
             )
             return {
@@ -140,7 +140,7 @@ class VoteService():
         except Vote.DoesNotExist:
             serializer = VoteSerializer(data=payload)
             if serializer.is_valid():
-                serializer.save(user_id=user_id)
+                serializer.save(user=user)
                 return {
                     "message": f"Movie {payload.get('movie_id')} with Value {payload.get('value')} successfully added to Vote."
                 }, status.HTTP_201_CREATED
@@ -148,13 +148,13 @@ class VoteService():
         except Exception as e:
             return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
-    def count(*, user_id: int):
+    def count(*, user: int):
         """
-            Count all rows or by user_id
+            Count all rows or by user
         """
-        if not user_id:
+        if not user:
             return Vote.objects.all().count()
-        return Vote.objects.filter(user_id=user_id).count()
+        return Vote.objects.filter(user=user).count()
 
     def check_enum_value(*, value: float):
         """
@@ -172,20 +172,20 @@ class CriticService():
         Critic service class
     """
 
-    def list(*, user_id: int):
+    def list(*, user: int):
         """
-            List by user_id
+            List by user
         """
-        if not user_id:
+        if not user:
             return Critic.objects.all()
-        return Critic.objects.filter(user_id=user_id)
+        return Critic.objects.filter(user=user)
 
-    def create(*, movie_id: int, movie_name: str, content: str, user_id: User):
+    def create(*, movie_id: int, movie_name: str, content: str, user: User):
         """
-            Create if (user_id & movie_id) does not exist
+            Create if (user & movie_id) does not exist
         """
         critic, created = Critic.objects.get_or_create(
-            user_id=user_id,
+            user=user,
             movie_id=movie_id,
             defaults={
                 "movie_name": movie_name,
@@ -200,10 +200,10 @@ class CriticService():
             "message": f"Movie {critic.movie_id} {critic.movie_name} successfully added to Critic."
         }, status.HTTP_201_CREATED
 
-    def count(*, user_id: int):
+    def count(*, user: int):
         """
-            Count all rows or by user_id
+            Count all rows or by user
         """
-        if not user_id:
+        if not user:
             return Critic.objects.all().count()
-        return Critic.objects.filter(user_id=user_id).count()
+        return Critic.objects.filter(user=user).count()
