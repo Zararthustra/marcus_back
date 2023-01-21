@@ -8,7 +8,7 @@ from .services import CriticService, MasterpieceService, VoteService, WatchlistS
 
 # from .models import xxx
 from django.contrib.auth.models import User
-from .serializers import CriticSerializer, MasterpieceSerializer, UserSerializer, VoteSerializer, WatchlistSerializer
+from .serializers import CreateCriticSerializer, CriticSerializer, MasterpieceSerializer, UserSerializer, VoteSerializer, WatchlistSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -149,7 +149,7 @@ class CriticsView(APIView):
 
     def get(self, request):
         user_id = request.query_params.get('user_id')
-        critics = CriticService.retrieve(user_id=user_id)
+        critics = CriticService.list(user_id=user_id)
         serialized_data = CriticSerializer(critics, many=True)
         response = {
             "total": CriticService.count(user_id=user_id),
@@ -158,6 +158,21 @@ class CriticsView(APIView):
         return Response(response, status=status.HTTP_200_OK)
 
     def post(self, request):
-        data, status = CriticService.create(
-            payload=request.data, user_id=request.user)
-        return Response(data, status=status)
+        payload = request.data
+        # Serialize
+        serialized_data = CreateCriticSerializer(data=payload)
+        # Validate
+        if not serialized_data.is_valid():
+            return Response(
+                {"error": serialized_data.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        # Service
+        data, status_code = CriticService.create(
+            movie_id=payload["movie_id"],
+            movie_name=payload["movie_name"],
+            content=payload["content"],
+            user_id=request.user
+        )
+        # Response
+        return Response(data, status=status_code)

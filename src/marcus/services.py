@@ -172,37 +172,33 @@ class CriticService():
         Critic service class
     """
 
-    def retrieve(*, user_id: int):
+    def list(*, user_id: int):
         """
-            Retrieve by user_id
+            List by user_id
         """
         if not user_id:
             return Critic.objects.all()
         return Critic.objects.filter(user_id=user_id)
 
-    def create(*, payload: dict, user_id: int):
+    def create(*, movie_id: int, movie_name: str, content: str, user_id: User):
         """
-            Create if not exist
+            Create if (user_id & movie_id) does not exist
         """
-        try:
-            # Find row where: user_id & movie_id
-            critic = Critic.objects.get(
-                Q(user_id=user_id) &
-                Q(movie_id=payload.get('movie_id'))
-            )
+        critic, created = Critic.objects.get_or_create(
+            user_id=user_id,
+            movie_id=movie_id,
+            defaults={
+                "movie_name": movie_name,
+                "content": content,
+            }
+        )
+        if not created:
             return {
-                "error": f"Movie {critic.movie_id} already exists in Critic."
+                "error": f"Movie {critic.movie_id} {critic.movie_name} already exists in Critic."
             }, status.HTTP_400_BAD_REQUEST
-        except Critic.DoesNotExist:
-            serializer = CriticSerializer(data=payload)
-            if serializer.is_valid():
-                serializer.save(user_id=user_id)
-                return {
-                    "message": f"Movie {payload.get('movie_id')} successfully added to Critic."
-                }, status.HTTP_201_CREATED
-            return serializer.errors, status.HTTP_400_BAD_REQUEST
-        except Exception as e:
-            return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
+        return {
+            "message": f"Movie {critic.movie_id} {critic.movie_name} successfully added to Critic."
+        }, status.HTTP_201_CREATED
 
     def count(*, user_id: int):
         """
