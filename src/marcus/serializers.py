@@ -24,7 +24,12 @@ class WatchlistSerializer(serializers.ModelSerializer):
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ('movie_id', 'value')
+        fields = ('movie_id', 'movie_name', 'value', 'user_id', 'user_name')
+
+class CreateVoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = ('movie_id', 'movie_name', 'value')
 
 
 class CriticSerializer(serializers.ModelSerializer):

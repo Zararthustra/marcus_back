@@ -8,7 +8,7 @@ from .services import CriticService, MasterpieceService, VoteService, WatchlistS
 
 # from .models import xxx
 from django.contrib.auth.models import User
-from .serializers import CreateCriticSerializer, CriticSerializer, MasterpieceSerializer, UserSerializer, VoteSerializer, WatchlistSerializer
+from .serializers import CreateCriticSerializer, CreateVoteSerializer, CriticSerializer, MasterpieceSerializer, UserSerializer, VoteSerializer, WatchlistSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -116,50 +116,70 @@ class VotesView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
-        user = request.query_params.get('user_id')
-        if not user:
-            response = {
-                "total": VoteService.count(user=None)
-            }
-        else:
-            votes = VoteService.retrieve(user=user)
-            serialized_data = VoteSerializer(votes, many=True)
-            response = {
-                "total": VoteService.count(user=user),
-                "data": serialized_data.data
-            }
+        user_param = request.query_params.get('user_id')
+        # Sanity check
+        if user_param:
+            try:
+                int(user_param)
+            except ValueError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        # Service
+        votes = VoteService.list(user=user_param)
+        # Serialize
+        serialized_data = VoteSerializer(votes, many=True)
+        # Response
+        response = {
+            "total": VoteService.count(user=user_param),
+            "data": serialized_data.data
+        }
         return Response(response, status=status.HTTP_200_OK)
 
     def post(self, request):
+        payload = request.data
+        # Serialize
+        serialized_data = CreateVoteSerializer(data=payload)
+        # Validate
+        if not serialized_data.is_valid():
+            return Response(
+                {"error": serialized_data.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        # Enum check
         isCorrectValue = VoteService.check_enum_value(
-            value=request.data.get('value'))
+            value=payload.get("value"))
         if not isCorrectValue:
-            response = {
+            return Response({
                 "error": "Value must be in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]"
-            }
-            status_code = status.HTTP_400_BAD_REQUEST
-        else:
-            response, status_code = VoteService.create(
-                payload=request.data, user=request.user)
-        return Response(response, status=status_code)
+            }, status=status.HTTP_400_BAD_REQUEST)
+        # Service
+        data, status_code = VoteService.create(
+            movie_id=payload["movie_id"],
+            movie_name=payload["movie_name"],
+            value=payload["value"],
+            user=request.user
+        )
+        # Response
+        return Response(data, status=status_code)
 
 
 class CriticsView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
+        user_param = request.query_params.get('user_id')
         # Sanity check
-        try:
-            user = int(request.query_params.get('user_id'))
-        except ValueError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        if user_param:
+            try:
+                int(user_param)
+            except ValueError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Service
-        critics = CriticService.list(user=user)
+        critics = CriticService.list(user=user_param)
         # Serialize
         serialized_data = CriticSerializer(critics, many=True)
         # Response
         response = {
-            "total": CriticService.count(user=user),
+            "total": CriticService.count(user=user_param),
             "data": serialized_data.data
         }
         return Response(response, status=status.HTTP_200_OK)

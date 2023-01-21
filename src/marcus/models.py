@@ -20,6 +20,10 @@ class Vote(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, null=True)
     movie_id = models.IntegerField()
+    movie_name = models.CharField(max_length=100)
+
+    def user_name(self):
+        return self.user.username
 
 class Masterpiece(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
