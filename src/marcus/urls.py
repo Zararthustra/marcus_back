@@ -12,8 +12,8 @@ urlpatterns = [
 
     path('users', views.Users.as_view()),
     
-    path('movies', views.MovieSearch.as_view()),
-    path('movies/<int:movie_id>', views.MovieDetails.as_view()),
+    # path('movies', views.MovieSearch.as_view()),
+    # path('movies/<int:movie_id>', views.MovieDetails.as_view()),
 
     path('masterpieces', views.MasterpiecesView.as_view()),
     # path('masterpieces/<int:masterpiece_id>', views.MasterpieceView.as_view()),
