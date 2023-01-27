@@ -19,11 +19,11 @@ class MovieBaseModel(models.Model):
         return self.user.username
 
 
-class Critic(models.Model):
+class Critic(MovieBaseModel):
     content = models.CharField(max_length=1000)
 
 
-class Vote(models.Model):
+class Vote(MovieBaseModel):
     value = models.FloatField()
 
 
@@ -31,5 +31,5 @@ class Masterpiece(MovieBaseModel):
     pass
 
 
-class Watchlist(models.Model):
+class Watchlist(MovieBaseModel):
     pass
