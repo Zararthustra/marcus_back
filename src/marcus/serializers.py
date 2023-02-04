@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Masterpiece, Watchlist, Vote, Critic
+from .services import TMDBService
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,9 +30,20 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MasterpieceSerializer(serializers.ModelSerializer):
+    movie_details = serializers.SerializerMethodField()
+
     class Meta:
         model = Masterpiece
-        fields = ('movie_id', 'movie_name', 'user_id', 'user_name', 'platform')
+        fields = ('movie_id', 'movie_name', 'user_id',
+                  'user_name', 'platform', 'movie_details')
+
+    def get_movie_details(self, obj):
+        details = {}
+        response = TMDBService.movie_details(obj.movie_id)
+        details["released_date"] = response["release_date"]
+        details["poster_path"] = response["poster_path"]
+        details["synopsis"] = response["overview"]
+        return details
 
 
 class CreateMasterpieceSerializer(serializers.ModelSerializer):

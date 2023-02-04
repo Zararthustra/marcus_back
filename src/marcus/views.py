@@ -97,6 +97,7 @@ class BaseView(APIView):
         data, status_code = self.service.create(
             movie_id=payload["movie_id"],
             movie_name=payload["movie_name"],
+            platform=payload["platform"],
             user=request.user
         )
         # Response
@@ -142,6 +143,7 @@ class VotesView(BaseView):
             movie_id=payload["movie_id"],
             movie_name=payload["movie_name"],
             value=payload["value"],
+            platform=payload["platform"],
             user=request.user
         )
         # Response
@@ -191,6 +193,7 @@ class CriticsView(BaseView):
             movie_id=payload["movie_id"],
             movie_name=payload["movie_name"],
             content=payload["content"],
+            platform=payload["platform"],
             user=request.user
         )
         # Response

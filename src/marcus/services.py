@@ -7,6 +7,10 @@ from marcus.models import Critic, Masterpiece, Watchlist, Vote
 # from django.shortcuts import get_object_or_404
 # from django.db.models import Q
 
+from django.conf import settings
+import tmdbsimple as tmdb
+tmdb.API_KEY = settings.TMDB_API_KEY
+
 
 class MasterpieceService():
     """
@@ -21,7 +25,7 @@ class MasterpieceService():
             return Masterpiece.objects.all()
         return Masterpiece.objects.filter(user=user)
 
-    def create(*, movie_id: int, movie_name: str, user: User):
+    def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
             Create if (user & movie_id) does not exist
         """
@@ -30,6 +34,7 @@ class MasterpieceService():
             movie_id=movie_id,
             defaults={
                 "movie_name": movie_name,
+                "platform": platform,
             }
         )
         if not created:
@@ -62,7 +67,7 @@ class WatchlistService():
             return Watchlist.objects.all()
         return Watchlist.objects.filter(user=user)
 
-    def create(*, movie_id: int, movie_name: str, user: User):
+    def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
             Create if (user & movie_id) does not exist
         """
@@ -71,6 +76,7 @@ class WatchlistService():
             movie_id=movie_id,
             defaults={
                 "movie_name": movie_name,
+                "platform": platform,
             }
         )
         if not created:
@@ -103,7 +109,7 @@ class VoteService():
             return Vote.objects.all()
         return Vote.objects.filter(user=user)
 
-    def create(*, movie_id: int, movie_name: str, value: float, user: User):
+    def create(*, movie_id: int, movie_name: str, value: float, platform: str, user: User):
         """
             Create if (user & movie_id) does not exist
         """
@@ -112,6 +118,7 @@ class VoteService():
             movie_id=movie_id,
             defaults={
                 "movie_name": movie_name,
+                "platform": platform,
                 "value": value,
             }
         )
@@ -175,7 +182,7 @@ class CriticService():
             merged_query.append(data)
         return merged_query
 
-    def create(*, movie_id: int, movie_name: str, content: str, user: User):
+    def create(*, movie_id: int, movie_name: str, content: str, platform: str, user: User):
         """
             Create if (user & movie_id) does not exist
         """
@@ -185,6 +192,7 @@ class CriticService():
             defaults={
                 "movie_name": movie_name,
                 "content": content,
+                "platform": platform,
             }
         )
         if not created:
@@ -204,17 +212,12 @@ class CriticService():
         return Critic.objects.filter(user=user).count()
 
 
-# from django.conf import settings
-# import tmdbsimple as tmdb
-# tmdb.API_KEY = settings.TMDB_API_KEY
+class TMDBService():
+    """
+        TMDB service class
+    """
 
-# def movie_search(query: str, page=int):
-#     search = tmdb.Search()
-#     response = search.movie(query=query, language="fr", page=page)
-#     return response
-
-
-# def movie_details(movie_id: int):
-#     movie = tmdb.Movies(movie_id)
-#     response = movie.info(language="fr")
-#     return response
+    def movie_details(movie_id: int):
+        movie = tmdb.Movies(movie_id)
+        response = movie.info(language="fr")
+        return response
