@@ -9,6 +9,7 @@ from .services import CriticService, MasterpieceService, VoteService, WatchlistS
 
 from django.contrib.auth.models import User
 from .serializers import (
+    CriticVoteSerializer,
     UserSerializer,
     CriticSerializer,
     CreateCriticSerializer,
@@ -149,9 +150,32 @@ class VotesView(BaseView):
 
 
 class CriticsView(BaseView):
-    service = CriticService
-    retrieve_serializer = CriticSerializer
-    create_serializer = CreateCriticSerializer
+
+    def get(self, request):
+        user_param = request.query_params.get('user_id')
+        movie_param = request.query_params.get('movie_id')
+        # Sanity check
+        if user_param:
+            try:
+                int(user_param)
+            except ValueError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        # Service
+        if (movie_param):
+            objects = CriticService.list_by_movie_id_and_aggregate_votes(movie=movie_param)
+            count = None
+            serialized_data = CriticVoteSerializer(objects, many=True)
+        else:
+            objects = CriticService.list(user=user_param)
+            count = CriticService.count(user=user_param)
+            # Serialize
+            serialized_data = CriticSerializer(objects, many=True)
+        # Response
+        response = {}
+        if count:
+            response["count"] = count
+        response["data"] = serialized_data.data
+        return Response(response, status=status.HTTP_200_OK)
 
     def post(self, request):
         payload = request.data

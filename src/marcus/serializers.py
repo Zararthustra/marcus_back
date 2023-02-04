@@ -47,6 +47,14 @@ class CriticSerializer(serializers.ModelSerializer):
         model = Critic
         fields = ('movie_id', 'movie_name', 'content', 'user_id', 'user_name')
 
+class CriticVoteSerializer(serializers.Serializer):
+    movie_id = serializers.IntegerField()
+    movie_name = serializers.CharField()
+    content = serializers.CharField()
+    vote = serializers.FloatField()
+    user_id = serializers.IntegerField()
+    user_name = serializers.CharField()
+
 class CreateCriticSerializer(serializers.ModelSerializer):
     class Meta:
         model = Critic

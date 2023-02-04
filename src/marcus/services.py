@@ -1,3 +1,4 @@
+import json
 from rest_framework import status
 
 from django.contrib.auth.models import User
@@ -147,11 +148,34 @@ class CriticService():
 
     def list(*, user: int):
         """
-            List by user
+            Optional List by user or movie
         """
-        if not user:
-            return Critic.objects.all()
-        return Critic.objects.filter(user=user)
+        if user:
+            return Critic.objects.filter(user=user)
+        return Critic.objects.all()
+
+    def list_by_movie_id_and_aggregate_votes(*, movie: int):
+        """
+            List Critics by movie_id with associated vote
+        """
+
+        critics = Critic.objects.filter(movie_id=movie)
+        votes = Vote.objects.filter(movie_id=movie)
+        merged_query = []
+        for critic in critics:
+            data = {}
+            data["movie_id"] = critic.movie_id
+            data["movie_name"] = critic.movie_name
+            data["content"] = critic.content
+            data["user_id"] = critic.user_id
+            data["user_name"] = critic.user_name
+            for vote in votes:
+                if (critic.movie_id == vote.movie_id) and (critic.user_id == vote.user_id):
+                    data["vote"] = vote.value
+                else:
+                    data["vote"] = None
+            merged_query.append(data)
+        return merged_query
 
     def create(*, movie_id: int, movie_name: str, content: str, user: User):
         """
@@ -180,7 +204,6 @@ class CriticService():
         if not user:
             return Critic.objects.all().count()
         return Critic.objects.filter(user=user).count()
-
 
 
 # from django.conf import settings
