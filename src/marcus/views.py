@@ -174,7 +174,7 @@ class CriticsView(BaseView):
         # Response
         response = {}
         if count:
-            response["count"] = count
+            response["total"] = count
         response["data"] = serialized_data.data
         return Response(response, status=status.HTTP_200_OK)
 
