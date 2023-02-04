@@ -167,13 +167,13 @@ class CriticService():
             data["movie_id"] = critic.movie_id
             data["movie_name"] = critic.movie_name
             data["content"] = critic.content
+            data["vote"] = None
             data["user_id"] = critic.user_id
             data["user_name"] = critic.user_name
-            for vote in votes:
-                if (critic.movie_id == vote.movie_id) and (critic.user_id == vote.user_id):
-                    data["vote"] = vote.value
-                else:
-                    data["vote"] = None
+            if (len(votes) > 0):
+                for vote in votes:
+                    if (critic.movie_id == vote.movie_id) and (critic.user_id == vote.user_id):
+                        data["vote"] = vote.value
             merged_query.append(data)
         return merged_query
 
