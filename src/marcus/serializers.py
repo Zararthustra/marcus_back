@@ -4,9 +4,28 @@ from .models import Masterpiece, Watchlist, Vote, Critic
 
 
 class UserSerializer(serializers.ModelSerializer):
+    user_critics = serializers.SerializerMethodField()
+    user_masterpieces = serializers.SerializerMethodField()
+    user_watchlists = serializers.SerializerMethodField()
+    user_votes = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('id', 'username',
+                  'user_critics', 'user_masterpieces', 'user_watchlists', 'user_votes'
+                  )
+
+    def get_user_critics(self, obj):
+        return Critic.objects.filter(user=obj.pk).count()
+
+    def get_user_masterpieces(self, obj):
+        return Masterpiece.objects.filter(user=obj.pk).count()
+
+    def get_user_watchlists(self, obj):
+        return Watchlist.objects.filter(user=obj.pk).count()
+
+    def get_user_votes(self, obj):
+        return Vote.objects.filter(user=obj.pk).count()
 
 
 class MasterpieceSerializer(serializers.ModelSerializer):

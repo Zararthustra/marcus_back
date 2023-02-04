@@ -50,7 +50,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 
 class Users(APIView):
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         users = User.objects.all()
