@@ -4,6 +4,8 @@ import uuid
 
 
 class MovieBaseModel(models.Model):
+    PLATFORMS = (('movie', 'movie'), ('tv', 'tv'))
+
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -11,10 +13,11 @@ class MovieBaseModel(models.Model):
     )
     movie_id = models.IntegerField()
     movie_name = models.CharField(max_length=100)
-    
+    platform = models.CharField(max_length=50, choices=PLATFORMS)
+
     class Meta:
         abstract = True
-    
+
     def user_name(self):
         return self.user.username
 
