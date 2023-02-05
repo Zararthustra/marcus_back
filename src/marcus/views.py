@@ -173,7 +173,7 @@ class CriticsView(BaseView):
             serialized_data = CriticSerializer(objects, many=True)
         # Response
         response = {}
-        if count:
+        if not movie_param:
             response["total"] = count
         response["data"] = serialized_data.data
         return Response(response, status=status.HTTP_200_OK)
