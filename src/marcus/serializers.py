@@ -53,9 +53,19 @@ class CreateMasterpieceSerializer(serializers.ModelSerializer):
 
 
 class WatchlistSerializer(serializers.ModelSerializer):
+    movie_details = serializers.SerializerMethodField()
+
     class Meta:
         model = Watchlist
-        fields = ('movie_id', 'movie_name', 'platform')
+        fields = ('movie_id', 'movie_name', 'platform', 'user_name', 'platform', 'movie_details')
+    
+    def get_movie_details(self, obj):
+        details = {}
+        response = TMDBService.movie_details(obj.movie_id)
+        details["released_date"] = response["release_date"]
+        details["poster_path"] = response["poster_path"]
+        details["synopsis"] = response["overview"]
+        return details
 
 
 class CreateWatchlistSerializer(serializers.ModelSerializer):
