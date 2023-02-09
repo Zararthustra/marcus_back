@@ -221,3 +221,8 @@ class TMDBService():
         movie = tmdb.Movies(movie_id)
         response = movie.info(language="fr")
         return response
+    
+    def tv_details(movie_id: int):
+        movie = tmdb.TV(movie_id)
+        response = movie.info(language="fr")
+        return response

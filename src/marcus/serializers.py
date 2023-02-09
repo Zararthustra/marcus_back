@@ -39,10 +39,15 @@ class MasterpieceSerializer(serializers.ModelSerializer):
 
     def get_movie_details(self, obj):
         details = {}
-        response = TMDBService.movie_details(obj.movie_id)
-        details["released_date"] = response["release_date"]
+        if (obj.platform == "movie"):
+            response = TMDBService.movie_details(obj.movie_id)
+            details["released_date"] = response["release_date"]
+        else:
+            response = TMDBService.tv_details(obj.movie_id)
+            details["released_date"] = response["first_air_date"]
         details["poster_path"] = response["poster_path"]
         details["synopsis"] = response["overview"]
+
         return details
 
 
@@ -61,10 +66,15 @@ class WatchlistSerializer(serializers.ModelSerializer):
     
     def get_movie_details(self, obj):
         details = {}
-        response = TMDBService.movie_details(obj.movie_id)
-        details["released_date"] = response["release_date"]
+        if (obj.platform == "movie"):
+            response = TMDBService.movie_details(obj.movie_id)
+            details["released_date"] = response["release_date"]
+        else:
+            response = TMDBService.tv_details(obj.movie_id)
+            details["released_date"] = response["first_air_date"]
         details["poster_path"] = response["poster_path"]
         details["synopsis"] = response["overview"]
+
         return details
 
 
