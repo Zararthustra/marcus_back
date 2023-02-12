@@ -7,6 +7,7 @@ class MovieBaseModel(models.Model):
     PLATFORMS = (('movie', 'movie'), ('tv', 'tv'))
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE, null=True

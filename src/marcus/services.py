@@ -1,10 +1,10 @@
 import json
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 from django.contrib.auth.models import User
 from marcus.models import Critic, Masterpiece, Watchlist, Vote
 
-# from django.shortcuts import get_object_or_404
 # from django.db.models import Q
 
 from django.conf import settings
@@ -22,8 +22,8 @@ class MasterpieceService():
             List by user
         """
         if not user:
-            return Masterpiece.objects.all()
-        return Masterpiece.objects.filter(user=user)
+            return Masterpiece.objects.all().order_by('-created_at')
+        return Masterpiece.objects.filter(user=user).order_by('-created_at')
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
@@ -53,6 +53,18 @@ class MasterpieceService():
             return Masterpiece.objects.all().count()
         return Masterpiece.objects.filter(user=user).count()
 
+    def delete(*, movie_id: int, user: str):
+        """
+            Delete a row by movie_id (called by user)
+        """
+        try:
+            masterpiece = Masterpiece.objects.get(user=user, movie_id=movie_id)
+            masterpiece.delete()
+            return 204
+        except Exception as e:
+            print(e)
+            return 404
+
 
 class WatchlistService():
     """
@@ -64,8 +76,8 @@ class WatchlistService():
             List by user
         """
         if not user:
-            return Watchlist.objects.all()
-        return Watchlist.objects.filter(user=user)
+            return Watchlist.objects.all().order_by('-created_at')
+        return Watchlist.objects.filter(user=user).order_by('-created_at')
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
@@ -95,6 +107,18 @@ class WatchlistService():
             return Watchlist.objects.all().count()
         return Watchlist.objects.filter(user=user).count()
 
+    def delete(*, movie_id: int, user: str):
+        """
+            Delete a row by movie_id (called by user)
+        """
+        try:
+            watchlist = Watchlist.objects.get(user=user, movie_id=movie_id)
+            watchlist.delete()
+            return 204
+        except Exception as e:
+            print(e)
+            return 404
+
 
 class VoteService():
     """
@@ -106,8 +130,8 @@ class VoteService():
             List by user
         """
         if not user:
-            return Vote.objects.all()
-        return Vote.objects.filter(user=user)
+            return Vote.objects.all().order_by('-created_at')
+        return Vote.objects.filter(user=user).order_by('-created_at')
 
     def create(*, movie_id: int, movie_name: str, value: float, platform: str, user: User):
         """
@@ -147,6 +171,18 @@ class VoteService():
             return True
         return False
 
+    def delete(*, movie_id: int, user: str):
+        """
+            Delete a row by movie_id (called by user)
+        """
+        try:
+            vote = Vote.objects.get(user=user, movie_id=movie_id)
+            vote.delete()
+            return 204
+        except Exception as e:
+            print(e)
+            return 404
+
 
 class CriticService():
     """
@@ -158,15 +194,15 @@ class CriticService():
             Optional List by user or movie
         """
         if user:
-            return Critic.objects.filter(user=user)
-        return Critic.objects.all()
+            return Critic.objects.filter(user=user).order_by('-created_at')
+        return Critic.objects.all().order_by('-created_at')
 
     def list_by_movie_id_and_aggregate_votes(*, movie: int):
         """
             List Critics by movie_id with associated vote
         """
 
-        critics = Critic.objects.filter(movie_id=movie)
+        critics = Critic.objects.filter(movie_id=movie).order_by('-created_at')
         votes = Vote.objects.filter(movie_id=movie)
         merged_query = []
         for critic in critics:
@@ -211,6 +247,18 @@ class CriticService():
             return Critic.objects.all().count()
         return Critic.objects.filter(user=user).count()
 
+    def delete(*, movie_id: int, user: str):
+        """
+            Delete a row by movie_id (called by user)
+        """
+        try:
+            critic = Critic.objects.get(user=user, movie_id=movie_id)
+            critic.delete()
+            return 204
+        except Exception as e:
+            print(e)
+            return 404
+
 
 class TMDBService():
     """
@@ -221,7 +269,7 @@ class TMDBService():
         movie = tmdb.Movies(movie_id)
         response = movie.info(language="fr")
         return response
-    
+
     def tv_details(movie_id: int):
         movie = tmdb.TV(movie_id)
         response = movie.info(language="fr")

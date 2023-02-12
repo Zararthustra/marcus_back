@@ -62,8 +62,9 @@ class WatchlistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Watchlist
-        fields = ('movie_id', 'movie_name', 'platform', 'user_name', 'platform', 'movie_details')
-    
+        fields = ('movie_id', 'movie_name', 'platform',
+                  'user_name', 'platform', 'movie_details')
+
     def get_movie_details(self, obj):
         details = {}
         if (obj.platform == "movie"):

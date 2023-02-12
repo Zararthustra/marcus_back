@@ -3,6 +3,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 # , movie_details, movie_search
 from .services import CriticService, MasterpieceService, VoteService, WatchlistService
@@ -57,6 +58,14 @@ class Users(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class UserDetails(APIView):
+
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class BaseView(APIView):
     service = None
     retrieve_serializer = None
@@ -101,6 +110,15 @@ class BaseView(APIView):
             user=request.user
         )
         # Response
+        return Response(data, status=status_code)
+    
+    def delete(self, request):
+        user = request.user
+        movie_param = request.query_params.get('movie_id')
+        data = {}
+        status_code = self.service.delete(movie_id=movie_param, user=user)
+        if status_code == 404:
+            data = {"message": f"Movie {movie_param} not found for user {user}."}
         return Response(data, status=status_code)
 
 
@@ -151,6 +169,7 @@ class VotesView(BaseView):
 
 
 class CriticsView(BaseView):
+    service = CriticService
 
     def get(self, request):
         user_param = request.query_params.get('user_id')
@@ -163,7 +182,8 @@ class CriticsView(BaseView):
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Service
         if (movie_param):
-            objects = CriticService.list_by_movie_id_and_aggregate_votes(movie=movie_param)
+            objects = CriticService.list_by_movie_id_and_aggregate_votes(
+                movie=movie_param)
             count = None
             serialized_data = CriticVoteSerializer(objects, many=True)
         else:
