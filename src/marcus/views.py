@@ -74,6 +74,7 @@ class BaseView(APIView):
 
     def get(self, request):
         user_param = request.query_params.get('user_id')
+        page_param = request.query_params.get('page')
         # Sanity check
         if user_param:
             try:
@@ -81,13 +82,15 @@ class BaseView(APIView):
             except ValueError as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Service
-        objects = self.service.list(user=user_param)
+        objects, has_next = self.service.list(
+            user=user_param, page_number=page_param)
         count = self.service.count(user=user_param)
         # Serialize
         serialized_data = self.retrieve_serializer(objects, many=True)
         # Response
         response = {
             "total": count,
+            "is_last_page": not has_next,
             "data": serialized_data.data
         }
         return Response(response, status=status.HTTP_200_OK)
@@ -111,7 +114,7 @@ class BaseView(APIView):
         )
         # Response
         return Response(data, status=status_code)
-    
+
     def delete(self, request):
         user = request.user
         movie_param = request.query_params.get('movie_id')
@@ -174,6 +177,7 @@ class CriticsView(BaseView):
     def get(self, request):
         user_param = request.query_params.get('user_id')
         movie_param = request.query_params.get('movie_id')
+        page_param = request.query_params.get('page')
         # Sanity check
         if user_param:
             try:
@@ -187,7 +191,8 @@ class CriticsView(BaseView):
             count = None
             serialized_data = CriticVoteSerializer(objects, many=True)
         else:
-            objects = CriticService.list(user=user_param)
+            objects, has_next = CriticService.list(
+                user=user_param, page_number=page_param)
             count = CriticService.count(user=user_param)
             # Serialize
             serialized_data = CriticSerializer(objects, many=True)
@@ -195,6 +200,7 @@ class CriticsView(BaseView):
         response = {}
         if not movie_param:
             response["total"] = count
+            response["is_last_page"] = not has_next
         response["data"] = serialized_data.data
         return Response(response, status=status.HTTP_200_OK)
 

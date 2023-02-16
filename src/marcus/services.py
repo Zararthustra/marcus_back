@@ -1,6 +1,6 @@
-import json
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 
 from django.contrib.auth.models import User
 from marcus.models import Critic, Masterpiece, Watchlist, Vote
@@ -17,13 +17,22 @@ class MasterpieceService():
         Masterpiece service class
     """
 
-    def list(*, user: int):
+    def list(*, user: int, page_number: int):
         """
-            List by user
+            Paginated list (optional : by user)
         """
         if not user:
-            return Masterpiece.objects.all().order_by('-created_at')
-        return Masterpiece.objects.filter(user=user).order_by('-created_at')
+            masterpieces = Masterpiece.objects.all().order_by('-created_at')
+            paginated_masterpieces = Paginator(masterpieces, 10)
+            page = paginated_masterpieces.get_page(page_number)
+            has_next = page.has_next()
+            return page, has_next
+    
+        masterpieces = Masterpiece.objects.filter(user=user).order_by('-created_at')
+        paginated_masterpieces = Paginator(masterpieces, 5)
+        page = paginated_masterpieces.get_page(page_number)
+        has_next = page.has_next()
+        return page, has_next
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
@@ -71,13 +80,22 @@ class WatchlistService():
         Watchlist service class
     """
 
-    def list(*, user: int):
+    def list(*, user: int, page_number: int):
         """
-            List by user
+            Paginated list (optional : by user)
         """
         if not user:
-            return Watchlist.objects.all().order_by('-created_at')
-        return Watchlist.objects.filter(user=user).order_by('-created_at')
+            watchlists = Watchlist.objects.all().order_by('-created_at')
+            paginated_watchlists = Paginator(watchlists, 10)
+            page = paginated_watchlists.get_page(page_number)
+            has_next = page.has_next()
+            return page, has_next
+    
+        watchlists = Watchlist.objects.filter(user=user).order_by('-created_at')
+        paginated_watchlists = Paginator(watchlists, 5)
+        page = paginated_watchlists.get_page(page_number)
+        has_next = page.has_next()
+        return page, has_next
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
@@ -125,13 +143,22 @@ class VoteService():
         Vote service class
     """
 
-    def list(*, user: int):
+    def list(*, user: int, page_number: int):
         """
-            List by user
+            Paginated list (optional : by user)
         """
         if not user:
-            return Vote.objects.all().order_by('-created_at')
-        return Vote.objects.filter(user=user).order_by('-created_at')
+            votes = Vote.objects.all().order_by('-created_at')
+            paginated_votes = Paginator(votes, 10)
+            page = paginated_votes.get_page(page_number)
+            has_next = page.has_next()
+            return page, has_next
+    
+        votes = Vote.objects.filter(user=user).order_by('-created_at')
+        paginated_votes = Paginator(votes, 5)
+        page = paginated_votes.get_page(page_number)
+        has_next = page.has_next()
+        return page, has_next
 
     def create(*, movie_id: int, movie_name: str, value: float, platform: str, user: User):
         """
@@ -189,13 +216,22 @@ class CriticService():
         Critic service class
     """
 
-    def list(*, user: int):
+    def list(*, user: int, page_number: int):
         """
-            Optional List by user or movie
+            Paginated list (optional : by user)
         """
-        if user:
-            return Critic.objects.filter(user=user).order_by('-created_at')
-        return Critic.objects.all().order_by('-created_at')
+        if not user:
+            critics = Critic.objects.all().order_by('-created_at')
+            paginated_critics = Paginator(critics, 10)
+            page = paginated_critics.get_page(page_number)
+            has_next = page.has_next()
+            return page, has_next
+    
+        critics = Critic.objects.filter(user=user).order_by('-created_at')
+        paginated_critics = Paginator(critics, 5)
+        page = paginated_critics.get_page(page_number)
+        has_next = page.has_next()
+        return page, has_next
 
     def list_by_movie_id_and_aggregate_votes(*, movie: int):
         """
