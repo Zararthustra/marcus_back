@@ -1,6 +1,7 @@
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from django.db import models
 
 from django.contrib.auth.models import User
 from marcus.models import Critic, Masterpiece, Watchlist, Vote
@@ -12,27 +13,41 @@ import tmdbsimple as tmdb
 tmdb.API_KEY = settings.TMDB_API_KEY
 
 
+class ToolkitService():
+    """
+        Toolkit service class
+    """
+
+    def paginate(*, page_number: int, range: int, objects: list[object]):
+        """
+            Returns paginated objects
+        """
+
+        paginated_objects = Paginator(objects, range)
+        total_objects = paginated_objects.count
+        page = paginated_objects.get_page(page_number)
+        has_next = page.has_next()
+        start_index = page.start_index()
+        end_index = page.end_index()
+        return page, has_next, start_index, end_index, total_objects
+
+
 class MasterpieceService():
     """
         Masterpiece service class
     """
 
-    def list(*, user: int, page_number: int):
+    def list(*, user: int):
         """
             Paginated list (optional : by user)
         """
         if not user:
+            range = 10
             masterpieces = Masterpiece.objects.all().order_by('-created_at')
-            paginated_masterpieces = Paginator(masterpieces, 10)
-            page = paginated_masterpieces.get_page(page_number)
-            has_next = page.has_next()
-            return page, has_next
-    
-        masterpieces = Masterpiece.objects.filter(user=user).order_by('-created_at')
-        paginated_masterpieces = Paginator(masterpieces, 5)
-        page = paginated_masterpieces.get_page(page_number)
-        has_next = page.has_next()
-        return page, has_next
+        else:
+            range = 5
+            masterpieces = Masterpiece.objects.filter(user=user).order_by('-created_at')
+        return masterpieces, range
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
@@ -54,14 +69,6 @@ class MasterpieceService():
             "message": f"Movie {vote.movie_id} {vote.movie_name} successfully added to Masterpiece."
         }, status.HTTP_201_CREATED
 
-    def count(*, user: int):
-        """
-            Count all rows or by user
-        """
-        if not user:
-            return Masterpiece.objects.all().count()
-        return Masterpiece.objects.filter(user=user).count()
-
     def delete(*, movie_id: int, user: str):
         """
             Delete a row by movie_id (called by user)
@@ -80,22 +87,17 @@ class WatchlistService():
         Watchlist service class
     """
 
-    def list(*, user: int, page_number: int):
+    def list(*, user: int):
         """
             Paginated list (optional : by user)
         """
         if not user:
+            range = 10
             watchlists = Watchlist.objects.all().order_by('-created_at')
-            paginated_watchlists = Paginator(watchlists, 10)
-            page = paginated_watchlists.get_page(page_number)
-            has_next = page.has_next()
-            return page, has_next
-    
-        watchlists = Watchlist.objects.filter(user=user).order_by('-created_at')
-        paginated_watchlists = Paginator(watchlists, 5)
-        page = paginated_watchlists.get_page(page_number)
-        has_next = page.has_next()
-        return page, has_next
+        else:
+            range = 5
+            watchlists = Watchlist.objects.filter(user=user).order_by('-created_at')
+        return watchlists, range
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
@@ -117,14 +119,6 @@ class WatchlistService():
             "message": f"Movie {vote.movie_id} {vote.movie_name} successfully added to Watchlist."
         }, status.HTTP_201_CREATED
 
-    def count(*, user: int):
-        """
-            Count all rows or by user
-        """
-        if not user:
-            return Watchlist.objects.all().count()
-        return Watchlist.objects.filter(user=user).count()
-
     def delete(*, movie_id: int, user: str):
         """
             Delete a row by movie_id (called by user)
@@ -143,22 +137,17 @@ class VoteService():
         Vote service class
     """
 
-    def list(*, user: int, page_number: int):
+    def list(*, user: int):
         """
             Paginated list (optional : by user)
         """
         if not user:
+            range = 10
             votes = Vote.objects.all().order_by('-created_at')
-            paginated_votes = Paginator(votes, 10)
-            page = paginated_votes.get_page(page_number)
-            has_next = page.has_next()
-            return page, has_next
-    
-        votes = Vote.objects.filter(user=user).order_by('-created_at')
-        paginated_votes = Paginator(votes, 5)
-        page = paginated_votes.get_page(page_number)
-        has_next = page.has_next()
-        return page, has_next
+        else:
+            range = 5
+            votes = Vote.objects.filter(user=user).order_by('-created_at')
+        return votes, range
 
     def create(*, movie_id: int, movie_name: str, value: float, platform: str, user: User):
         """
@@ -180,14 +169,6 @@ class VoteService():
         return {
             "message": f"Movie {vote.movie_id} {vote.movie_name} successfully added to Vote."
         }, status.HTTP_201_CREATED
-
-    def count(*, user: int):
-        """
-            Count all rows or by user
-        """
-        if not user:
-            return Vote.objects.all().count()
-        return Vote.objects.filter(user=user).count()
 
     def check_enum_value(*, value: float):
         """
@@ -216,22 +197,17 @@ class CriticService():
         Critic service class
     """
 
-    def list(*, user: int, page_number: int):
+    def list(*, user: int):
         """
             Paginated list (optional : by user)
         """
         if not user:
+            range = 10
             critics = Critic.objects.all().order_by('-created_at')
-            paginated_critics = Paginator(critics, 10)
-            page = paginated_critics.get_page(page_number)
-            has_next = page.has_next()
-            return page, has_next
-    
-        critics = Critic.objects.filter(user=user).order_by('-created_at')
-        paginated_critics = Paginator(critics, 5)
-        page = paginated_critics.get_page(page_number)
-        has_next = page.has_next()
-        return page, has_next
+        else:
+            range = 5
+            critics = Critic.objects.filter(user=user).order_by('-created_at')
+        return critics, range
 
     def list_by_movie_id_and_aggregate_votes(*, movie: int):
         """
@@ -274,14 +250,6 @@ class CriticService():
         return {
             "message": f"Movie {critic.movie_id} {critic.movie_name} successfully added to Critic."
         }, status.HTTP_201_CREATED
-
-    def count(*, user: int):
-        """
-            Count all rows or by user
-        """
-        if not user:
-            return Critic.objects.all().count()
-        return Critic.objects.filter(user=user).count()
 
     def delete(*, movie_id: int, user: str):
         """

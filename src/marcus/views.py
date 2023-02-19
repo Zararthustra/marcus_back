@@ -6,7 +6,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 # , movie_details, movie_search
-from .services import CriticService, MasterpieceService, VoteService, WatchlistService
+from .services import CriticService, MasterpieceService, ToolkitService, VoteService, WatchlistService
 
 from django.contrib.auth.models import User
 from .serializers import (
@@ -81,15 +81,17 @@ class BaseView(APIView):
                 int(user_param)
             except ValueError as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        # Service
-        objects, has_next = self.service.list(
-            user=user_param, page_number=page_param)
-        count = self.service.count(user=user_param)
+        # Services (list & paginate)
+        objects, range = self.service.list(user=user_param)
+        page, has_next, start_index, end_index, total_objects = ToolkitService.paginate(
+            page_number=page_param, range=range, objects=objects)
         # Serialize
-        serialized_data = self.retrieve_serializer(objects, many=True)
+        serialized_data = self.retrieve_serializer(page, many=True)
         # Response
         response = {
-            "total": count,
+            "total": total_objects,
+            "from": start_index,
+            "to": end_index,
             "is_last_page": not has_next,
             "data": serialized_data.data
         }
@@ -185,21 +187,25 @@ class CriticsView(BaseView):
             except ValueError as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Service
-        if (movie_param):
+        if movie_param:
             objects = CriticService.list_by_movie_id_and_aggregate_votes(
                 movie=movie_param)
             count = None
+            # Serialize
             serialized_data = CriticVoteSerializer(objects, many=True)
         else:
-            objects, has_next = CriticService.list(
-                user=user_param, page_number=page_param)
-            count = CriticService.count(user=user_param)
+            critics, range = CriticService.list(user=user_param)
+            # Paginate
+            page, has_next, start_index, end_index, count = ToolkitService.paginate(
+                page_number=page_param, range=range, objects=critics)
             # Serialize
-            serialized_data = CriticSerializer(objects, many=True)
+            serialized_data = CriticSerializer(page, many=True)
         # Response
         response = {}
         if not movie_param:
             response["total"] = count
+            response["from"] = start_index
+            response["to"] = end_index
             response["is_last_page"] = not has_next
         response["data"] = serialized_data.data
         return Response(response, status=status.HTTP_200_OK)
