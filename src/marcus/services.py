@@ -46,7 +46,8 @@ class MasterpieceService():
             masterpieces = Masterpiece.objects.all().order_by('-created_at')
         else:
             range = 5
-            masterpieces = Masterpiece.objects.filter(user=user).order_by('-created_at')
+            masterpieces = Masterpiece.objects.filter(
+                user=user).order_by('-created_at')
         return masterpieces, range
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
@@ -96,7 +97,8 @@ class WatchlistService():
             watchlists = Watchlist.objects.all().order_by('-created_at')
         else:
             range = 5
-            watchlists = Watchlist.objects.filter(user=user).order_by('-created_at')
+            watchlists = Watchlist.objects.filter(
+                user=user).order_by('-created_at')
         return watchlists, range
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
@@ -137,16 +139,23 @@ class VoteService():
         Vote service class
     """
 
-    def list(*, user: int):
+    def list(*, user: int, stars: int):
         """
-            Paginated list (optional : by user)
+            Paginated list (optional filters : by user, by stars)
         """
+        range = 10
         if not user:
-            range = 10
-            votes = Vote.objects.all().order_by('-created_at')
+            if stars:
+                votes = Vote.objects.filter(
+                    value=stars).order_by('-created_at')
+            else:
+                votes = Vote.objects.all().order_by('-created_at')
         else:
-            range = 5
-            votes = Vote.objects.filter(user=user).order_by('-created_at')
+            if stars:
+                votes = Vote.objects.filter(
+                    user=user, value=stars).order_by('-created_at')
+            else:
+                votes = Vote.objects.filter(user=user).order_by('-created_at')
         return votes, range
 
     def create(*, movie_id: int, movie_name: str, value: float, platform: str, user: User):

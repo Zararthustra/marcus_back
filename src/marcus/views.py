@@ -144,6 +144,37 @@ class VotesView(BaseView):
     retrieve_serializer = VoteSerializer
     create_serializer = CreateVoteSerializer
 
+    def get(self, request):
+        user_param = request.query_params.get('user_id')
+        page_param = request.query_params.get('page')
+        stars_param = request.query_params.get('stars')
+        # Sanity check
+        if user_param:
+            try:
+                int(user_param)
+            except ValueError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        if stars_param:
+            try:
+                int(stars_param)
+            except ValueError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        # Services (list & paginate)
+        objects, range = self.service.list(user=user_param, stars=stars_param)
+        page, has_next, start_index, end_index, total_objects = ToolkitService.paginate(
+            page_number=page_param, range=range, objects=objects)
+        # Serialize
+        serialized_data = self.retrieve_serializer(page, many=True)
+        # Response
+        response = {
+            "total": total_objects,
+            "from": start_index,
+            "to": end_index,
+            "is_last_page": not has_next,
+            "data": serialized_data.data
+        }
+        return Response(response, status=status.HTTP_200_OK)
+
     def post(self, request):
         payload = request.data
         # Serialize
