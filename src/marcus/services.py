@@ -10,49 +10,58 @@ from marcus.models import Critic, Masterpiece, Watchlist, Vote
 
 from django.conf import settings
 import tmdbsimple as tmdb
+
 tmdb.API_KEY = settings.TMDB_API_KEY
 
 
-class ToolkitService():
+class ToolkitService:
     """
-        Toolkit service class
+    Toolkit service class
     """
 
     def paginate(*, page_number: int, range: int, objects: list[object]):
         """
-            Returns paginated objects
+        Returns paginated objects
         """
+        if range is None:
+            paginated_objects = objects
+            page = paginated_objects
+            has_next = False
+            total_objects = objects.count()
+            start_index = 1
+            end_index = total_objects
+        else:
+            paginated_objects = Paginator(objects, range)
+            page = paginated_objects.get_page(page_number)
+            has_next = page.has_next()
+            start_index = page.start_index()
+            end_index = page.end_index()
+            total_objects = paginated_objects.count
 
-        paginated_objects = Paginator(objects, range)
-        total_objects = paginated_objects.count
-        page = paginated_objects.get_page(page_number)
-        has_next = page.has_next()
-        start_index = page.start_index()
-        end_index = page.end_index()
         return page, has_next, start_index, end_index, total_objects
 
 
-class MasterpieceService():
+class MasterpieceService:
     """
-        Masterpiece service class
+    Masterpiece service class
     """
 
-    def list(*, user: int):
+    def list(*, user: int, page: int):
         """
-            Paginated list (optional : by user)
+        Paginated list (optional : by user)
         """
+        range = 10
         if not user:
-            range = 10
-            masterpieces = Masterpiece.objects.all().order_by('-created_at')
+            masterpieces = Masterpiece.objects.all().order_by("-created_at")
         else:
-            range = 5
-            masterpieces = Masterpiece.objects.filter(
-                user=user).order_by('-created_at')
+            if not page:
+                range = None
+            masterpieces = Masterpiece.objects.filter(user=user).order_by("-created_at")
         return masterpieces, range
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
-            Create if (user & movie_id) does not exist
+        Create if (user & movie_id) does not exist
         """
         vote, created = Masterpiece.objects.get_or_create(
             user=user,
@@ -60,7 +69,7 @@ class MasterpieceService():
             defaults={
                 "movie_name": movie_name,
                 "platform": platform,
-            }
+            },
         )
         if not created:
             return {
@@ -72,7 +81,7 @@ class MasterpieceService():
 
     def delete(*, movie_id: int, user: str):
         """
-            Delete a row by movie_id (called by user)
+        Delete a row by movie_id (called by user)
         """
         try:
             masterpiece = Masterpiece.objects.get(user=user, movie_id=movie_id)
@@ -83,27 +92,28 @@ class MasterpieceService():
             return 404
 
 
-class WatchlistService():
+class WatchlistService:
     """
-        Watchlist service class
+    Watchlist service class
     """
 
-    def list(*, user: int):
+    def list(*, user: int, page: int):
         """
-            Paginated list (optional : by user)
+        Paginated list (optional : by user)
         """
+        range = 10
         if not user:
-            range = 10
-            watchlists = Watchlist.objects.all().order_by('-created_at')
+            watchlists = Watchlist.objects.all().order_by("-created_at")
         else:
-            range = 5
-            watchlists = Watchlist.objects.filter(
-                user=user).order_by('-created_at')
+            if not page:
+                range = None
+
+            watchlists = Watchlist.objects.filter(user=user).order_by("-created_at")
         return watchlists, range
 
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
-            Create if (user & movie_id) does not exist
+        Create if (user & movie_id) does not exist
         """
         vote, created = Watchlist.objects.get_or_create(
             user=user,
@@ -111,7 +121,7 @@ class WatchlistService():
             defaults={
                 "movie_name": movie_name,
                 "platform": platform,
-            }
+            },
         )
         if not created:
             return {
@@ -123,7 +133,7 @@ class WatchlistService():
 
     def delete(*, movie_id: int, user: str):
         """
-            Delete a row by movie_id (called by user)
+        Delete a row by movie_id (called by user)
         """
         try:
             watchlist = Watchlist.objects.get(user=user, movie_id=movie_id)
@@ -134,33 +144,35 @@ class WatchlistService():
             return 404
 
 
-class VoteService():
+class VoteService:
     """
-        Vote service class
+    Vote service class
     """
 
     def list(*, user: int, stars: int):
         """
-            Paginated list (optional filters : by user, by stars)
+        Paginated list (optional filters : by user, by stars)
         """
         range = 10
         if not user:
             if stars:
-                votes = Vote.objects.filter(
-                    value=stars).order_by('-created_at')
+                votes = Vote.objects.filter(value=stars).order_by("-created_at")
             else:
-                votes = Vote.objects.all().order_by('-created_at')
+                votes = Vote.objects.all().order_by("-created_at")
         else:
             if stars:
-                votes = Vote.objects.filter(
-                    user=user, value=stars).order_by('-created_at')
+                votes = Vote.objects.filter(user=user, value=stars).order_by(
+                    "-created_at"
+                )
             else:
-                votes = Vote.objects.filter(user=user).order_by('-created_at')
+                votes = Vote.objects.filter(user=user).order_by("-created_at")
         return votes, range
 
-    def create(*, movie_id: int, movie_name: str, value: float, platform: str, user: User):
+    def create(
+        *, movie_id: int, movie_name: str, value: float, platform: str, user: User
+    ):
         """
-            Create if (user & movie_id) does not exist
+        Create if (user & movie_id) does not exist
         """
         vote, created = Vote.objects.get_or_create(
             user=user,
@@ -169,7 +181,7 @@ class VoteService():
                 "movie_name": movie_name,
                 "platform": platform,
                 "value": value,
-            }
+            },
         )
         if not created:
             return {
@@ -181,7 +193,7 @@ class VoteService():
 
     def check_enum_value(*, value: float):
         """
-            Check if value is in enum_values
+        Check if value is in enum_values
         """
         enum_values = [x * 0.5 for x in range(0, 11)]
         if value in enum_values:
@@ -190,7 +202,7 @@ class VoteService():
 
     def delete(*, movie_id: int, user: str):
         """
-            Delete a row by movie_id (called by user)
+        Delete a row by movie_id (called by user)
         """
         try:
             vote = Vote.objects.get(user=user, movie_id=movie_id)
@@ -201,29 +213,29 @@ class VoteService():
             return 404
 
 
-class CriticService():
+class CriticService:
     """
-        Critic service class
+    Critic service class
     """
 
     def list(*, user: int):
         """
-            Paginated list (optional : by user)
+        Paginated list (optional : by user)
         """
         if not user:
             range = 10
-            critics = Critic.objects.all().order_by('-created_at')
+            critics = Critic.objects.all().order_by("-created_at")
         else:
             range = 5
-            critics = Critic.objects.filter(user=user).order_by('-created_at')
+            critics = Critic.objects.filter(user=user).order_by("-created_at")
         return critics, range
 
     def list_by_movie_id_and_aggregate_votes(*, movie: int):
         """
-            List Critics by movie_id with associated vote
+        List Critics by movie_id with associated vote
         """
 
-        critics = Critic.objects.filter(movie_id=movie).order_by('-created_at')
+        critics = Critic.objects.filter(movie_id=movie).order_by("-created_at")
         votes = Vote.objects.filter(movie_id=movie)
         merged_query = []
         for critic in critics:
@@ -232,16 +244,20 @@ class CriticService():
             data["user_name"] = critic.user_name
             data["content"] = critic.content
             data["vote"] = None
-            if (len(votes) > 0):
+            if len(votes) > 0:
                 for vote in votes:
-                    if (critic.movie_id == vote.movie_id) and (critic.user_id == vote.user_id):
+                    if (critic.movie_id == vote.movie_id) and (
+                        critic.user_id == vote.user_id
+                    ):
                         data["vote"] = vote.value
             merged_query.append(data)
         return merged_query
 
-    def create(*, movie_id: int, movie_name: str, content: str, platform: str, user: User):
+    def create(
+        *, movie_id: int, movie_name: str, content: str, platform: str, user: User
+    ):
         """
-            Create if (user & movie_id) does not exist
+        Create if (user & movie_id) does not exist
         """
         critic, created = Critic.objects.get_or_create(
             user=user,
@@ -250,7 +266,7 @@ class CriticService():
                 "movie_name": movie_name,
                 "content": content,
                 "platform": platform,
-            }
+            },
         )
         if not created:
             return {
@@ -262,7 +278,7 @@ class CriticService():
 
     def delete(*, movie_id: int, user: str):
         """
-            Delete a row by movie_id (called by user)
+        Delete a row by movie_id (called by user)
         """
         try:
             critic = Critic.objects.get(user=user, movie_id=movie_id)
@@ -273,9 +289,9 @@ class CriticService():
             return 404
 
 
-class TMDBService():
+class TMDBService:
     """
-        TMDB service class
+    TMDB service class
     """
 
     def movie_details(movie_id: int):

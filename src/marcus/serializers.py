@@ -12,9 +12,14 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username',
-                  'user_critics', 'user_masterpieces', 'user_watchlists', 'user_votes'
-                  )
+        fields = (
+            "id",
+            "username",
+            "user_critics",
+            "user_masterpieces",
+            "user_watchlists",
+            "user_votes",
+        )
 
     def get_user_critics(self, obj):
         return Critic.objects.filter(user=obj.pk).count()
@@ -34,12 +39,18 @@ class MasterpieceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Masterpiece
-        fields = ('movie_id', 'movie_name', 'user_id',
-                  'user_name', 'platform', 'movie_details')
+        fields = (
+            "movie_id",
+            "movie_name",
+            "user_id",
+            "user_name",
+            "platform",
+            "movie_details",
+        )
 
     def get_movie_details(self, obj):
         details = {}
-        if (obj.platform == "movie"):
+        if obj.platform == "movie":
             response = TMDBService.movie_details(obj.movie_id)
             details["released_date"] = response["release_date"]
         else:
@@ -47,14 +58,18 @@ class MasterpieceSerializer(serializers.ModelSerializer):
             details["released_date"] = response["first_air_date"]
         details["poster_path"] = response["poster_path"]
         details["synopsis"] = response["overview"]
-
+        try:
+            details["backdrop_path"] = response["backdrop_path"]
+            details["director"] = response.get("created_by")[0].get("name")
+        except Exception as e:
+            print("While getting director :", e)
         return details
 
 
 class CreateMasterpieceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Masterpiece
-        fields = ('movie_id', 'movie_name', 'platform')
+        fields = ("movie_id", "movie_name", "platform")
 
 
 class WatchlistSerializer(serializers.ModelSerializer):
@@ -62,12 +77,18 @@ class WatchlistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Watchlist
-        fields = ('movie_id', 'movie_name', 'platform',
-                  'user_name', 'platform', 'movie_details')
+        fields = (
+            "movie_id",
+            "movie_name",
+            "platform",
+            "user_name",
+            "platform",
+            "movie_details",
+        )
 
     def get_movie_details(self, obj):
         details = {}
-        if (obj.platform == "movie"):
+        if obj.platform == "movie":
             response = TMDBService.movie_details(obj.movie_id)
             details["released_date"] = response["release_date"]
         else:
@@ -75,6 +96,11 @@ class WatchlistSerializer(serializers.ModelSerializer):
             details["released_date"] = response["first_air_date"]
         details["poster_path"] = response["poster_path"]
         details["synopsis"] = response["overview"]
+        try:
+            details["backdrop_path"] = response["backdrop_path"]
+            details["director"] = response.get("created_by")[0].get("name")
+        except Exception as e:
+            print("While getting director :", e)
 
         return details
 
@@ -82,20 +108,19 @@ class WatchlistSerializer(serializers.ModelSerializer):
 class CreateWatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Watchlist
-        fields = ('movie_id', 'movie_name', 'platform')
+        fields = ("movie_id", "movie_name", "platform")
 
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ('movie_id', 'movie_name', 'value',
-                  'user_id', 'user_name', 'platform')
+        fields = ("movie_id", "movie_name", "value", "user_id", "user_name", "platform")
 
 
 class CreateVoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ('movie_id', 'movie_name', 'value', 'platform')
+        fields = ("movie_id", "movie_name", "value", "platform")
 
 
 class CriticVoteSerializer(serializers.Serializer):
@@ -108,11 +133,17 @@ class CriticVoteSerializer(serializers.Serializer):
 class CriticSerializer(serializers.ModelSerializer):
     class Meta:
         model = Critic
-        fields = ('movie_id', 'movie_name', 'content',
-                  'user_id', 'user_name', 'platform')
+        fields = (
+            "movie_id",
+            "movie_name",
+            "content",
+            "user_id",
+            "user_name",
+            "platform",
+        )
 
 
 class CreateCriticSerializer(serializers.ModelSerializer):
     class Meta:
         model = Critic
-        fields = ('movie_id', 'movie_name', 'content', 'platform')
+        fields = ("movie_id", "movie_name", "content", "platform")
