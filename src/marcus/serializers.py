@@ -1,6 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Masterpiece, Watchlist, Vote, Critic
+from marcus_music.models import (
+    Masterpiece as MusicMasterpiece,
+    Playlist,
+    Vote as MusicVote,
+    Critic as MusicCritic,
+)
 from .services import TMDBService
 
 
@@ -22,16 +28,28 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
     def get_user_critics(self, obj):
-        return Critic.objects.filter(user=obj.pk).count()
+        movie_critics = Critic.objects.filter(user=obj.pk).count()
+        music_critics = MusicCritic.objects.filter(user=obj.pk).count()
+
+        return movie_critics + music_critics
 
     def get_user_masterpieces(self, obj):
-        return Masterpiece.objects.filter(user=obj.pk).count()
+        movie_masterpieces = Masterpiece.objects.filter(user=obj.pk).count()
+        music_masterpieces = MusicMasterpiece.objects.filter(user=obj.pk).count()
+
+        return movie_masterpieces + music_masterpieces
 
     def get_user_watchlists(self, obj):
-        return Watchlist.objects.filter(user=obj.pk).count()
+        watchlists = Watchlist.objects.filter(user=obj.pk).count()
+        playlists = Playlist.objects.filter(user=obj.pk).count()
+
+        return watchlists + playlists
 
     def get_user_votes(self, obj):
-        return Vote.objects.filter(user=obj.pk).count()
+        movie_votes = Vote.objects.filter(user=obj.pk).count()
+        music_votes = MusicVote.objects.filter(user=obj.pk).count()
+
+        return movie_votes + music_votes
 
 
 class MasterpieceSerializer(serializers.ModelSerializer):

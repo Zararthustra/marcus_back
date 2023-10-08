@@ -4,13 +4,12 @@ import uuid
 
 
 class MovieBaseModel(models.Model):
-    PLATFORMS = (('movie', 'movie'), ('tv', 'tv'))
+    PLATFORMS = (("movie", "movie"), ("tv", "tv"))
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE, null=True
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
     )
     movie_id = models.IntegerField()
     movie_name = models.CharField(max_length=100)
@@ -24,7 +23,7 @@ class MovieBaseModel(models.Model):
 
 
 class Critic(MovieBaseModel):
-    content = models.CharField(max_length=1000)
+    content = models.CharField(max_length=2000)
 
 
 class Vote(MovieBaseModel):
