@@ -30,6 +30,7 @@ class BaseView(APIView):
 
     def get(self, request):
         user_param = request.query_params.get("user_id")
+        artist_param = request.query_params.get("artist_id")
         page_param = request.query_params.get("page")
         # Sanity check
         if user_param:
@@ -38,7 +39,9 @@ class BaseView(APIView):
             except ValueError as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Services (list & paginate)
-        objects, range = self.service.list(user=user_param, page=page_param)
+        objects, range = self.service.list(
+            user=user_param, page=page_param, artist_id=artist_param
+        )
         page, has_next, start_index, end_index, total_objects = ToolkitService.paginate(
             page_number=page_param, range=range, objects=objects
         )
