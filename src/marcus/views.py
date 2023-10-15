@@ -158,6 +158,8 @@ class VotesView(BaseView):
         user_param = request.query_params.get("user_id")
         page_param = request.query_params.get("page")
         stars_param = request.query_params.get("stars")
+        movie_param = request.query_params.get("movie_id")
+
         # Sanity check
         if user_param:
             try:
@@ -165,7 +167,9 @@ class VotesView(BaseView):
             except ValueError as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Services (list & paginate)
-        objects, range = self.service.list(user=user_param, stars=stars_param)
+        objects, range = self.service.list(
+            user=user_param, stars=stars_param, movie_id=movie_param
+        )
         page, has_next, start_index, end_index, total_objects = ToolkitService.paginate(
             page_number=page_param, range=range, objects=objects
         )

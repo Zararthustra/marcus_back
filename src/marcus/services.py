@@ -149,7 +149,7 @@ class VoteService:
     Vote service class
     """
 
-    def list(*, user: int, stars: int):
+    def list(*, user: int, stars: int, movie_id: int):
         """
         Paginated list (optional filters : by user, by stars)
         """
@@ -157,6 +157,8 @@ class VoteService:
         if not user:
             if stars:
                 votes = Vote.objects.filter(value=stars).order_by("-created_at")
+            elif movie_id:
+                votes = Vote.objects.filter(movie_id=movie_id).order_by("-created_at")
             else:
                 votes = Vote.objects.all().order_by("-created_at")
         else:
