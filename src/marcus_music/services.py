@@ -133,18 +133,26 @@ class VoteService:
     Vote service class
     """
 
-    def list(*, user: int, page: int, artist_id: str):
+    def list(*, user: int, page: int, artist_id: str, stars: int):
         """
         Paginated list (optional : by user)
         """
         range = 10 if page else None
         if user:
-            critics = Vote.objects.filter(user=user).order_by("-created_at")
+            if stars:
+                votes = Vote.objects.filter(user=user, value=stars).order_by(
+                    "-created_at"
+                )
+            else:
+                votes = Vote.objects.filter(user=user).order_by("-created_at")
         elif artist_id:
-            critics = Vote.objects.filter(artist_id=artist_id)
+            votes = Vote.objects.filter(artist_id=artist_id)
+        elif stars:
+            votes = Vote.objects.filter(value=stars).order_by("-created_at")
+            print(votes)
         else:
-            critics = Vote.objects.all().order_by("-created_at")
-        return critics, range
+            votes = Vote.objects.all().order_by("-created_at")
+        return votes, range
 
     def create(
         *,

@@ -164,11 +164,6 @@ class VotesView(BaseView):
                 int(user_param)
             except ValueError as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        if stars_param:
-            try:
-                int(stars_param)
-            except ValueError as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Services (list & paginate)
         objects, range = self.service.list(user=user_param, stars=stars_param)
         page, has_next, start_index, end_index, total_objects = ToolkitService.paginate(
