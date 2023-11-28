@@ -27,7 +27,6 @@ class MasterpieceService:
         album_id: str,
         album_name: str,
         user: User,
-        genders: str,
         artist_id: str,
         artist_name: str,
         image_url: str,
@@ -39,7 +38,6 @@ class MasterpieceService:
             user=user,
             album_id=album_id,
             album_name=album_name,
-            genders=genders,
             artist_id=artist_id,
             artist_name=artist_name,
             image_url=image_url,
@@ -223,8 +221,6 @@ class PlaylistService:
         artist_id: str,
         artist_name: str,
         image_url: str,
-        track_id: str,
-        track_name: str,
     ):
         """
         Create if (user & album_id) does not exist
@@ -236,15 +232,13 @@ class PlaylistService:
             artist_id=artist_id,
             artist_name=artist_name,
             image_url=image_url,
-            track_id=track_id,
-            track_name=track_name,
         )
         if not created:
             return {
-                "error": f"Track {critic.track_name} already exists in Playlist."
+                "error": f"Album {critic.album_name} already exists in Playlist."
             }, status.HTTP_400_BAD_REQUEST
         return {
-            "message": f"Track {critic.track_name} successfully added to Playlist."
+            "message": f"Album {critic.album_name} successfully added to Playlist."
         }, status.HTTP_201_CREATED
 
     def delete(*, id: str, user: str):

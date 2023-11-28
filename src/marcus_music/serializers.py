@@ -37,52 +37,6 @@ class CreateMasterpieceSerializer(serializers.ModelSerializer):
         fields = ("album_id", "album_name", "artist_id", "artist_name", "image_url")
 
 
-# class WatchlistSerializer(serializers.ModelSerializer):
-#     movie_details = serializers.SerializerMethodField()
-
-#     class Meta:
-#         model = Watchlist
-#         fields = (
-#             "movie_id",
-#             "movie_name",
-#             "platform",
-#             "user_name",
-#             "platform",
-#             "movie_details",
-#         )
-
-#     def get_movie_details(self, obj):
-#         details = {}
-#         if obj.platform == "movie":
-#             response = TMDBService.movie_details(obj.movie_id)
-#             details["released_date"] = response["release_date"]
-#         else:
-#             response = TMDBService.tv_details(obj.movie_id)
-#             details["released_date"] = response["first_air_date"]
-#         details["poster_path"] = response["poster_path"]
-#         details["synopsis"] = response["overview"]
-#         try:
-#             details["backdrop_path"] = response["backdrop_path"]
-#             details["director"] = response.get("created_by")[0].get("name")
-#         except Exception as e:
-#             print("While getting director :", e)
-
-#         return details
-
-
-# class CreateWatchlistSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Watchlist
-#         fields = ("movie_id", "movie_name", "platform")
-
-
-# class CriticVoteSerializer(serializers.Serializer):
-#     user_id = serializers.IntegerField()
-#     user_name = serializers.CharField()
-#     vote = serializers.FloatField()
-#     content = serializers.CharField()
-
-
 class CriticSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
 
@@ -152,10 +106,10 @@ class PlaylistSerializer(serializers.ModelSerializer):
             "id",
             "album_id",
             "album_name",
-            "track_id",
-            "track_name",
+            "genders",
             "artist_id",
             "artist_name",
+            "album_name",
             "image_url",
             "user",
         )
@@ -164,12 +118,4 @@ class PlaylistSerializer(serializers.ModelSerializer):
 class CreatePlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
-        fields = (
-            "album_id",
-            "album_name",
-            "track_id",
-            "track_name",
-            "artist_id",
-            "artist_name",
-            "image_url",
-        )
+        fields = ("album_id", "album_name", "artist_id", "artist_name", "image_url")
