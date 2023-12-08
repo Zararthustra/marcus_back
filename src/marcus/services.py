@@ -97,6 +97,7 @@ class WatchlistService:
     Watchlist service class
     """
 
+    @staticmethod
     def list(*, user: int, page: int):
         """
         Paginated list (optional : by user)
@@ -111,6 +112,7 @@ class WatchlistService:
             watchlists = Watchlist.objects.filter(user=user).order_by("-created_at")
         return watchlists, range
 
+    @staticmethod
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
         Create if (user & movie_id) does not exist
@@ -131,6 +133,7 @@ class WatchlistService:
             "message": f"Movie {vote.movie_id} {vote.movie_name} successfully added to Watchlist."
         }, status.HTTP_201_CREATED
 
+    @staticmethod
     def delete(*, movie_id: int, user: str):
         """
         Delete a row by movie_id (called by user)
