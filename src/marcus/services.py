@@ -149,6 +149,7 @@ class VoteService:
     Vote service class
     """
 
+    @staticmethod
     def list(*, user: int, stars: int, movie_id: int):
         """
         Paginated list (optional filters : by user, by stars)
@@ -170,6 +171,7 @@ class VoteService:
                 votes = Vote.objects.filter(user=user).order_by("-created_at")
         return votes, range
 
+    @staticmethod
     def create(
         *, movie_id: int, movie_name: str, value: float, platform: str, user: User
     ):
@@ -193,6 +195,7 @@ class VoteService:
             "message": f"Movie {vote.movie_id} {vote.movie_name} successfully added to Vote."
         }, status.HTTP_201_CREATED
 
+    @staticmethod
     def check_enum_value(*, value: float):
         """
         Check if value is in enum_values
@@ -202,6 +205,7 @@ class VoteService:
             return True
         return False
 
+    @staticmethod
     def delete(*, movie_id: int, user: str):
         """
         Delete a row by movie_id (called by user)
@@ -220,6 +224,7 @@ class CriticService:
     Critic service class
     """
 
+    @staticmethod
     def list(*, user: int):
         """
         Paginated list (optional : by user)
@@ -232,6 +237,7 @@ class CriticService:
             critics = Critic.objects.filter(user=user).order_by("-created_at")
         return critics, range
 
+    @staticmethod
     def list_by_movie_id_and_aggregate_votes(*, movie: int):
         """
         List Critics by movie_id with associated vote
@@ -255,6 +261,7 @@ class CriticService:
             merged_query.append(data)
         return merged_query
 
+    @staticmethod
     def create(
         *, movie_id: int, movie_name: str, content: str, platform: str, user: User
     ):
@@ -278,6 +285,7 @@ class CriticService:
             "message": f"Movie {critic.movie_id} {critic.movie_name} successfully added to Critic."
         }, status.HTTP_201_CREATED
 
+    @staticmethod
     def delete(*, movie_id: int, user: str):
         """
         Delete a row by movie_id (called by user)

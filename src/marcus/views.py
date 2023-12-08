@@ -195,7 +195,7 @@ class VotesView(BaseView):
                 {"error": serialized_data.errors}, status=status.HTTP_400_BAD_REQUEST
             )
         # Enum check
-        isCorrectValue = VoteService.check_enum_value(value=payload.get("value"))
+        isCorrectValue = VoteService.check_enum_value(value=float(payload.get("value")))
         if not isCorrectValue:
             return Response(
                 {

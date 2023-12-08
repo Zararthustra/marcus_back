@@ -835,6 +835,121 @@
 			]
 		},
 		{
+			"name": "Playlist",
+			"item": [
+				{
+					"name": "Add Playlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"artist_id\": 1111111,\r\n    \"artist_name\": \"pink floyd\",\r\n    \"album_id\": 2222,\r\n    \"album_name\": \"dark side of the moon\",\r\n    \"image_url\": \"url\",\r\n    \"genders\": \"rock,metal\",\r\n    \"track_id\": 555545,\r\n    \"track_name\": \"truc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/playlists",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"playlists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Playlist",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/playlists",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"playlists"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Playlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/playlists?id=63374d1b-6723-4954-8d75-9bfcdaf658da",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"playlists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "63374d1b-6723-4954-8d75-9bfcdaf658da"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Vote",
 			"item": [
 				{
@@ -1033,6 +1148,45 @@
 					]
 				},
 				{
+					"name": "Add Music Vote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"album_id\": 99998,\r\n    \"album_name\": \"Dark side of the moon\",\r\n    \"value\": 3.5,\r\n    \"image_url\": \"url\",\r\n    \"artist_name\": \"pink floyd\",\r\n    \"artist_id\": 8888\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/votes",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"votes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Retrieve Votes",
 					"request": {
 						"auth": {
@@ -1143,6 +1297,41 @@
 					]
 				},
 				{
+					"name": "Retrieve Music Votes",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/votes",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"votes"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Vote",
 					"request": {
 						"auth": {
@@ -1171,6 +1360,42 @@
 								{
 									"key": "movie_id",
 									"value": "315162"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Music Vote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/votes?id=07c2d2a0-d265-4c51-be94-9841abd46650",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"votes"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "07c2d2a0-d265-4c51-be94-9841abd46650"
 								}
 							]
 						}
@@ -1296,6 +1521,45 @@
 					]
 				},
 				{
+					"name": "Add Music Critic",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"album_id\": 9999,\r\n    \"album_name\": \"Dark side of the moon\",\r\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\r\n    \"image_url\": \"url\",\r\n    \"artist_name\": \"pink floyd\",\r\n    \"artist_id\": 8888\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/critics",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"critics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Retrieve Critics",
 					"request": {
 						"auth": {
@@ -1416,6 +1680,46 @@
 					]
 				},
 				{
+					"name": "Retrieve Music Critics",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/critics",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"critics"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "artist_id",
+									"value": "8888",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Critic",
 					"request": {
 						"auth": {
@@ -1444,6 +1748,42 @@
 								{
 									"key": "movie_id",
 									"value": "274"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Music Critic",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/critics?id=9399a3d6-7b0b-4638-81c4-e9b99bf4a312",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"critics"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "9399a3d6-7b0b-4638-81c4-e9b99bf4a312"
 								}
 							]
 						}
@@ -1577,6 +1917,45 @@
 					]
 				},
 				{
+					"name": "Add Music Masterpiece",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"artist_id\": 1111111,\r\n    \"artist_name\": \"pink floyd\",\r\n    \"album_id\": 2222,\r\n    \"album_name\": \"dark side of the moon\",\r\n    \"image_url\": \"url\",\r\n    \"genders\": \"rock,metal\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/masterpieces",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"masterpieces"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Retrieve Masterpieces",
 					"request": {
 						"auth": {
@@ -1687,6 +2066,41 @@
 					]
 				},
 				{
+					"name": "Retrieve Music Masterpieces",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/masterpieces",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"masterpieces"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Masterpiece",
 					"request": {
 						"auth": {
@@ -1715,6 +2129,42 @@
 								{
 									"key": "movie_id",
 									"value": "119051"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Music Masterpiece",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/masterpieces?id=e8150516-ea0e-4915-94f9-cb72811afb9b",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{app}}{{host}}{{port}}"
+							],
+							"path": [
+								"{{baseUri}}",
+								"music",
+								"masterpieces"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "e8150516-ea0e-4915-94f9-cb72811afb9b"
 								}
 							]
 						}
