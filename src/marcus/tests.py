@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, RequestFactory
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .services import CriticService, VoteService, WatchlistService
+from .services import CriticService, MasterpieceService, VoteService, WatchlistService
 
 
 def get_tokens_for_user(user):
@@ -214,6 +214,60 @@ class MovieWatchlistTest(TestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_watchlist_service(self):
+        # create()
+        _, status_code = self.service.create(
+            user=self.user,
+            movie_id="872585",
+            movie_name="movie name",
+            platform="movie"
+        )
+        self.assertEqual(status_code, 201)
+        _, status_code = self.service.create(
+            user=self.user,
+            movie_id="872585",
+            movie_name="movie name",
+            platform="movie"
+        )
+        self.assertEqual(status_code, 400)
+
+        # list()
+        list, _ = self.service.list(user=self.user, page=None)
+        self.assertEqual(len(list), 1)
+
+        # delete()
+        status_code = self.service.delete(user=self.user, movie_id="872585")
+        self.assertEqual(status_code, 204)
+
+
+class MovieMasterpieceTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser")
+        self.service = MasterpieceService()
+        self.url = reverse("masterpieces")
+        self.token = "Bearer {}".format(get_tokens_for_user(self.user).get("access"))
+
+    def test_masterpiece_views(self):
+        # Create
+        response = self.client.post(self.url, {
+            "movie_id": "872585",
+            "movie_name": "movie name",
+            "platform": "movie"
+        },
+        HTTP_AUTHORIZATION=self.token)
+        self.assertEqual(response.status_code, 201)
+
+        # Retrieve
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json().get('total'), 1)
+
+        # Delete
+        response = self.client.delete(self.url + "?movie_id=872585",
+            HTTP_AUTHORIZATION=self.token
+        )
+        self.assertEqual(response.status_code, 204)
+
+    def test_masterpiece_service(self):
         # create()
         _, status_code = self.service.create(
             user=self.user,

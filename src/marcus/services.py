@@ -46,6 +46,7 @@ class MasterpieceService:
     Masterpiece service class
     """
 
+    @staticmethod
     def list(*, user: int, page: int):
         """
         Paginated list (optional : by user)
@@ -59,6 +60,7 @@ class MasterpieceService:
             masterpieces = Masterpiece.objects.filter(user=user).order_by("-created_at")
         return masterpieces, range
 
+    @staticmethod
     def create(*, movie_id: int, movie_name: str, platform: str, user: User):
         """
         Create if (user & movie_id) does not exist
@@ -79,6 +81,7 @@ class MasterpieceService:
             "message": f"Movie {vote.movie_id} {vote.movie_name} successfully added to Masterpiece."
         }, status.HTTP_201_CREATED
 
+    @staticmethod
     def delete(*, movie_id: int, user: str):
         """
         Delete a row by movie_id (called by user)
