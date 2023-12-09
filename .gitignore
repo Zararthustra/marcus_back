@@ -2,5 +2,5 @@ __pycache__/
 migrations
 db.sqlite3
 commands.txt
-settings.py
+settings_prod.py
 marcusenv
