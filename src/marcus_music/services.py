@@ -68,6 +68,7 @@ class CriticService:
     Critic service class
     """
 
+    @staticmethod
     def list(*, user: int, page: int, artist_id: str):
         """
         Paginated list (optional : by user)
@@ -81,6 +82,7 @@ class CriticService:
             critics = Critic.objects.all().order_by("-created_at")
         return critics, range
 
+    @staticmethod
     def create(
         *,
         album_id: str,
@@ -113,6 +115,7 @@ class CriticService:
             "message": f"Album {critic.album_id} {critic.album_name} successfully added to Critic."
         }, status.HTTP_201_CREATED
 
+    @staticmethod
     def delete(*, id: str, user: str):
         """
         Delete a row by id (called by user)
