@@ -7,7 +7,7 @@ on:
 
 jobs:
   Test:
-    name: Run tests
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
@@ -19,8 +19,11 @@ jobs:
         with:
           python-version: '3.11.6'
           
+      - name: Check Python version
+        run: python --version
+
       - name: Install 🏗️
         run: pip install -r requirements.txt
 
       - name: Test 🧪
-        run: cd src && python manage.py test --verbosity=2 | grep test_
+        run: python manage.py test --verbosity=2
