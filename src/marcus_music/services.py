@@ -9,6 +9,7 @@ class MasterpieceService:
     Masterpiece service class
     """
 
+    @staticmethod
     def list(*, user: int, page: int):
         """
         Paginated list (optional : by user)
@@ -22,6 +23,7 @@ class MasterpieceService:
             masterpieces = Masterpiece.objects.filter(user=user).order_by("-created_at")
         return masterpieces, range
 
+    @staticmethod
     def create(
         *,
         album_id: str,
@@ -50,6 +52,7 @@ class MasterpieceService:
             "message": f"Album {vote.album_id} {vote.album_name} successfully added to Masterpiece."
         }, status.HTTP_201_CREATED
 
+    @staticmethod
     def delete(*, id: str, user: str):
         """
         Delete a row by album_id (called by user)
@@ -206,6 +209,7 @@ class PlaylistService:
     Playlist service class
     """
 
+    @staticmethod
     def list(*, user: int, page: int):
         """
         Paginated list (optional : by user)
@@ -219,6 +223,7 @@ class PlaylistService:
             critics = Playlist.objects.filter(user=user).order_by("-created_at")
         return critics, range
 
+    @staticmethod
     def create(
         *,
         album_id: str,
@@ -247,6 +252,7 @@ class PlaylistService:
             "message": f"Album {critic.album_name} successfully added to Playlist."
         }, status.HTTP_201_CREATED
 
+    @staticmethod
     def delete(*, id: str, user: str):
         """
         Delete a row by id (called by user)

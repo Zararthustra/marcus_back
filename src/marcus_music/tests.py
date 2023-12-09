@@ -147,109 +147,125 @@ class MusicCriticTest(TestCase):
         self.assertEqual(status_code, 204)
 
 
-# class MovieWatchlistTest(TestCase):
-#     def setUp(self):
-#         self.user = User.objects.create_user(username="testuser")
-#         self.service = WatchlistService()
-#         self.url = reverse("watchlists")
-#         self.token = "Bearer {}".format(get_tokens_for_user(self.user).get("access"))
+class MusicMasterpieceTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser")
+        self.service = MasterpieceService()
+        self.url = reverse("music_masterpieces")
+        self.token = "Bearer {}".format(get_tokens_for_user(self.user).get("access"))
 
-#     def test_watchlist_views(self):
-#         # Create
-#         response = self.client.post(self.url, {
-#             "movie_id": "872585",
-#             "movie_name": "movie name",
-#             "platform": "movie"
-#         },
-#         HTTP_AUTHORIZATION=self.token)
-#         self.assertEqual(response.status_code, 201)
+    def test_masterpiece_views(self):
+        # Create
+        response = self.client.post(self.url, {
+            "album_id": "1",
+            "album_name": "album name",
+            "artist_id": "1",
+            "artist_name": "artist name",
+            "image_url": "https://url.com",
+        },
+        HTTP_AUTHORIZATION=self.token)
+        self.assertEqual(response.status_code, 201)
 
-#         # Retrieve
-#         response = self.client.get(self.url)
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(response.json().get('total'), 1)
+        # Retrieve
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json().get('total'), 1)
 
-#         # Delete
-#         response = self.client.delete(self.url + "?movie_id=872585",
-#             HTTP_AUTHORIZATION=self.token
-#         )
-#         self.assertEqual(response.status_code, 204)
+        # Delete
+        vote_id = response.json().get('data')[0]["id"]
+        response = self.client.delete(self.url + "?id=" + vote_id,
+            HTTP_AUTHORIZATION=self.token
+        )
+        self.assertEqual(response.status_code, 204)
 
-#     def test_watchlist_service(self):
-#         # create()
-#         _, status_code = self.service.create(
-#             user=self.user,
-#             movie_id="872585",
-#             movie_name="movie name",
-#             platform="movie"
-#         )
-#         self.assertEqual(status_code, 201)
-#         _, status_code = self.service.create(
-#             user=self.user,
-#             movie_id="872585",
-#             movie_name="movie name",
-#             platform="movie"
-#         )
-#         self.assertEqual(status_code, 400)
+    def test_masterpiece_service(self):
+        # create()
+        _, status_code = self.service.create(
+            user=self.user,
+            album_id="1",
+            album_name="album name",
+            artist_id="1",
+            artist_name="artist name",
+            image_url="http://url.com",
+        )
+        self.assertEqual(status_code, 201)
+        _, status_code = self.service.create(
+            user=self.user,
+            album_id="1",
+            album_name="album name",
+            artist_id="1",
+            artist_name="artist name",
+            image_url="http://url.com",
+        )
+        self.assertEqual(status_code, 400)
 
-#         # list()
-#         list, _ = self.service.list(user=self.user, page=None)
-#         self.assertEqual(len(list), 1)
+        # list()
+        list, _ = self.service.list(page=None, user=self.user)
+        self.assertEqual(len(list), 1)
 
-#         # delete()
-#         status_code = self.service.delete(user=self.user, movie_id="872585")
-#         self.assertEqual(status_code, 204)
+        # delete()
+        vote_id = list[0].id
+        status_code = self.service.delete(user=self.user, id=vote_id)
+        self.assertEqual(status_code, 204)
 
 
-# class MovieMasterpieceTest(TestCase):
-    # def setUp(self):
-    #     self.user = User.objects.create_user(username="testuser")
-    #     self.service = MasterpieceService()
-    #     self.url = reverse("masterpieces")
-    #     self.token = "Bearer {}".format(get_tokens_for_user(self.user).get("access"))
+class MusicPlaylistTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser")
+        self.service = PlaylistService()
+        self.url = reverse("music_playlists")
+        self.token = "Bearer {}".format(get_tokens_for_user(self.user).get("access"))
 
-    # def test_masterpiece_views(self):
-    #     # Create
-    #     response = self.client.post(self.url, {
-    #         "movie_id": "872585",
-    #         "movie_name": "movie name",
-    #         "platform": "movie"
-    #     },
-    #     HTTP_AUTHORIZATION=self.token)
-    #     self.assertEqual(response.status_code, 201)
+    def test_playlist_views(self):
+        # Create
+        response = self.client.post(self.url, {
+            "album_id": "1",
+            "album_name": "album name",
+            "artist_id": "1",
+            "artist_name": "artist name",
+            "image_url": "https://url.com",
+        },
+        HTTP_AUTHORIZATION=self.token)
+        self.assertEqual(response.status_code, 201)
 
-    #     # Retrieve
-    #     response = self.client.get(self.url)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(response.json().get('total'), 1)
+        # Retrieve
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json().get('total'), 1)
 
-    #     # Delete
-    #     response = self.client.delete(self.url + "?movie_id=872585",
-    #         HTTP_AUTHORIZATION=self.token
-    #     )
-    #     self.assertEqual(response.status_code, 204)
+        # Delete
+        vote_id = response.json().get('data')[0]["id"]
+        response = self.client.delete(self.url + "?id=" + vote_id,
+            HTTP_AUTHORIZATION=self.token
+        )
+        self.assertEqual(response.status_code, 204)
 
-    # def test_masterpiece_service(self):
-    #     # create()
-    #     _, status_code = self.service.create(
-    #         user=self.user,
-    #         movie_id="872585",
-    #         movie_name="movie name",
-    #         platform="movie"
-    #     )
-    #     self.assertEqual(status_code, 201)
-    #     _, status_code = self.service.create(
-    #         user=self.user,
-    #         movie_id="872585",
-    #         movie_name="movie name",
-    #         platform="movie"
-    #     )
-    #     self.assertEqual(status_code, 400)
+    def test_playlist_service(self):
+        # create()
+        _, status_code = self.service.create(
+            user=self.user,
+            album_id="1",
+            album_name="album name",
+            artist_id="1",
+            artist_name="artist name",
+            image_url="http://url.com",
+        )
+        self.assertEqual(status_code, 201)
+        _, status_code = self.service.create(
+            user=self.user,
+            album_id="1",
+            album_name="album name",
+            artist_id="1",
+            artist_name="artist name",
+            image_url="http://url.com",
+        )
+        self.assertEqual(status_code, 400)
 
-    #     # list()
-    #     list, _ = self.service.list(user=self.user, page=None)
-    #     self.assertEqual(len(list), 1)
+        # list()
+        list, _ = self.service.list(page=None, user=self.user)
+        self.assertEqual(len(list), 1)
 
-    #     # delete()
-    #     status_code = self.service.delete(user=self.user, movie_id="872585")
-    #     self.assertEqual(status_code, 204)
+        # delete()
+        vote_id = list[0].id
+        status_code = self.service.delete(user=self.user, id=vote_id)
+        self.assertEqual(status_code, 204)
