@@ -131,6 +131,7 @@ class VoteService:
     Vote service class
     """
 
+    @staticmethod
     def list(*, user: int, page: int, artist_id: str, stars: int):
         """
         Paginated list (optional : by user)
@@ -152,6 +153,7 @@ class VoteService:
             votes = Vote.objects.all().order_by("-created_at")
         return votes, range
 
+    @staticmethod
     def create(
         *,
         album_id: str,
@@ -182,6 +184,7 @@ class VoteService:
             "message": f"Album {critic.album_id} {critic.album_name} successfully added to Vote."
         }, status.HTTP_201_CREATED
 
+    @staticmethod
     def delete(*, id: str, user: str):
         """
         Delete a row by id (called by user)
