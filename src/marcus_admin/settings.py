@@ -94,3 +94,4 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+TMDB_API_KEY = "34e2e08fed7af733b62f781d945c6a7c"
