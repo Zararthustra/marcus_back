@@ -7,6 +7,12 @@ info:
 tags:
   - name: Authentication
   - name: Cinema
+  - name: Music
+  - name: Critics
+  - name: Votes
+  - name: Masterpieces
+  - name: Watchlist
+  - name: Playlist
 
 servers:
   - url: http://localhost:8000/api
@@ -20,10 +26,26 @@ components:
       name: page
       in: query
       required: false
-      description: Page query parameter
+      description: Filter by page
+      schema:
+        type: integer
+      example: 2
+    user:
+      name: user_id
+      in: query
+      required: false
+      description: Filter by user
+      schema:
+        type: integer
+      example: 1
+    movie:
+      name: movie_id
+      in: query
+      required: false
+      description: Filter by movie
       schema:
         type: string
-      example: 2
+      example: 872585
 
   requestBodies:
     user:
@@ -74,13 +96,17 @@ components:
     badRequestResponse:
       type: object
       properties:
-        field_name:
-          type: array
-          items:
-            type: string
+        error:
+          type: object
+          properties:
+            field_name:
+              type: array
+              items:
+                type: string
       example:
-        field_name:
-          - This field is required
+        error:
+          field_name:
+            - This field is required
     messageResponse:
       type: object
       properties:
@@ -172,8 +198,8 @@ components:
             - tv
       example:
         platform: movie
-        movie_id: 1613254
-        movie_name: star wars IV
+        movie_id: 872585
+        movie_name: Oppenheimer
 
   examples:
     tokens:
@@ -270,9 +296,12 @@ paths:
     get:
       tags:
         - Cinema
+        - Critics
       summary: List critics
       parameters:
         - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/user"
+        - $ref: "#/components/parameters/movie"
       responses:
         "200":
           description: Success
@@ -292,24 +321,103 @@ paths:
                               content:
                                 type: string
                             example:
-                              movie_id: 1613254
-                              movie_name: star wars IV
+                              movie_id: 872585
+                              movie_name: Openheimer
                               user_id: 1
                               user_name: user1
                               content: This movie is awesome !
                               platform: movie
               example:
-                - total: 1
-                  from: 1
-                  to: 1
-                  is_last_page: true
-                  data:
-                    - movie_id: 1613254
-                      movie_name: star wars IV
-                      user_id: 1
-                      user_name: user1
-                      content: This movie is awesome !
-                      platform: movie
+                total: 1
+                from: 1
+                to: 1
+                is_last_page: true
+                data:
+                  - movie_id: 872585
+                    movie_name: Oppenheimer
+                    user_id: 1
+                    user_name: user1
+                    content: This movie is awesome !
+                    platform: movie
+
+    post:
+      tags:
+        - Cinema
+        - Critics
+      summary: Add critic
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/movie"
+                - type: object
+                  properties:
+                    content:
+                      type: string
+                  required:
+                    - movie_id
+                    - movie_name
+                    - content
+                    - platform
+                  example:
+                    movie_id: 872585
+                    movie_name: Oppenheimer
+                    content: This movie is awesome !
+                    platform: movie
+      responses:
+        "201":
+          description: Critic created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Movie 872585 Oppenheimer successfully added to Critic.
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequestResponse"
+              example:
+                error:
+                  platform:
+                    - This field is required.
+
+        "401":
+          $ref: "#/components/responses/401"
+
+    delete:
+      tags:
+        - Cinema
+        - Critics
+      summary: Remove critic
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: movie_id
+          in: query
+          required: true
+          description: Delete critic from its movie id
+          schema:
+            type: string
+          example: 653218
+      responses:
+        "204":
+          description: Critic removed
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}
+
+        "401":
+          $ref: "#/components/responses/401"
 
         "404":
           description: Not Found
@@ -318,4 +426,176 @@ paths:
               schema:
                 $ref: "#/components/schemas/messageResponse"
               example:
-                message: Record with id '034ed24d-6213-4f9d-9c0a-e95d21bd1f82' not found.
+                message: Movie 653218 not found for user user1.
+
+  /votes:
+    get:
+      tags:
+        - Cinema
+        - Votes
+      summary: List votes
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/user"
+        - $ref: "#/components/parameters/movie"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/dataResponse"
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: "#/components/schemas/movie"
+                          - $ref: "#/components/schemas/user"
+                          - type: object
+                            properties:
+                              value:
+                                type: number
+                                format: float
+                                enum:
+                                  - 0
+                                  - 0.5
+                                  - 1
+                                  - 1.5
+                                  - 2
+                                  - 2.5
+                                  - 3
+                                  - 3.5
+                                  - 4
+                                  - 4.5
+                                  - 5
+                            example:
+                              movie_id: 872585
+                              movie_name: Openheimer
+                              user_id: 1
+                              user_name: user1
+                              value: 3.5
+                              platform: movie
+              example:
+                total: 1
+                from: 1
+                to: 1
+                is_last_page: true
+                data:
+                  - movie_id: 872585
+                    movie_name: Oppenheimer
+                    user_id: 1
+                    user_name: user1
+                    value: 3.5
+                    platform: movie
+
+    post:
+      tags:
+        - Cinema
+        - Votes
+      summary: Add Vote
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/movie"
+                - type: object
+                  properties:
+                    value:
+                      type: number
+                      format: float
+                      enum:
+                        - 0
+                        - 0.5
+                        - 1
+                        - 1.5
+                        - 2
+                        - 2.5
+                        - 3
+                        - 3.5
+                        - 4
+                        - 4.5
+                        - 5
+                  required:
+                    - movie_id
+                    - movie_name
+                    - value
+                    - platform
+                  example:
+                    movie_id: 872585
+                    movie_name: Oppenheimer
+                    value: 2.5
+                    platform: movie
+      responses:
+        "201":
+          description: Critic created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Movie 872585 Oppenheimer successfully added to Critic.
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/badRequestResponse"
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+              examples:
+                value out of range:
+                  value:
+                    error: Value must be in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+                missing field:
+                  value:
+                    error:
+                      platform:
+                        - This field is required.
+
+        "401":
+          $ref: "#/components/responses/401"
+
+    delete:
+      tags:
+        - Cinema
+        - Votes
+      summary: Remove vote
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: movie_id
+          in: query
+          required: true
+          description: Delete vote from its movie id
+          schema:
+            type: string
+          example: 653218
+      responses:
+        "204":
+          description: Vote removed
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}
+
+        "401":
+          $ref: "#/components/responses/401"
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Movie 653218 not found for user user1.
