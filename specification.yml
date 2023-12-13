@@ -1,0 +1,321 @@
+openapi: 3.1.0
+info:
+  title: Marcus API
+  version: 1.0.0
+  description: OpenAPI specification for Marcus API
+
+tags:
+  - name: Authentication
+  - name: Cinema
+
+servers:
+  - url: http://localhost:8000/api
+    description: "Local API server"
+  - url: https://planifit.pythonanywhere.com/api
+    description: "Production API server"
+
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      required: false
+      description: Page query parameter
+      schema:
+        type: string
+      example: 2
+
+  requestBodies:
+    user:
+      required: true
+      content:
+        application/json:
+          schema:
+            description: Register request body
+            type: object
+            required:
+              - username
+              - password
+            properties:
+              username:
+                type: string
+                description: User name
+              password:
+                type: string
+                description: User password
+            example:
+              username: myuser
+              password: xxxxxx
+
+  responses:
+    "401":
+      description: Unauthorized because token is not valid or has not been provided
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/detailResponse"
+              - $ref: "#/components/schemas/token_not_valid"
+          examples:
+            no token:
+              value:
+                detail: Authentication credentials were not provided.
+            not valid token:
+              value:
+                detail: Given token not valid for any token type
+                code: token_not_valid
+                messages:
+                  - token_class: AccessToken
+                    token_type: access
+                    message: Token is invalid or expired
+
+  schemas:
+    # Base
+    badRequestResponse:
+      type: object
+      properties:
+        field_name:
+          type: array
+          items:
+            type: string
+      example:
+        field_name:
+          - This field is required
+    messageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: User created successfully
+    detailResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+      example:
+        detail: No active account found with the given credentials
+    dataResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+        from:
+          type: integer
+        to:
+          type: integer
+        is_last_page:
+          type: boolean
+      example:
+        total: 2
+        from: 1
+        to: 2
+        is_last_page: true
+    tokens:
+      type: object
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+      example:
+        access: eyJhbGciOiJIUzI1NiIsI...
+        refresh: eyJhbGciOiJIUzI1NiIsI...
+    token_not_valid:
+      type: object
+      properties:
+        detail:
+          type: string
+        code:
+          type: string
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              token_class:
+                type: string
+              token_type:
+                type: string
+              message:
+                type: string
+      example:
+        detail: Given token not valid for any token type
+        code: token_not_valid
+        messages:
+          - token_class: AccessToken
+            token_type: access
+            message: Token is invalid or expired
+    user:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        user_name:
+          type: string
+      example:
+        user_id: 1
+        user_name: user1
+
+    # Cinema
+    movie:
+      type: object
+      properties:
+        movie_id:
+          type: string
+        movie_name:
+          type: string
+        platform:
+          type: string
+          enum:
+            - movie
+            - tv
+      example:
+        platform: movie
+        movie_id: 1613254
+        movie_name: star wars IV
+
+  examples:
+    tokens:
+      value:
+        refresh: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY2NjE4NjE0NSwiaWF0IjoxNjY2MDk5NzQ1LCJqdGkiOiIyNmU0YWE2NmU2YTg0MTQ0ODM5OTlmZTRjMTAzMWFkZiIsInVzZXJfaWQiOjEsIm5hbWUiOiJhcnRoeSJ9.KrmGSkxmSgRp5mfT4wNcMAWnUeAJz1qZPtszPepZ274
+        access: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY2MTAwMDQ1LCJpYXQiOjE2NjYwOTk3NDUsImp0aSI6ImE1ZjE0OWMyYzIyZTRkZTJiZmM5Mzg5NjgzOWZmMjFlIiwidXNlcl9pZCI6MSwibmFtZSI6ImFydGh5In0.phcAoGJDJ9ZmEdPLdTXgO5EWx4dkkhDjmxE-so8f-7s
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: Register user
+      requestBody:
+        $ref: "#/components/requestBodies/user"
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: User created successfully
+
+  /token/:
+    post:
+      tags:
+        - Authentication
+      summary: Login user
+      requestBody:
+        $ref: "#/components/requestBodies/user"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tokens"
+              example:
+                $ref: "#/components/examples/tokens"
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/detailResponse"
+              example:
+                detail: No active account found with the given credentials
+
+  /token/refresh/:
+    post:
+      tags:
+        - Authentication
+      summary: Reconnect user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh:
+                  type: string
+              example:
+                refresh: eyJhbGciOiJIUzI1NiIsI...
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tokens"
+              example:
+                $ref: "#/components/examples/tokens"
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/detailResponse"
+              example:
+                detail: Token is invalid or expired
+
+  /critics:
+    get:
+      tags:
+        - Cinema
+      summary: List critics
+      parameters:
+        - $ref: "#/components/parameters/page"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/dataResponse"
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: "#/components/schemas/movie"
+                          - $ref: "#/components/schemas/user"
+                          - type: object
+                            properties:
+                              content:
+                                type: string
+                            example:
+                              movie_id: 1613254
+                              movie_name: star wars IV
+                              user_id: 1
+                              user_name: user1
+                              content: This movie is awesome !
+                              platform: movie
+              example:
+                - total: 1
+                  from: 1
+                  to: 1
+                  is_last_page: true
+                  data:
+                    - movie_id: 1613254
+                      movie_name: star wars IV
+                      user_id: 1
+                      user_name: user1
+                      content: This movie is awesome !
+                      platform: movie
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Record with id '034ed24d-6213-4f9d-9c0a-e95d21bd1f82' not found.
