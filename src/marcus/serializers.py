@@ -100,6 +100,7 @@ class WatchlistSerializer(serializers.ModelSerializer):
             "movie_name",
             "platform",
             "user_name",
+            "user_id",
             "platform",
             "movie_details",
         )

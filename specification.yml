@@ -1,4 +1,5 @@
 openapi: 3.1.0
+
 info:
   title: Marcus API
   version: 1.0.0
@@ -6,6 +7,7 @@ info:
 
 tags:
   - name: Authentication
+  - name: Users
   - name: Cinema
   - name: Music
   - name: Critics
@@ -46,6 +48,14 @@ components:
       schema:
         type: string
       example: 872585
+    artist:
+      name: artist_id
+      in: query
+      required: false
+      description: Filter by artist
+      schema:
+        type: string
+      example: 5eAWCfyUhZtHHtBdNk56l1
 
   requestBodies:
     user:
@@ -64,6 +74,7 @@ components:
                 description: User name
               password:
                 type: string
+                format: password
                 description: User password
             example:
               username: myuser
@@ -172,7 +183,7 @@ components:
           - token_class: AccessToken
             token_type: access
             message: Token is invalid or expired
-    user:
+    userCinema:
       type: object
       properties:
         user_id:
@@ -182,8 +193,20 @@ components:
       example:
         user_id: 1
         user_name: user1
-
-    # Cinema
+    userMusic:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+      example:
+        user:
+          id: 1
+          username: user1
     movie:
       type: object
       properties:
@@ -200,6 +223,25 @@ components:
         platform: movie
         movie_id: 872585
         movie_name: Oppenheimer
+    album:
+      type: object
+      properties:
+        album_id:
+          type: string
+        album_name:
+          type: string
+        artist_id:
+          type: string
+        artist_name:
+          type: string
+        image_url:
+          type: string
+      example:
+        album_id: 0cn6MHyx4YuZauaB7Pb66o
+        album_name: Mezmerize
+        artist_id: 5eAWCfyUhZtHHtBdNk56l1
+        artist_name: System Of A Down
+        image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
 
   examples:
     tokens:
@@ -315,7 +357,7 @@ paths:
                       data:
                         allOf:
                           - $ref: "#/components/schemas/movie"
-                          - $ref: "#/components/schemas/user"
+                          - $ref: "#/components/schemas/userCinema"
                           - type: object
                             properties:
                               content:
@@ -451,7 +493,7 @@ paths:
                       data:
                         allOf:
                           - $ref: "#/components/schemas/movie"
-                          - $ref: "#/components/schemas/user"
+                          - $ref: "#/components/schemas/userCinema"
                           - type: object
                             properties:
                               value:
@@ -532,13 +574,13 @@ paths:
                     platform: movie
       responses:
         "201":
-          description: Critic created
+          description: Vote created
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/messageResponse"
               example:
-                message: Movie 872585 Oppenheimer successfully added to Critic.
+                message: Movie 872585 Oppenheimer successfully added to Vote.
 
         "400":
           description: Bad Request
@@ -599,3 +641,982 @@ paths:
                 $ref: "#/components/schemas/messageResponse"
               example:
                 message: Movie 653218 not found for user user1.
+
+  /masterpieces:
+    get:
+      tags:
+        - Cinema
+        - Masterpieces
+      summary: List masterpieces
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/user"
+        - $ref: "#/components/parameters/movie"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/dataResponse"
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: "#/components/schemas/movie"
+                          - $ref: "#/components/schemas/userCinema"
+                          - type: object
+                            properties:
+                              movie_details:
+                                type: object
+                                properties:
+                                  released_date:
+                                    type: string
+                                  poster_path:
+                                    type: string
+                                  backdrop_path:
+                                    type: string
+                                  synopsis:
+                                    type: string
+                            example:
+                              movie_id: 968051
+                              movie_name: "La Nonne : La Malédiction de Sainte-Lucie"
+                              user_id: 1
+                              user_name: user1
+                              platform: movie
+                              movie_details:
+                                released_date: 2023-09-06
+                                poster_path: /wfsG1HRTgEwJr0GuluPHpIAVzhv.jpg
+                                synopsis: En France, en 1956, un prêtre est assassiné dans un internat. Après la mort du prêtre, il se passe des choses qui ne peuvent plus être expliquées rationnellement. Sœur Irène est une nouvelle fois confrontée à un pouvoir démoniaque. Elle se rend vite compte que c'est le démon Valak qui est de retour et qui se prépare à ses méfaits meurtriers.
+                                backdrop_path: /gN79aDbZdaSJkFS1iVA17HplF2X.jpg
+              example:
+                total: 1
+                from: 1
+                to: 1
+                is_last_page: true
+                data:
+                  - movie_id: 968051
+                    movie_name: "La Nonne : La Malédiction de Sainte-Lucie"
+                    user_id: 1
+                    user_name: user1
+                    platform: movie
+                    movie_details:
+                      released_date: 2023-09-06
+                      poster_path: /wfsG1HRTgEwJr0GuluPHpIAVzhv.jpg
+                      synopsis: En France, en 1956, un prêtre est assassiné dans un internat. Après la mort du prêtre, il se passe des choses qui ne peuvent plus être expliquées rationnellement. Sœur Irène est une nouvelle fois confrontée à un pouvoir démoniaque. Elle se rend vite compte que c'est le démon Valak qui est de retour et qui se prépare à ses méfaits meurtriers.
+                      backdrop_path: /gN79aDbZdaSJkFS1iVA17HplF2X.jpg
+
+    post:
+      tags:
+        - Cinema
+        - Masterpieces
+      summary: Add masterpiece
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/movie"
+              required:
+                - movie_id
+                - movie_name
+                - platform
+            example:
+              movie_id: 872585
+              movie_name: Oppenheimer
+              platform: movie
+      responses:
+        "201":
+          description: Masterpiece created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Movie 872585 Oppenheimer successfully added to Masterpiece.
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequestResponse"
+              example:
+                error:
+                  movie_id:
+                    - This field is required.
+
+        "401":
+          $ref: "#/components/responses/401"
+
+    delete:
+      tags:
+        - Cinema
+        - Masterpieces
+      summary: Remove masterpiece
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: movie_id
+          in: query
+          required: true
+          description: Delete masterpiece from its movie id
+          schema:
+            type: string
+          example: 653218
+      responses:
+        "204":
+          description: Masterpiece removed
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}
+
+        "401":
+          $ref: "#/components/responses/401"
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Movie 653218 not found for user user1.
+
+  /watchlists:
+    get:
+      tags:
+        - Cinema
+        - Watchlist
+      summary: List watchlists
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/user"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/dataResponse"
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: "#/components/schemas/movie"
+                          - $ref: "#/components/schemas/userCinema"
+                          - type: object
+                            properties:
+                              movie_details:
+                                type: object
+                                properties:
+                                  released_date:
+                                    type: string
+                                  poster_path:
+                                    type: string
+                                  backdrop_path:
+                                    type: string
+                                  synopsis:
+                                    type: string
+                            example:
+                              movie_id: 968051
+                              movie_name: "La Nonne : La Malédiction de Sainte-Lucie"
+                              user_id: 1
+                              user_name: user1
+                              platform: movie
+                              movie_details:
+                                released_date: 2023-09-06
+                                poster_path: /wfsG1HRTgEwJr0GuluPHpIAVzhv.jpg
+                                synopsis: En France, en 1956, un prêtre est assassiné dans un internat. Après la mort du prêtre, il se passe des choses qui ne peuvent plus être expliquées rationnellement. Sœur Irène est une nouvelle fois confrontée à un pouvoir démoniaque. Elle se rend vite compte que c'est le démon Valak qui est de retour et qui se prépare à ses méfaits meurtriers.
+                                backdrop_path: /gN79aDbZdaSJkFS1iVA17HplF2X.jpg
+              example:
+                total: 1
+                from: 1
+                to: 1
+                is_last_page: true
+                data:
+                  - movie_id: 968051
+                    movie_name: "La Nonne : La Malédiction de Sainte-Lucie"
+                    user_id: 1
+                    user_name: user1
+                    platform: movie
+                    movie_details:
+                      released_date: 2023-09-06
+                      poster_path: /wfsG1HRTgEwJr0GuluPHpIAVzhv.jpg
+                      synopsis: En France, en 1956, un prêtre est assassiné dans un internat. Après la mort du prêtre, il se passe des choses qui ne peuvent plus être expliquées rationnellement. Sœur Irène est une nouvelle fois confrontée à un pouvoir démoniaque. Elle se rend vite compte que c'est le démon Valak qui est de retour et qui se prépare à ses méfaits meurtriers.
+                      backdrop_path: /gN79aDbZdaSJkFS1iVA17HplF2X.jpg
+
+    post:
+      tags:
+        - Cinema
+        - Watchlist
+      summary: Add to watchlist
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/movie"
+              required:
+                - movie_id
+                - movie_name
+                - platform
+            example:
+              movie_id: 872585
+              movie_name: Oppenheimer
+              platform: movie
+      responses:
+        "201":
+          description: Movie added to watchlist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Movie 872585 Oppenheimer successfully added to Watchlist.
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequestResponse"
+              example:
+                error:
+                  movie_id:
+                    - This field is required.
+
+        "401":
+          $ref: "#/components/responses/401"
+
+    delete:
+      tags:
+        - Cinema
+        - Watchlist
+      summary: Remove movie from watchlist
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: movie_id
+          in: query
+          required: true
+          description: Delete from watchlist from its movie id
+          schema:
+            type: string
+          example: 653218
+      responses:
+        "204":
+          description: Movie removed from watchlist
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}
+
+        "401":
+          $ref: "#/components/responses/401"
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Movie 653218 not found for user user1.
+
+  /music/critics:
+    get:
+      tags:
+        - Music
+        - Critics
+      summary: List critics
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/user"
+        - $ref: "#/components/parameters/artist"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/dataResponse"
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: "#/components/schemas/album"
+                          - $ref: "#/components/schemas/userMusic"
+                          - type: object
+                            properties:
+                              content:
+                                type: string
+                              id:
+                                type: string
+                            example:
+                              id: 15818a15-6f30-4df2-8b2f-e74e7ce9cf02
+                              content: Amazing album !
+                              album_id: 0cn6MHyx4YuZauaB7Pb66o
+                              album_name: Mezmerize
+                              artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                              artist_name: System Of A Down
+                              image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+                              user:
+                                id: 1
+                                username: user1
+              example:
+                total: 1
+                from: 1
+                to: 1
+                is_last_page: true
+                data:
+                  - id: 15818a15-6f30-4df2-8b2f-e74e7ce9cf02
+                    content: Amazing album !
+                    album_id: 0cn6MHyx4YuZauaB7Pb66o
+                    album_name: Mezmerize
+                    artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                    artist_name: System Of A Down
+                    image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+                    user:
+                      id: 1
+                      username: user1
+
+    post:
+      tags:
+        - Music
+        - Critics
+      summary: Add critic
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/album"
+                - type: object
+                  properties:
+                    content:
+                      type: string
+                  required:
+                    - content
+                    - album_id
+                    - album_name
+                    - artist_id
+                    - artist_name
+                    - image_url
+                  example:
+                    content: This album is awesome !
+                    album_id: 0cn6MHyx4YuZauaB7Pb66o
+                    album_name: Mezmerize
+                    artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                    artist_name: System Of A Down
+                    image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+      responses:
+        "201":
+          description: Critic created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Album 0cn6MHyx4YuZauaB7Pb66o Mezmerize successfully added to Critic.
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequestResponse"
+              example:
+                error:
+                  artist_id:
+                    - This field is required.
+
+        "401":
+          $ref: "#/components/responses/401"
+
+    delete:
+      tags:
+        - Music
+        - Critics
+      summary: Remove critic
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Delete critic from its id
+          schema:
+            type: string
+          example: 9399a3d6-7b0b-4638-81c4-e9b99bf4a312
+      responses:
+        "204":
+          description: Critic removed
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}
+
+        "401":
+          $ref: "#/components/responses/401"
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Music 9399a3d6-7b0b-4638-81c4-e9b99bf4a312 not found for user user1.
+
+  /music/votes:
+    get:
+      tags:
+        - Music
+        - Votes
+      summary: List votes
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/user"
+        - $ref: "#/components/parameters/artist"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/dataResponse"
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: "#/components/schemas/album"
+                          - $ref: "#/components/schemas/userMusic"
+                          - type: object
+                            properties:
+                              value:
+                                type: number
+                                format: float
+                                enum:
+                                  - 0
+                                  - 0.5
+                                  - 1
+                                  - 1.5
+                                  - 2
+                                  - 2.5
+                                  - 3
+                                  - 3.5
+                                  - 4
+                                  - 4.5
+                                  - 5
+                              id:
+                                type: string
+                            example:
+                              id: 15818a15-6f30-4df2-8b2f-e74e7ce9cf02
+                              value: 4.5
+                              album_id: 0cn6MHyx4YuZauaB7Pb66o
+                              album_name: Mezmerize
+                              artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                              artist_name: System Of A Down
+                              image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+                              user:
+                                id: 1
+                                username: user1
+              example:
+                total: 1
+                from: 1
+                to: 1
+                is_last_page: true
+                data:
+                  - id: 15818a15-6f30-4df2-8b2f-e74e7ce9cf02
+                    value: 4.5
+                    album_id: 0cn6MHyx4YuZauaB7Pb66o
+                    album_name: Mezmerize
+                    artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                    artist_name: System Of A Down
+                    image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+                    user:
+                      id: 1
+                      username: user1
+
+    post:
+      tags:
+        - Music
+        - Votes
+      summary: Add vote
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/album"
+                - type: object
+                  properties:
+                    value:
+                      type: number
+                      format: float
+                      enum:
+                        - 0
+                        - 0.5
+                        - 1
+                        - 1.5
+                        - 2
+                        - 2.5
+                        - 3
+                        - 3.5
+                        - 4
+                        - 4.5
+                        - 5
+                  required:
+                    - value
+                    - album_id
+                    - album_name
+                    - artist_id
+                    - artist_name
+                    - image_url
+                  example:
+                    value: 4.5
+                    album_id: 0cn6MHyx4YuZauaB7Pb66o
+                    album_name: Mezmerize
+                    artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                    artist_name: System Of A Down
+                    image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+      responses:
+        "201":
+          description: Vote created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Album 0cn6MHyx4YuZauaB7Pb66o Mezmerize successfully added to Vote.
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/badRequestResponse"
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+              examples:
+                value out of range:
+                  value:
+                    error: Value must be in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+                missing field:
+                  value:
+                    error:
+                      artist_id:
+                        - This field is required.
+
+        "401":
+          $ref: "#/components/responses/401"
+
+    delete:
+      tags:
+        - Music
+        - Votes
+      summary: Remove vote
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Delete vote from its id
+          schema:
+            type: string
+          example: 9399a3d6-7b0b-4638-81c4-e9b99bf4a312
+      responses:
+        "204":
+          description: Vote removed
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}
+
+        "401":
+          $ref: "#/components/responses/401"
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Music 9399a3d6-7b0b-4638-81c4-e9b99bf4a312 not found for user user1.
+
+  /music/masterpieces:
+    get:
+      tags:
+        - Music
+        - Masterpieces
+      summary: List masterpieces
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/user"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/dataResponse"
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: "#/components/schemas/album"
+                          - $ref: "#/components/schemas/userMusic"
+                          - type: object
+                            properties:
+                              id:
+                                type: string
+                            example:
+                              id: 9399a3d6-7b0b-4638-81c4-e9b99bf4a312
+                              album_id: 0cn6MHyx4YuZauaB7Pb66o
+                              album_name: Mezmerize
+                              artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                              artist_name: System Of A Down
+                              image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+                              user:
+                                id: 1
+                                username: user1
+              example:
+                total: 1
+                from: 1
+                to: 1
+                is_last_page: true
+                data:
+                  - id: 9399a3d6-7b0b-4638-81c4-e9b99bf4a312
+                    album_id: 0cn6MHyx4YuZauaB7Pb66o
+                    album_name: Mezmerize
+                    artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                    artist_name: System Of A Down
+                    image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+                    user:
+                      id: 1
+                      username: user1
+
+    post:
+      tags:
+        - Music
+        - Masterpieces
+      summary: Add masterpiece
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/album"
+              required:
+                - album_id
+                - album_name
+                - artist_id
+                - artist_name
+                - image_url
+              example:
+                album_id: 0cn6MHyx4YuZauaB7Pb66o
+                album_name: Mezmerize
+                artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                artist_name: System Of A Down
+                image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+      responses:
+        "201":
+          description: Masterpiece created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Album 0cn6MHyx4YuZauaB7Pb66o Mezmerize successfully added to Masterpiece.
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequestResponse"
+              example:
+                error:
+                  artist_id:
+                    - This field is required.
+
+        "401":
+          $ref: "#/components/responses/401"
+
+    delete:
+      tags:
+        - Music
+        - Masterpieces
+      summary: Remove masterpiece
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Delete masterpiece from its id
+          schema:
+            type: string
+          example: 9399a3d6-7b0b-4638-81c4-e9b99bf4a312
+      responses:
+        "204":
+          description: Masterpiece removed
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}
+
+        "401":
+          $ref: "#/components/responses/401"
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Music 9399a3d6-7b0b-4638-81c4-e9b99bf4a312 not found for user user1.
+
+  /music/playlists:
+    get:
+      tags:
+        - Music
+        - Playlist
+      summary: List playlists
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/user"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/dataResponse"
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: "#/components/schemas/album"
+                          - $ref: "#/components/schemas/userMusic"
+                          - type: object
+                            properties:
+                              id:
+                                type: string
+                            example:
+                              id: 9399a3d6-7b0b-4638-81c4-e9b99bf4a312
+                              album_id: 0cn6MHyx4YuZauaB7Pb66o
+                              album_name: Mezmerize
+                              artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                              artist_name: System Of A Down
+                              image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+                              user:
+                                id: 1
+                                username: user1
+              example:
+                total: 1
+                from: 1
+                to: 1
+                is_last_page: true
+                data:
+                  - id: 9399a3d6-7b0b-4638-81c4-e9b99bf4a312
+                    album_id: 0cn6MHyx4YuZauaB7Pb66o
+                    album_name: Mezmerize
+                    artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                    artist_name: System Of A Down
+                    image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+                    user:
+                      id: 1
+                      username: user1
+
+    post:
+      tags:
+        - Music
+        - Playlist
+      summary: Add to playlist
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/album"
+              required:
+                - album_id
+                - album_name
+                - artist_id
+                - artist_name
+                - image_url
+              example:
+                album_id: 0cn6MHyx4YuZauaB7Pb66o
+                album_name: Mezmerize
+                artist_id: 5eAWCfyUhZtHHtBdNk56l1
+                artist_name: System Of A Down
+                image_url: https://i.scdn.co/image/ab67616d00001e02c65f8d04502eeddbdd61fa71
+      responses:
+        "201":
+          description: Masterpiece created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Album 0cn6MHyx4YuZauaB7Pb66o Mezmerize successfully added to Playlist.
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequestResponse"
+              example:
+                error:
+                  artist_id:
+                    - This field is required.
+
+        "401":
+          $ref: "#/components/responses/401"
+
+    delete:
+      tags:
+        - Music
+        - Playlist
+      summary: Remove album from playlist
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Delete from playlist from its id
+          schema:
+            type: string
+          example: 9399a3d6-7b0b-4638-81c4-e9b99bf4a312
+      responses:
+        "204":
+          description: Album removed from playlist
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}
+
+        "401":
+          $ref: "#/components/responses/401"
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageResponse"
+              example:
+                message: Music 9399a3d6-7b0b-4638-81c4-e9b99bf4a312 not found for user user1.
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: List users stats
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    username:
+                      type: string
+                    user_critics:
+                      type: number
+                    user_masterpieces:
+                      type: number
+                    user_watchlists:
+                      type: number
+                    user_votes:
+                      type: number
+              example:
+                - id: 1,
+                  username: user1,
+                  user_critics: 5,
+                  user_masterpieces: 14,
+                  user_watchlists: 32,
+                  user_votes: 11
+
+  /users/{user_id}:
+    get:
+      tags:
+        - Users
+      summary: Retrieve user's stats
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User unique identifier
+          schema:
+            type: integer
+          example: 1
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  username:
+                    type: string
+                  user_critics:
+                    type: number
+                  user_masterpieces:
+                    type: number
+                  user_watchlists:
+                    type: number
+                  user_votes:
+                    type: number
+              example:
+                id: 1,
+                username: user1,
+                user_critics: 5,
+                user_masterpieces: 14,
+                user_watchlists: 32,
+                user_votes: 11

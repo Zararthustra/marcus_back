@@ -244,6 +244,15 @@ class VotesView(BaseView):
             return Response(
                 {"error": serialized_data.errors}, status=status.HTTP_400_BAD_REQUEST
             )
+        # Enum check
+        isCorrectValue = VoteService.check_enum_value(value=float(payload.get("value")))
+        if not isCorrectValue:
+            return Response(
+                {
+                    "error": "Value must be in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]"
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         # Service
         data, status_code = self.service.create(
             album_id=payload["album_id"],

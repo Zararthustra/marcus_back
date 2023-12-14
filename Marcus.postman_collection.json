@@ -1,7 +1,8 @@
 {
 	"info": {
-		"_postman_id": "b9e66313-499c-41f7-8a03-b7c3d53002a9",
+		"_postman_id": "b2d6be3b-92ff-4232-b5a0-3e9f11e6114b",
 		"name": "Marcus",
+		"description": "OpenAPI specification for Marcus API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18563608"
 	},
@@ -10,55 +11,118 @@
 			"name": "Authentication",
 			"item": [
 				{
-					"name": "Register",
+					"name": "Register user",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"xxx\",\r\n    \"password\": \"xxx\"\r\n}",
+							"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
 							"options": {
 								"raw": {
+									"headerFamily": "json",
 									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/register",
-							"protocol": "{{protocol}}",
+							"raw": "{{baseUrl}}/register",
 							"host": [
-								"{{app}}{{host}}{{port}}"
+								"{{baseUrl}}"
 							],
 							"path": [
-								"{{baseUri}}",
 								"register"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"message\": \"<string>\"\n}"
+						}
+					]
 				},
 				{
-					"name": "Get Token",
+					"name": "Login user",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"xxx\",\r\n    \"password\": \"xxx\"\r\n}",
+							"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
 							"options": {
 								"raw": {
+									"headerFamily": "json",
 									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/token/",
-							"protocol": "{{protocol}}",
+							"raw": "{{baseUrl}}/token/",
 							"host": [
-								"{{app}}{{host}}{{port}}"
+								"{{baseUrl}}"
 							],
 							"path": [
-								"{{baseUri}}",
 								"token",
 								""
 							]
@@ -66,108 +130,35 @@
 					},
 					"response": [
 						{
-							"name": "401",
+							"name": "Success",
 							"originalRequest": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{passwordX}}\"\r\n}",
+									"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
 									"options": {
 										"raw": {
+											"headerFamily": "json",
 											"language": "json"
 										}
 									}
 								},
 								"url": {
-									"raw": "{{protocol}}://{{host}}:{{port}}/{{baseUri}}/token/",
-									"protocol": "{{protocol}}",
+									"raw": "{{baseUrl}}/token/",
 									"host": [
-										"{{host}}"
+										"{{baseUrl}}"
 									],
-									"port": "{{port}}",
 									"path": [
-										"{{baseUri}}",
-										"token",
-										""
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Mon, 17 Oct 2022 14:10:29 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.10.7"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "WWW-Authenticate",
-									"value": "Bearer realm=\"api\""
-								},
-								{
-									"key": "Vary",
-									"value": "Accept"
-								},
-								{
-									"key": "Allow",
-									"value": "POST, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "63"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"detail\": \"No active account found with the given credentials\"\n}"
-						},
-						{
-							"name": "200",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{protocol}}://{{host}}:{{port}}/{{baseUri}}/token/",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{host}}"
-									],
-									"port": "{{port}}",
-									"path": [
-										"{{baseUri}}",
 										"token",
 										""
 									]
@@ -178,73 +169,92 @@
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
-									"key": "Date",
-									"value": "Tue, 18 Oct 2022 13:29:05 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.10.7"
-								},
-								{
 									"key": "Content-Type",
 									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "POST, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "523"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY2NjE4NjE0NSwiaWF0IjoxNjY2MDk5NzQ1LCJqdGkiOiIyNmU0YWE2NmU2YTg0MTQ0ODM5OTlmZTRjMTAzMWFkZiIsInVzZXJfaWQiOjEsIm5hbWUiOiJhcnRoeSJ9.KrmGSkxmSgRp5mfT4wNcMAWnUeAJz1qZPtszPepZ274\",\n    \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY2MTAwMDQ1LCJpYXQiOjE2NjYwOTk3NDUsImp0aSI6ImE1ZjE0OWMyYzIyZTRkZTJiZmM5Mzg5NjgzOWZmMjFlIiwidXNlcl9pZCI6MSwibmFtZSI6ImFydGh5In0.phcAoGJDJ9ZmEdPLdTXgO5EWx4dkkhDjmxE-so8f-7s\"\n}"
+							"body": "{\n  \"access\": \"<string>\",\n  \"refresh\": \"<string>\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/token/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"token",
+										""
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"detail\": \"<string>\"\n}"
 						}
 					]
 				},
 				{
-					"name": "Refresh Token",
+					"name": "Reconnect user",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"refresh\": \"{{refreshToken}}\"\r\n}",
+							"raw": "{\n  \"refresh\": \"<string>\"\n}",
 							"options": {
 								"raw": {
+									"headerFamily": "json",
 									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/token/refresh/",
-							"protocol": "{{protocol}}",
+							"raw": "{{baseUrl}}/token/refresh/",
 							"host": [
-								"{{app}}{{host}}{{port}}"
+								"{{baseUrl}}"
 							],
 							"path": [
-								"{{baseUri}}",
 								"token",
 								"refresh",
 								""
@@ -253,28 +263,83 @@
 					},
 					"response": [
 						{
-							"name": "401",
+							"name": "Success",
 							"originalRequest": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"refresh\": \"{{refreshTokenX}}\"\r\n}",
+									"raw": "{\n  \"refresh\": \"<string>\"\n}",
 									"options": {
 										"raw": {
+											"headerFamily": "json",
 											"language": "json"
 										}
 									}
 								},
 								"url": {
-									"raw": "{{protocol}}://{{host}}:{{port}}/{{baseUri}}/token/refresh/",
-									"protocol": "{{protocol}}",
+									"raw": "{{baseUrl}}/token/refresh/",
 									"host": [
-										"{{host}}"
+										"{{baseUrl}}"
 									],
-									"port": "{{port}}",
 									"path": [
-										"{{baseUri}}",
+										"token",
+										"refresh",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"access\": \"<string>\",\n  \"refresh\": \"<string>\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"refresh\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/token/refresh/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
 										"token",
 										"refresh",
 										""
@@ -286,2009 +351,3899 @@
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
-									"key": "Date",
-									"value": "Mon, 17 Oct 2022 14:08:07 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.10.7"
-								},
-								{
 									"key": "Content-Type",
 									"value": "application/json"
-								},
-								{
-									"key": "WWW-Authenticate",
-									"value": "Bearer realm=\"api\""
-								},
-								{
-									"key": "Vary",
-									"value": "Accept"
-								},
-								{
-									"key": "Allow",
-									"value": "POST, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "65"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"detail\": \"Token is invalid or expired\",\n    \"code\": \"token_not_valid\"\n}"
-						},
-						{
-							"name": "200",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"refresh\": \"{{refreshToken}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{protocol}}://{{host}}:{{port}}/{{baseUri}}/token/refresh/",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{host}}"
-									],
-									"port": "{{port}}",
-									"path": [
-										"{{baseUri}}",
-										"token",
-										"refresh",
-										""
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Tue, 18 Oct 2022 13:29:53 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.10.7"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "POST, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "523"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY2MTAwMDkzLCJpYXQiOjE2NjYwOTk3NDUsImp0aSI6ImE5ODI5ODEwMTA1NzRlOGQ4YWY5ZjE0NzBkZGU5NDhiIiwidXNlcl9pZCI6MSwibmFtZSI6ImFydGh5In0.rPz5V-h3TL20S0F22PP82qi9pErs9WPgIUhWmN7Q6HM\",\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY2NjE4NjE5MywiaWF0IjoxNjY2MDk5NzkzLCJqdGkiOiJiMGJhYTUyYTJjNmE0MjQ5YmFkMWY0ODFjZTc1ZmUyNyIsInVzZXJfaWQiOjEsIm5hbWUiOiJhcnRoeSJ9.jRgeySD-ovIinwpvojTXoU3qFXo0mKhkr-NH573fDQM\"\n}"
+							"body": "{\n  \"detail\": \"<string>\"\n}"
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "Watchlist",
-			"item": [
-				{
-					"name": "Add Watchlist",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"movie_id\": 44,\r\n    \"movie_name\": \"Nemo\",\r\n    \"platform\": \"movie\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/watchlists",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"watchlists"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "2",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "201",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"movie_id\": 44,\r\n    \"movie_name\": \"Nemo\",\r\n    \"platform\": \"movie\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/watchlists",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"watchlists"
-									],
-									"query": [
-										{
-											"key": "user_id",
-											"value": "2",
-											"disabled": true
-										}
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 12 Feb 2023 23:14:16 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, DELETE, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "60"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"Movie 44 Nemo successfully added to Watchlist.\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Retrieve Watchlist",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/watchlists?page=1",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"watchlists"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "200",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/watchlists?page=1",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"watchlists"
-									],
-									"query": [
-										{
-											"key": "user_id",
-											"value": "2",
-											"disabled": true
-										},
-										{
-											"key": "page",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 19 Feb 2023 11:44:09 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, DELETE, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "7421"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"total\": 20,\n    \"from\": 1,\n    \"to\": 10,\n    \"is_last_page\": false,\n    \"data\": [\n        {\n            \"movie_id\": 646389,\n            \"movie_name\": \"Mayday\",\n            \"platform\": \"movie\",\n            \"user_name\": \"test2\",\n            \"movie_details\": {\n                \"released_date\": \"2023-01-13\",\n                \"poster_path\": \"/qGKE0vJsydUcRzeoR2r5j3W25Il.jpg\",\n                \"synopsis\": \"Le pilote Brodie Torrance sauve des passagers d'un coup de foudre en effectuant un atterrissage risqué sur une île déchirée par la guerre seulement pour découvrir que survivre à l'atterrissage n'était que le début. Lorsque de dangereux rebelles prennent la plupart des passagers en otage, la seule personne sur laquelle Torrance peut compter pour obtenir de l'aide est Louis Gaspare, un meurtrier accusé qui a été transporté par le FBI.\"\n            }\n        },\n        {\n            \"movie_id\": 315162,\n            \"movie_name\": \"Le Chat Potté 2 : la dernière quête\",\n            \"platform\": \"movie\",\n            \"user_name\": \"test2\",\n            \"movie_details\": {\n                \"released_date\": \"2022-12-07\",\n                \"poster_path\": \"/kO35BwoKHyP1VRulxZJVeEl5dvS.jpg\",\n                \"synopsis\": \"Le Chat Potté découvre que sa passion pour l'aventure et son mépris du danger ont fini par lui coûter cher : il a épuisé huit de ses neuf vies, et en a perdu le compte au passage. Afin de retomber sur ses pattes notre héros velu se lance littéralement dans la quête de sa vie. Il s'embarque dans une aventure épique aux confins de la Forêt Sombre afin de dénicher la mythique Etoile à vœu, seule susceptible de lui rendre ses vies perdues. Mais quand il ne vous en reste qu’une, il faut savoir faire profil bas, se montrer prudent et demander de l’aide. C’est ainsi qu’il se tourne vers son ancienne partenaire et meilleure ennemie de toujours : l’ensorcelante Kitty Pattes De Velours. Le Chat Potté et la belle Kitty vont être aidés dans leur quête, à leur corps bien défendant, par Perro, un corniaud errant et galleux à la langue bien pendue et d’une inaltérable bonne humeur.\"\n            }\n        },\n        {\n            \"movie_id\": 505642,\n            \"movie_name\": \"Black Panther : Wakanda Forever\",\n            \"platform\": \"movie\",\n            \"user_name\": \"test2\",\n            \"movie_details\": {\n                \"released_date\": \"2022-11-09\",\n                \"poster_path\": \"/nsQt8kl5c5I7ZQknTzl133e8reh.jpg\",\n                \"synopsis\": \"La Reine Ramonda, Shuri, M’Baku, Okoye et les Dora Milaje luttent pour protéger leur nation des ingérences d’autres puissances mondiales après la mort du roi T’Challa. Alors que le peuple s’efforce d’aller de l’avant, nos héros vont devoir s’unir et compter sur l’aide de la mercenaire Nakia et d’Everett Ross pour faire entrer le royaume du Wakanda dans une nouvelle ère. Mais une terrible menace surgit d’un royaume caché au plus profond des océans : Talokan.\"\n            }\n        },\n        {\n            \"movie_id\": 315162,\n            \"movie_name\": \"Le Chat Potté 2 : la dernière quête\",\n            \"platform\": \"movie\",\n            \"user_name\": \"zaza\",\n            \"movie_details\": {\n                \"released_date\": \"2022-12-07\",\n                \"poster_path\": \"/kO35BwoKHyP1VRulxZJVeEl5dvS.jpg\",\n                \"synopsis\": \"Le Chat Potté découvre que sa passion pour l'aventure et son mépris du danger ont fini par lui coûter cher : il a épuisé huit de ses neuf vies, et en a perdu le compte au passage. Afin de retomber sur ses pattes notre héros velu se lance littéralement dans la quête de sa vie. Il s'embarque dans une aventure épique aux confins de la Forêt Sombre afin de dénicher la mythique Etoile à vœu, seule susceptible de lui rendre ses vies perdues. Mais quand il ne vous en reste qu’une, il faut savoir faire profil bas, se montrer prudent et demander de l’aide. C’est ainsi qu’il se tourne vers son ancienne partenaire et meilleure ennemie de toujours : l’ensorcelante Kitty Pattes De Velours. Le Chat Potté et la belle Kitty vont être aidés dans leur quête, à leur corps bien défendant, par Perro, un corniaud errant et galleux à la langue bien pendue et d’une inaltérable bonne humeur.\"\n            }\n        },\n        {\n            \"movie_id\": 758009,\n            \"movie_name\": \"Shotgun Wedding\",\n            \"platform\": \"movie\",\n            \"user_name\": \"zaza\",\n            \"movie_details\": {\n                \"released_date\": \"2022-12-28\",\n                \"poster_path\": \"/ckx7WbMUFnREYMTP7Q4HmHQckGZ.jpg\",\n                \"synopsis\": \"Darcy et Tom rassemblent leurs familles pour leur mariage dans une destination lointaine, mais lorsque toute la fête est prise en otage, \\\"'Jusqu'à ce que la mort nous sépare \\\" prend un tout nouveau sens dans cette aventure hilarante et pleine d'adrénaline car Darcy et Tom doivent sauver leurs proches - s'ils ne s'entretuent pas d'abord.\"\n            }\n        },\n        {\n            \"movie_id\": 505642,\n            \"movie_name\": \"Black Panther: Wakanda Forever\",\n            \"platform\": \"movie\",\n            \"user_name\": \"zaza\",\n            \"movie_details\": {\n                \"released_date\": \"2022-11-09\",\n                \"poster_path\": \"/nsQt8kl5c5I7ZQknTzl133e8reh.jpg\",\n                \"synopsis\": \"La Reine Ramonda, Shuri, M’Baku, Okoye et les Dora Milaje luttent pour protéger leur nation des ingérences d’autres puissances mondiales après la mort du roi T’Challa. Alors que le peuple s’efforce d’aller de l’avant, nos héros vont devoir s’unir et compter sur l’aide de la mercenaire Nakia et d’Everett Ross pour faire entrer le royaume du Wakanda dans une nouvelle ère. Mais une terrible menace surgit d’un royaume caché au plus profond des océans : Talokan.\"\n            }\n        },\n        {\n            \"movie_id\": 536554,\n            \"movie_name\": \"M3GAN\",\n            \"platform\": \"movie\",\n            \"user_name\": \"zaza\",\n            \"movie_details\": {\n                \"released_date\": \"2022-12-28\",\n                \"poster_path\": \"/xBl5AGw7HXZcv1nNXPlzGgO4Cfo.jpg\",\n                \"synopsis\": \"M3GAN est une merveille d'intelligence artificielle, une poupée réaliste qui est programmée pour être la meilleure compagne d'un enfant et la meilleure alliée d'un parent. Conçue par Gemma, une brillante roboticienne, M3GAN peut écouter, regarder et apprendre, car elle joue le rôle d'amie et d'enseignante, de compagne de jeu et de protectrice.\"\n            }\n        },\n        {\n            \"movie_id\": 76600,\n            \"movie_name\": \"Avatar : La voie de l'eau\",\n            \"platform\": \"movie\",\n            \"user_name\": \"zaza\",\n            \"movie_details\": {\n                \"released_date\": \"2022-12-14\",\n                \"poster_path\": \"/hYeB9GpFaT7ysabBoGG5rbo9mF4.jpg\",\n                \"synopsis\": \"Jake Sully et Neytiri sont devenus parents. L'intrigue se déroule une dizaine d'années après les événements racontés dans le long-métrage originel. Leur vie idyllique, proche de la nature, est menacée lorsque la « Resources Development Administration », dangereuse organisation non-gouvernementale, est de retour sur Pandora. Contraints de quitter leur habitat naturel, Jake et sa famille se rendent sur les récifs, où ils pensent trouver asile. Mais ils tombent sur un clan, les Metkayina, aux mœurs différentes des leurs...\"\n            }\n        },\n        {\n            \"movie_id\": 1013870,\n            \"movie_name\": \"Kids vs. Aliens\",\n            \"platform\": \"movie\",\n            \"user_name\": \"zaza\",\n            \"movie_details\": {\n                \"released_date\": \"2023-01-20\",\n                \"poster_path\": \"/wQ53sO5n9LCFbssV3oQ4CuajL1L.jpg\",\n                \"synopsis\": \"Tout ce que Gary veut, c'est faire de superbes films familiaux avec ses meilleurs amis. Tout ce que veut sa grande sœur Samantha, c'est de fréquenter les jeunes les plus cool. Lorsque leurs parents s'absentent de la ville un week-end d'Halloween, une fête d'ados qui n'a jamais été aussi joyeuse tourne à la terreur lorsque des extraterrestres attaquent, obligeant les frères et sœurs à s'unir pour survivre à la nuit.\"\n            }\n        },\n        {\n            \"movie_id\": 842544,\n            \"movie_name\": \"Sniper Redemption\",\n            \"platform\": \"movie\",\n            \"user_name\": \"zaza\",\n            \"movie_details\": {\n                \"released_date\": \"2023-01-05\",\n                \"poster_path\": \"/x92tU4s3uiEfjL3eucXwHtYHsfg.jpg\",\n                \"synopsis\": \"Ancien sniper aujourd'hui instructeur dans l'armée, Ryan Logan menait une vie heureuse avant la mort de sa femme, enceinte, dans un terrible accident. Huit ans après, il ne parvient pas à remonter la pente. Pas plus que son fils Billy qui enchaîne les délits et les absences scolaires. Un ancien compagnon d'armes, devenu mercenaire, offre alors une mission d'une nuit à Logan.\"\n            }\n        }\n    ]\n}"
-						}
-					]
-				},
-				{
-					"name": "Delete Watchlist",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/watchlists?movie_id=44",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"watchlists"
-							],
-							"query": [
-								{
-									"key": "movie_id",
-									"value": "44"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "404",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/watchlists?movie_id=117581",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"watchlists"
-									],
-									"query": [
-										{
-											"key": "movie_id",
-											"value": "117581"
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 12 Feb 2023 22:35:43 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, DELETE, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "51"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"Movie 117581 not found for user test.\"\n}"
-						},
-						{
-							"name": "204",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/watchlists?movie_id=78191",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"watchlists"
-									],
-									"query": [
-										{
-											"key": "movie_id",
-											"value": "78191"
-										}
-									]
-								}
-							},
-							"status": "No Content",
-							"code": 204,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 12 Feb 2023 23:13:37 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, DELETE, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "2"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{}"
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "Playlist",
-			"item": [
-				{
-					"name": "Add Playlist",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"artist_id\": 1111111,\r\n    \"artist_name\": \"pink floyd\",\r\n    \"album_id\": 2222,\r\n    \"album_name\": \"dark side of the moon\",\r\n    \"image_url\": \"url\",\r\n    \"genders\": \"rock,metal\",\r\n    \"track_id\": 555545,\r\n    \"track_name\": \"truc\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/playlists",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"playlists"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Retrieve Playlist",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/playlists",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"playlists"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "1",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Playlist",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/playlists?id=63374d1b-6723-4954-8d75-9bfcdaf658da",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"playlists"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "63374d1b-6723-4954-8d75-9bfcdaf658da"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Vote",
-			"item": [
-				{
-					"name": "Add Vote",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"movie_id\": 222,\r\n    \"movie_name\": \"Un titre de film assez long\",\r\n    \"value\": 4.5,\r\n    \"platform\": \"movie\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/votes",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"votes"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "400",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"movie_id\": 111,\r\n    \"value\": 3.2\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/votes",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"votes"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Fri, 13 Jan 2023 08:46:57 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "84"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"error\": \"Value must be in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]\"\n}"
-						},
-						{
-							"name": "201",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"movie_id\": 106,\r\n    \"movie_name\": \"nemo\",\r\n    \"value\": 2\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/votes",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"votes"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sat, 28 Jan 2023 09:57:53 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Content-Length",
-									"value": "56"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "X-Clacks-Overhead",
-									"value": "GNU Terry Pratchett"
-								},
-								{
-									"key": "Server",
-									"value": "PythonAnywhere"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"Movie 106 nemo successfully added to Vote.\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Add Music Vote",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"album_id\": 99998,\r\n    \"album_name\": \"Dark side of the moon\",\r\n    \"value\": 3.5,\r\n    \"image_url\": \"url\",\r\n    \"artist_name\": \"pink floyd\",\r\n    \"artist_id\": 8888\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/votes",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"votes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Retrieve Votes",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/votes?page=1",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"votes"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "200",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/votes?page=1",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"votes"
-									],
-									"query": [
-										{
-											"key": "user_id",
-											"value": "2",
-											"disabled": true
-										},
-										{
-											"key": "page",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 19 Feb 2023 11:42:17 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, DELETE, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "1211"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"total\": 14,\n    \"from\": 1,\n    \"to\": 10,\n    \"is_last_page\": false,\n    \"data\": [\n        {\n            \"movie_id\": 931954,\n            \"movie_name\": \"Venus\",\n            \"value\": 2,\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 843794,\n            \"movie_name\": \"JUNG_E\",\n            \"value\": 4,\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 505642,\n            \"movie_name\": \"Black Panther : Wakanda Forever\",\n            \"value\": 4,\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 315162,\n            \"movie_name\": \"Le Chat Potté 2 : la dernière quête\",\n            \"value\": 2,\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 646389,\n            \"movie_name\": \"Mayday\",\n            \"value\": 4,\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 646389,\n            \"movie_name\": \"Mayday\",\n            \"value\": 4,\n            \"user_id\": 2,\n            \"user_name\": \"test2\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 505642,\n            \"movie_name\": \"Black Panther : Wakanda Forever\",\n            \"value\": 5,\n            \"user_id\": 6,\n            \"user_name\": \"alexandrexxxddddxwdg\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 846433,\n            \"movie_name\": \"The Enforcer\",\n            \"value\": 3,\n            \"user_id\": 2,\n            \"user_name\": \"test2\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 955991,\n            \"movie_name\": \"L'Emprise du démon\",\n            \"value\": 1,\n            \"user_id\": 2,\n            \"user_name\": \"test2\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 2317,\n            \"movie_name\": \"Earl\",\n            \"value\": 5,\n            \"user_id\": 1,\n            \"user_name\": \"test\",\n            \"platform\": \"tv\"\n        }\n    ]\n}"
-						}
-					]
-				},
-				{
-					"name": "Retrieve Music Votes",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/votes",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"votes"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "1",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Vote",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/votes?movie_id=315162",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"votes"
-							],
-							"query": [
-								{
-									"key": "movie_id",
-									"value": "315162"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Music Vote",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/votes?id=07c2d2a0-d265-4c51-be94-9841abd46650",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"votes"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "07c2d2a0-d265-4c51-be94-9841abd46650"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Critic",
-			"item": [
-				{
-					"name": "Add Critic",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"movie_id\": 274,\r\n    \"movie_name\": \"Le monde de Némo\",\r\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\r\n    \"platform\": \"movie\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/critics",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"critics"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "201",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"movie_id\": 268,\r\n    \"movie_name\": \"titanic\",\r\n    \"content\": \"cool cool cfool\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/critics",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"critics"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sat, 21 Jan 2023 11:36:06 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "61"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"Movie 268 titanic successfully added to Critic.\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Add Music Critic",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"album_id\": 9999,\r\n    \"album_name\": \"Dark side of the moon\",\r\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\r\n    \"image_url\": \"url\",\r\n    \"artist_name\": \"pink floyd\",\r\n    \"artist_id\": 8888\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/critics",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"critics"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Retrieve Critics",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/critics?page=1",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"critics"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "movie_id",
-									"value": "646389",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "200",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/critics?page=1",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"critics"
-									],
-									"query": [
-										{
-											"key": "user_id",
-											"value": "1",
-											"disabled": true
-										},
-										{
-											"key": "movie_id",
-											"value": "646389",
-											"disabled": true
-										},
-										{
-											"key": "page",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 19 Feb 2023 10:45:53 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, DELETE, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "1245"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"total\": 12,\n    \"from\": 1,\n    \"to\": 10,\n    \"is_last_page\": false,\n    \"data\": [\n        {\n            \"movie_id\": 843794,\n            \"movie_name\": \"JUNG_E\",\n            \"content\": \"wxcvwv\",\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 505642,\n            \"movie_name\": \"Black Panther : Wakanda Forever\",\n            \"content\": \"qsdff\",\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 315162,\n            \"movie_name\": \"Le Chat Potté 2 : la dernière quête\",\n            \"content\": \"xcvxwv<\",\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 646389,\n            \"movie_name\": \"Mayday\",\n            \"content\": \"xcv\",\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 646389,\n            \"movie_name\": \"Mayday\",\n            \"content\": \"yoyo\",\n            \"user_id\": 2,\n            \"user_name\": \"test2\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 955991,\n            \"movie_name\": \"L'Emprise du démon\",\n            \"content\": \"alors ?\",\n            \"user_id\": 2,\n            \"user_name\": \"test2\",\n            \"platform\": \"movie\"\n        },\n        {\n            \"movie_id\": 2317,\n            \"movie_name\": \"Earl\",\n            \"content\": \"trop cool earl\",\n            \"user_id\": 1,\n            \"user_name\": \"test\",\n            \"platform\": \"tv\"\n        },\n        {\n            \"movie_id\": 117581,\n            \"movie_name\": \"Ginny & Georgia\",\n            \"content\": \"simpa\",\n            \"user_id\": 1,\n            \"user_name\": \"test\",\n            \"platform\": \"tv\"\n        },\n        {\n            \"movie_id\": 78191,\n            \"movie_name\": \"You\",\n            \"content\": \"sdfg\",\n            \"user_id\": 1,\n            \"user_name\": \"test\",\n            \"platform\": \"tv\"\n        },\n        {\n            \"movie_id\": 955991,\n            \"movie_name\": \"L'Emprise du démon\",\n            \"content\": \"dede\",\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\"\n        }\n    ]\n}"
-						}
-					]
-				},
-				{
-					"name": "Retrieve Music Critics",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/critics",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"critics"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "artist_id",
-									"value": "8888",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "1",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Critic",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/critics?movie_id=274",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"critics"
-							],
-							"query": [
-								{
-									"key": "movie_id",
-									"value": "274"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Music Critic",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/critics?id=9399a3d6-7b0b-4638-81c4-e9b99bf4a312",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"critics"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "9399a3d6-7b0b-4638-81c4-e9b99bf4a312"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Masterpiece",
-			"item": [
-				{
-					"name": "Add Masterpiece",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"movie_id\": 315162,\r\n    \"movie_name\": \"Le Chat Potté 2 : la dernière quête\",\r\n    \"platform\": \"movie\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/masterpieces",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"masterpieces"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "201",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"movie_id\": 108,\r\n    \"movie_name\": \"matrix\",\r\n    \"platform\": \"movie\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/masterpieces",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"masterpieces"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sat, 28 Jan 2023 09:56:23 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Content-Length",
-									"value": "65"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "X-Clacks-Overhead",
-									"value": "GNU Terry Pratchett"
-								},
-								{
-									"key": "Server",
-									"value": "PythonAnywhere"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"Movie 108 matrix successfully added to Masterpiece.\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Add Music Masterpiece",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"artist_id\": 1111111,\r\n    \"artist_name\": \"pink floyd\",\r\n    \"album_id\": 2222,\r\n    \"album_name\": \"dark side of the moon\",\r\n    \"image_url\": \"url\",\r\n    \"genders\": \"rock,metal\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/masterpieces",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"masterpieces"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Retrieve Masterpieces",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/masterpieces?page=1",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"masterpieces"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "200",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/masterpieces?page=1",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{app}}{{host}}{{port}}"
-									],
-									"path": [
-										"{{baseUri}}",
-										"masterpieces"
-									],
-									"query": [
-										{
-											"key": "user_id",
-											"value": "1",
-											"disabled": true
-										},
-										{
-											"key": "page",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 19 Feb 2023 11:40:03 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.11.0"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Vary",
-									"value": "Accept, Origin"
-								},
-								{
-									"key": "Allow",
-									"value": "GET, POST, DELETE, HEAD, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "4992"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"total\": 7,\n    \"from\": 1,\n    \"to\": 7,\n    \"is_last_page\": true,\n    \"data\": [\n        {\n            \"movie_id\": 646389,\n            \"movie_name\": \"Mayday\",\n            \"user_id\": 2,\n            \"user_name\": \"test2\",\n            \"platform\": \"movie\",\n            \"movie_details\": {\n                \"released_date\": \"2023-01-13\",\n                \"poster_path\": \"/qGKE0vJsydUcRzeoR2r5j3W25Il.jpg\",\n                \"synopsis\": \"Le pilote Brodie Torrance sauve des passagers d'un coup de foudre en effectuant un atterrissage risqué sur une île déchirée par la guerre seulement pour découvrir que survivre à l'atterrissage n'était que le début. Lorsque de dangereux rebelles prennent la plupart des passagers en otage, la seule personne sur laquelle Torrance peut compter pour obtenir de l'aide est Louis Gaspare, un meurtrier accusé qui a été transporté par le FBI.\"\n            }\n        },\n        {\n            \"movie_id\": 315162,\n            \"movie_name\": \"Le Chat Potté 2 : la dernière quête\",\n            \"user_id\": 2,\n            \"user_name\": \"test2\",\n            \"platform\": \"movie\",\n            \"movie_details\": {\n                \"released_date\": \"2022-12-07\",\n                \"poster_path\": \"/kO35BwoKHyP1VRulxZJVeEl5dvS.jpg\",\n                \"synopsis\": \"Le Chat Potté découvre que sa passion pour l'aventure et son mépris du danger ont fini par lui coûter cher : il a épuisé huit de ses neuf vies, et en a perdu le compte au passage. Afin de retomber sur ses pattes notre héros velu se lance littéralement dans la quête de sa vie. Il s'embarque dans une aventure épique aux confins de la Forêt Sombre afin de dénicher la mythique Etoile à vœu, seule susceptible de lui rendre ses vies perdues. Mais quand il ne vous en reste qu’une, il faut savoir faire profil bas, se montrer prudent et demander de l’aide. C’est ainsi qu’il se tourne vers son ancienne partenaire et meilleure ennemie de toujours : l’ensorcelante Kitty Pattes De Velours. Le Chat Potté et la belle Kitty vont être aidés dans leur quête, à leur corps bien défendant, par Perro, un corniaud errant et galleux à la langue bien pendue et d’une inaltérable bonne humeur.\"\n            }\n        },\n        {\n            \"movie_id\": 505642,\n            \"movie_name\": \"Black Panther : Wakanda Forever\",\n            \"user_id\": 2,\n            \"user_name\": \"test2\",\n            \"platform\": \"movie\",\n            \"movie_details\": {\n                \"released_date\": \"2022-11-09\",\n                \"poster_path\": \"/nsQt8kl5c5I7ZQknTzl133e8reh.jpg\",\n                \"synopsis\": \"La Reine Ramonda, Shuri, M’Baku, Okoye et les Dora Milaje luttent pour protéger leur nation des ingérences d’autres puissances mondiales après la mort du roi T’Challa. Alors que le peuple s’efforce d’aller de l’avant, nos héros vont devoir s’unir et compter sur l’aide de la mercenaire Nakia et d’Everett Ross pour faire entrer le royaume du Wakanda dans une nouvelle ère. Mais une terrible menace surgit d’un royaume caché au plus profond des océans : Talokan.\"\n            }\n        },\n        {\n            \"movie_id\": 78191,\n            \"movie_name\": \"You\",\n            \"user_id\": 1,\n            \"user_name\": \"test\",\n            \"platform\": \"tv\",\n            \"movie_details\": {\n                \"released_date\": \"2018-09-09\",\n                \"poster_path\": \"/7bEYwjUvlJW7GerM8GYmqwl4oS3.jpg\",\n                \"synopsis\": \"Joe, le gérant d'une librairie new-yorkaise, devient obsédé par Beck, une jeune aspirante écrivaine qui partage sa passion pour les livres et pour la poésie. Persuadé qu'ils sont faits l'un pour l'autre, il va alors se servir des réseaux sociaux pour nourrir son obsession, savoir en permanence où elle se trouve et ce qu'elle fait, et tenter de faire tomber tous les obstacles qui pourraient se dresser en travers du chemin de leur possible romance. Quitte à commettre des actes totalement fous...\"\n            }\n        },\n        {\n            \"movie_id\": 955991,\n            \"movie_name\": \"L'Emprise du démon\",\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"movie\",\n            \"movie_details\": {\n                \"released_date\": \"2023-01-11\",\n                \"poster_path\": \"/wrRQNxkMVhF352LUtcU2z7Mca3G.jpg\",\n                \"synopsis\": \"Alors qu’ils attendent leur premier enfant Claire et Arthur décident de renouer les liens familiaux. Le jeune couple s’installe dans la vétuste entreprise de pompes funèbres tenue par Saul, le père d’Arthur. Mais l’arrivée d’un mystérieux cadavre va les faire basculer dans l’horreur : la dépouille contient une entité surnaturelle, Abyzou, qui une fois libérée, veut posséder l’enfant à venir du couple. Face à ce démon, personne n’est à l’abri…\"\n            }\n        },\n        {\n            \"movie_id\": 63174,\n            \"movie_name\": \"Lucifer\",\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"tv\",\n            \"movie_details\": {\n                \"released_date\": \"2016-01-25\",\n                \"poster_path\": \"/tU34L2zd8sWxypSxAwg01mksLdq.jpg\",\n                \"synopsis\": \"Lassé d’être le Seigneur des Enfers, le diable s’installe à Los Angeles où il ouvre un nightclub et se lie avec une policière de la brigade criminelle...\"\n            }\n        },\n        {\n            \"movie_id\": 119051,\n            \"movie_name\": \"Mercredi\",\n            \"user_id\": 5,\n            \"user_name\": \"zaza\",\n            \"platform\": \"tv\",\n            \"movie_details\": {\n                \"released_date\": \"2022-11-23\",\n                \"poster_path\": \"/9ifSmhXDP36tFZXdcczJzRDGo5b.jpg\",\n                \"synopsis\": \"Infusée de mystère et de surnaturel, la série suit les aventures de Mercredi Addams, désormais étudiante à la Nevermore Academy. Alors qu'elle apprend à dompter ses nouveaux pouvoirs psychiques, la jeune fille doit aussi déjouer une série de meurtres monstrueux qui terrorisent la ville, et résoudre le mystère auquel ont été mêlés ses parents il y a 25 ans, le tout en tentant péniblement de nouer de nouvelles relations au sein de Nevermore.\"\n            }\n        }\n    ]\n}"
-						}
-					]
-				},
-				{
-					"name": "Retrieve Music Masterpieces",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/masterpieces",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"masterpieces"
-							],
-							"query": [
-								{
-									"key": "user_id",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "1",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Masterpiece",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/masterpieces?movie_id=119051",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"masterpieces"
-							],
-							"query": [
-								{
-									"key": "movie_id",
-									"value": "119051"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Music Masterpiece",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{bearer}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/music/masterpieces?id=e8150516-ea0e-4915-94f9-cb72811afb9b",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{app}}{{host}}{{port}}"
-							],
-							"path": [
-								"{{baseUri}}",
-								"music",
-								"masterpieces"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "e8150516-ea0e-4915-94f9-cb72811afb9b"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
 		{
 			"name": "Users",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/users",
-					"protocol": "{{protocol}}",
-					"host": [
-						"{{app}}{{host}}{{port}}"
-					],
-					"path": [
-						"{{baseUri}}",
-						"users"
-					]
-				}
-			},
-			"response": [
+			"item": [
 				{
-					"name": "200",
-					"originalRequest": {
+					"name": "List users stats",
+					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
 						"url": {
-							"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/users",
-							"protocol": "{{protocol}}",
+							"raw": "{{baseUrl}}/users",
 							"host": [
-								"{{app}}{{host}}{{port}}"
+								"{{baseUrl}}"
 							],
 							"path": [
-								"{{baseUri}}",
 								"users"
 							]
 						}
 					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Date",
-							"value": "Sat, 04 Feb 2023 20:14:29 GMT"
-						},
-						{
-							"key": "Server",
-							"value": "WSGIServer/0.2 CPython/3.11.0"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Vary",
-							"value": "Accept, Origin"
-						},
-						{
-							"key": "Allow",
-							"value": "GET, HEAD, OPTIONS"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "Content-Length",
-							"value": "306"
-						},
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "Referrer-Policy",
-							"value": "same-origin"
-						},
-						{
-							"key": "Cross-Origin-Opener-Policy",
-							"value": "same-origin"
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"<number>\",\n    \"username\": \"<string>\",\n    \"user_critics\": \"<number>\",\n    \"user_masterpieces\": \"<number>\",\n    \"user_watchlists\": \"<number>\",\n    \"user_votes\": \"<number>\"\n  },\n  {\n    \"id\": \"<number>\",\n    \"username\": \"<string>\",\n    \"user_critics\": \"<number>\",\n    \"user_masterpieces\": \"<number>\",\n    \"user_watchlists\": \"<number>\",\n    \"user_votes\": \"<number>\"\n  }\n]"
 						}
-					],
-					"cookie": [],
-					"body": "[\n    {\n        \"id\": 1,\n        \"username\": \"test\",\n        \"user_critics\": 4,\n        \"user_masterpieces\": 2,\n        \"user_watchlists\": 3,\n        \"user_votes\": 6\n    },\n    {\n        \"id\": 2,\n        \"username\": \"test2\",\n        \"user_critics\": 3,\n        \"user_masterpieces\": 0,\n        \"user_watchlists\": 0,\n        \"user_votes\": 1\n    },\n    {\n        \"id\": 3,\n        \"username\": \"test3\",\n        \"user_critics\": 2,\n        \"user_masterpieces\": 1,\n        \"user_watchlists\": 5,\n        \"user_votes\": 0\n    }\n]"
+					]
+				},
+				{
+					"name": "Retrieve user's stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:user_id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "<integer>",
+									"description": "(Required) User unique identifier"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:user_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":user_id"
+									],
+									"variable": [
+										{
+											"key": "user_id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<number>\",\n  \"username\": \"<string>\",\n  \"user_critics\": \"<number>\",\n  \"user_masterpieces\": \"<number>\",\n  \"user_watchlists\": \"<number>\",\n  \"user_votes\": \"<number>\"\n}"
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "User",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{protocol}}://{{app}}{{host}}{{port}}/{{baseUri}}/users/:user_id",
-					"protocol": "{{protocol}}",
-					"host": [
-						"{{app}}{{host}}{{port}}"
-					],
-					"path": [
-						"{{baseUri}}",
-						"users",
-						":user_id"
-					],
-					"variable": [
+			"name": "Music",
+			"item": [
+				{
+					"name": "critics",
+					"item": [
 						{
-							"key": "user_id",
-							"value": "1"
+							"name": "List critics",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/music/critics?page=<integer>&user_id=<integer>&artist_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"critics"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>",
+											"description": "Filter by page"
+										},
+										{
+											"key": "user_id",
+											"value": "<integer>",
+											"description": "Filter by user"
+										},
+										{
+											"key": "artist_id",
+											"value": "<string>",
+											"description": "Filter by artist"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/critics?page=<integer>&user_id=<integer>&artist_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"critics"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Filter by page"
+												},
+												{
+													"key": "user_id",
+													"value": "<integer>",
+													"description": "Filter by user"
+												},
+												{
+													"key": "artist_id",
+													"value": "<string>",
+													"description": "Filter by artist"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<integer>\",\n  \"from\": \"<integer>\",\n  \"to\": \"<integer>\",\n  \"is_last_page\": \"<boolean>\",\n  \"data\": {\n    \"album_id\": \"<string>\",\n    \"album_name\": \"<string>\",\n    \"artist_id\": \"<string>\",\n    \"artist_name\": \"<string>\",\n    \"image_url\": \"<string>\",\n    \"user\": {\n      \"id\": \"<integer>\",\n      \"username\": \"<string>\"\n    },\n    \"content\": \"<string>\",\n    \"id\": \"<string>\"\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add critic",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"<string>\",\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/music/critics",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"critics"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Critic created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"content\": \"<string>\",\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/critics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"critics"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"content\": \"<string>\",\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/critics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"critics"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"field_name\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"content\": \"<string>\",\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/critics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"critics"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remove critic",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/music/critics?id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"critics"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<string>",
+											"description": "(Required) Delete critic from its id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Critic removed",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/critics?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"critics"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete critic from its id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/critics?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"critics"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete critic from its id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/critics?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"critics"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete critic from its id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "votes",
+					"item": [
+						{
+							"name": "List votes",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/music/votes?page=<integer>&user_id=<integer>&artist_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"votes"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>",
+											"description": "Filter by page"
+										},
+										{
+											"key": "user_id",
+											"value": "<integer>",
+											"description": "Filter by user"
+										},
+										{
+											"key": "artist_id",
+											"value": "<string>",
+											"description": "Filter by artist"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/votes?page=<integer>&user_id=<integer>&artist_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"votes"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Filter by page"
+												},
+												{
+													"key": "user_id",
+													"value": "<integer>",
+													"description": "Filter by user"
+												},
+												{
+													"key": "artist_id",
+													"value": "<string>",
+													"description": "Filter by artist"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<integer>\",\n  \"from\": \"<integer>\",\n  \"to\": \"<integer>\",\n  \"is_last_page\": \"<boolean>\",\n  \"data\": {\n    \"album_id\": \"<string>\",\n    \"album_name\": \"<string>\",\n    \"artist_id\": \"<string>\",\n    \"artist_name\": \"<string>\",\n    \"image_url\": \"<string>\",\n    \"user\": {\n      \"id\": \"<integer>\",\n      \"username\": \"<string>\"\n    },\n    \"value\": 0,\n    \"id\": \"<string>\"\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add vote",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"value\": 2,\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/music/votes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"votes"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Vote created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"value\": 2,\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/votes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"votes"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"value\": 2,\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/votes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"votes"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"field_name\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"value\": 2,\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/votes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"votes"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remove vote",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/music/votes?id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"votes"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<string>",
+											"description": "(Required) Delete vote from its id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Vote removed",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/votes?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"votes"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete vote from its id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/votes?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"votes"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete vote from its id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/votes?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"votes"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete vote from its id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "masterpieces",
+					"item": [
+						{
+							"name": "List masterpieces",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/music/masterpieces?page=<integer>&user_id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"masterpieces"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>",
+											"description": "Filter by page"
+										},
+										{
+											"key": "user_id",
+											"value": "<integer>",
+											"description": "Filter by user"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/masterpieces?page=<integer>&user_id=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"masterpieces"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Filter by page"
+												},
+												{
+													"key": "user_id",
+													"value": "<integer>",
+													"description": "Filter by user"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<integer>\",\n  \"from\": \"<integer>\",\n  \"to\": \"<integer>\",\n  \"is_last_page\": \"<boolean>\",\n  \"data\": {\n    \"album_id\": \"<string>\",\n    \"album_name\": \"<string>\",\n    \"artist_id\": \"<string>\",\n    \"artist_name\": \"<string>\",\n    \"image_url\": \"<string>\",\n    \"user\": {\n      \"id\": \"<integer>\",\n      \"username\": \"<string>\"\n    },\n    \"id\": \"<string>\"\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add masterpiece",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/music/masterpieces",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"masterpieces"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Masterpiece created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/masterpieces",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"masterpieces"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/masterpieces",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"masterpieces"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"field_name\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/masterpieces",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"masterpieces"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remove masterpiece",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/music/masterpieces?id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"masterpieces"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<string>",
+											"description": "(Required) Delete masterpiece from its id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Masterpiece removed",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/masterpieces?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"masterpieces"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete masterpiece from its id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/masterpieces?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"masterpieces"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete masterpiece from its id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/masterpieces?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"masterpieces"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete masterpiece from its id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "playlists",
+					"item": [
+						{
+							"name": "List playlists",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/music/playlists?page=<integer>&user_id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"playlists"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>",
+											"description": "Filter by page"
+										},
+										{
+											"key": "user_id",
+											"value": "<integer>",
+											"description": "Filter by user"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/playlists?page=<integer>&user_id=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"playlists"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Filter by page"
+												},
+												{
+													"key": "user_id",
+													"value": "<integer>",
+													"description": "Filter by user"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<integer>\",\n  \"from\": \"<integer>\",\n  \"to\": \"<integer>\",\n  \"is_last_page\": \"<boolean>\",\n  \"data\": {\n    \"album_id\": \"<string>\",\n    \"album_name\": \"<string>\",\n    \"artist_id\": \"<string>\",\n    \"artist_name\": \"<string>\",\n    \"image_url\": \"<string>\",\n    \"user\": {\n      \"id\": \"<integer>\",\n      \"username\": \"<string>\"\n    },\n    \"id\": \"<string>\"\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add to playlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/music/playlists",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"playlists"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Masterpiece created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/playlists",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"playlists"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/playlists",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"playlists"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"field_name\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"album_id\": \"<string>\",\n  \"album_name\": \"<string>\",\n  \"artist_id\": \"<string>\",\n  \"artist_name\": \"<string>\",\n  \"image_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/music/playlists",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"playlists"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remove album from playlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/music/playlists?id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"music",
+										"playlists"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<string>",
+											"description": "(Required) Delete from playlist from its id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Album removed from playlist",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/playlists?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"playlists"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete from playlist from its id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/playlists?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"playlists"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete from playlist from its id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/music/playlists?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"music",
+												"playlists"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) Delete from playlist from its id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								}
+							]
 						}
 					]
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Cinema",
+			"item": [
+				{
+					"name": "votes",
+					"item": [
+						{
+							"name": "List votes",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/votes?page=<integer>&user_id=<integer>&movie_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"votes"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>",
+											"description": "Filter by page"
+										},
+										{
+											"key": "user_id",
+											"value": "<integer>",
+											"description": "Filter by user"
+										},
+										{
+											"key": "movie_id",
+											"value": "<string>",
+											"description": "Filter by movie"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/votes?page=<integer>&user_id=<integer>&movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"votes"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Filter by page"
+												},
+												{
+													"key": "user_id",
+													"value": "<integer>",
+													"description": "Filter by user"
+												},
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "Filter by movie"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<integer>\",\n  \"from\": \"<integer>\",\n  \"to\": \"<integer>\",\n  \"is_last_page\": \"<boolean>\",\n  \"data\": {\n    \"movie_id\": \"<string>\",\n    \"movie_name\": \"<string>\",\n    \"platform\": \"tv\",\n    \"user_id\": \"<integer>\",\n    \"user_name\": \"<string>\",\n    \"value\": 2\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add Vote",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"value\": 0,\n  \"platform\": \"tv\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/votes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"votes"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Vote created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"value\": 0,\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/votes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"votes"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"value\": 0,\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/votes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"votes"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"field_name\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"value\": 0,\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/votes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"votes"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remove vote",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/votes?movie_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"votes"
+									],
+									"query": [
+										{
+											"key": "movie_id",
+											"value": "<string>",
+											"description": "(Required) Delete vote from its movie id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Vote removed",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/votes?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"votes"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete vote from its movie id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/votes?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"votes"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete vote from its movie id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/votes?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"votes"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete vote from its movie id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "critics",
+					"item": [
+						{
+							"name": "List critics",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/critics?page=<integer>&user_id=<integer>&movie_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"critics"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>",
+											"description": "Filter by page"
+										},
+										{
+											"key": "user_id",
+											"value": "<integer>",
+											"description": "Filter by user"
+										},
+										{
+											"key": "movie_id",
+											"value": "<string>",
+											"description": "Filter by movie"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/critics?page=<integer>&user_id=<integer>&movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"critics"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Filter by page"
+												},
+												{
+													"key": "user_id",
+													"value": "<integer>",
+													"description": "Filter by user"
+												},
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "Filter by movie"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<integer>\",\n  \"from\": \"<integer>\",\n  \"to\": \"<integer>\",\n  \"is_last_page\": \"<boolean>\",\n  \"data\": {\n    \"movie_id\": \"<string>\",\n    \"movie_name\": \"<string>\",\n    \"platform\": \"tv\",\n    \"user_id\": \"<integer>\",\n    \"user_name\": \"<string>\",\n    \"content\": \"<string>\"\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add critic",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"content\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/critics",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"critics"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Critic created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"content\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/critics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"critics"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"content\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/critics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"critics"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"field_name\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"content\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/critics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"critics"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remove critic",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/critics?movie_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"critics"
+									],
+									"query": [
+										{
+											"key": "movie_id",
+											"value": "<string>",
+											"description": "(Required) Delete critic from its movie id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Critic removed",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/critics?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"critics"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete critic from its movie id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/critics?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"critics"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete critic from its movie id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/critics?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"critics"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete critic from its movie id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "masterpieces",
+					"item": [
+						{
+							"name": "List masterpieces",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/masterpieces?page=<integer>&user_id=<integer>&movie_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"masterpieces"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>",
+											"description": "Filter by page"
+										},
+										{
+											"key": "user_id",
+											"value": "<integer>",
+											"description": "Filter by user"
+										},
+										{
+											"key": "movie_id",
+											"value": "<string>",
+											"description": "Filter by movie"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/masterpieces?page=<integer>&user_id=<integer>&movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"masterpieces"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Filter by page"
+												},
+												{
+													"key": "user_id",
+													"value": "<integer>",
+													"description": "Filter by user"
+												},
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "Filter by movie"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<integer>\",\n  \"from\": \"<integer>\",\n  \"to\": \"<integer>\",\n  \"is_last_page\": \"<boolean>\",\n  \"data\": {\n    \"movie_id\": \"<string>\",\n    \"movie_name\": \"<string>\",\n    \"platform\": \"movie\",\n    \"user_id\": \"<integer>\",\n    \"user_name\": \"<string>\",\n    \"movie_details\": {\n      \"released_date\": \"<string>\",\n      \"poster_path\": \"<string>\",\n      \"backdrop_path\": \"<string>\",\n      \"synopsis\": \"<string>\"\n    }\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add masterpiece",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/masterpieces",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"masterpieces"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Masterpiece created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/masterpieces",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"masterpieces"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/masterpieces",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"masterpieces"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"field_name\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/masterpieces",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"masterpieces"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remove masterpiece",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/masterpieces?movie_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"masterpieces"
+									],
+									"query": [
+										{
+											"key": "movie_id",
+											"value": "<string>",
+											"description": "(Required) Delete masterpiece from its movie id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Masterpiece removed",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/masterpieces?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"masterpieces"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete masterpiece from its movie id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/masterpieces?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"masterpieces"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete masterpiece from its movie id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/masterpieces?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"masterpieces"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete masterpiece from its movie id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "watchlists",
+					"item": [
+						{
+							"name": "List watchlists",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/watchlists?page=<integer>&user_id=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"watchlists"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "<integer>",
+											"description": "Filter by page"
+										},
+										{
+											"key": "user_id",
+											"value": "<integer>",
+											"description": "Filter by user"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/watchlists?page=<integer>&user_id=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"watchlists"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Filter by page"
+												},
+												{
+													"key": "user_id",
+													"value": "<integer>",
+													"description": "Filter by user"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<integer>\",\n  \"from\": \"<integer>\",\n  \"to\": \"<integer>\",\n  \"is_last_page\": \"<boolean>\",\n  \"data\": {\n    \"movie_id\": \"<string>\",\n    \"movie_name\": \"<string>\",\n    \"platform\": \"movie\",\n    \"user_id\": \"<integer>\",\n    \"user_name\": \"<string>\",\n    \"movie_details\": {\n      \"released_date\": \"<string>\",\n      \"poster_path\": \"<string>\",\n      \"backdrop_path\": \"<string>\",\n      \"synopsis\": \"<string>\"\n    }\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add to watchlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/watchlists",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"watchlists"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Movie added to watchlist",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/watchlists",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"watchlists"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/watchlists",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"watchlists"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"field_name\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"movie_id\": \"<string>\",\n  \"movie_name\": \"<string>\",\n  \"platform\": \"tv\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/watchlists",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"watchlists"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remove movie from watchlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/watchlists?movie_id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"watchlists"
+									],
+									"query": [
+										{
+											"key": "movie_id",
+											"value": "<string>",
+											"description": "(Required) Delete from watchlist from its movie id"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Movie removed from watchlist",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/watchlists?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"watchlists"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete from watchlist from its movie id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "Unauthorized because token is not valid or has not been provided",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/watchlists?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"watchlists"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete from watchlist from its movie id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/watchlists?movie_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"watchlists"
+											],
+											"query": [
+												{
+													"key": "movie_id",
+													"value": "<string>",
+													"description": "(Required) Delete from watchlist from its movie id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000/api"
 		}
 	]
 }

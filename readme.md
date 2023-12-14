@@ -1,3 +1,7 @@
+## Marcus
+
+A movie & music review application built around the TMDB & Spotify APIs
+
 ## Documentation
 
 - [View Swagger](https://app.swaggerhub.com/apis-docs/ARTHMAYER/Marcus-API/1.0.0)

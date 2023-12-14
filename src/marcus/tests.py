@@ -9,8 +9,8 @@ from .services import CriticService, MasterpieceService, VoteService, WatchlistS
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
     return {
-        'refresh': str(refresh),
-        'access': str(refresh.access_token),
+        "refresh": str(refresh),
+        "access": str(refresh.access_token),
     }
 
 
@@ -30,32 +30,33 @@ class UserTest(TestCase):
         self.assertEqual(self.user.id, None)
 
     def test_unauthorized_user(self):
-        response = self.client.post("/api/votes", {
-            "movie_id": "1",
-            "movie_name": "movie name",
-            "value": 2.5,
-            "platform": "movie"
-        })
+        response = self.client.post(
+            "/api/votes",
+            {
+                "movie_id": "1",
+                "movie_name": "movie name",
+                "value": 2.5,
+                "platform": "movie",
+            },
+        )
         self.assertEqual(response.status_code, 401)
-    
+
     def test_login_user(self):
-        response = self.client.post(self.login_url, {
-            "username": "testuser",
-            "password": "password"
-        })
+        response = self.client.post(
+            self.login_url, {"username": "testuser", "password": "password"}
+        )
         self.assertEqual(response.status_code, 200)
-    
+
     def test_reconnect_user(self):
-        response = self.client.post(self.reconnect_url, {
-            "refresh": self.user_refresh_token
-        })
+        response = self.client.post(
+            self.reconnect_url, {"refresh": self.user_refresh_token}
+        )
         self.assertEqual(response.status_code, 200)
-    
+
     def test_register_user(self):
-        response = self.client.post(self.register_url , {
-            "username": "newuser",
-            "password": "password"
-        })
+        response = self.client.post(
+            self.register_url, {"username": "newuser", "password": "password"}
+        )
         self.assertEqual(response.status_code, 201)
 
 
@@ -68,23 +69,26 @@ class MovieVoteTest(TestCase):
 
     def test_vote_views(self):
         # Create
-        response = self.client.post(self.url, {
-            "movie_id": "1",
-            "movie_name": "movie name",
-            "value": 2.5,
-            "platform": "movie"
-        },
-        HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            self.url,
+            {
+                "movie_id": "1",
+                "movie_name": "movie name",
+                "value": 2.5,
+                "platform": "movie",
+            },
+            HTTP_AUTHORIZATION=self.token,
+        )
         self.assertEqual(response.status_code, 201)
 
         # Retrieve
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json().get('total'), 1)
+        self.assertEqual(response.json().get("total"), 1)
 
         # Delete
-        response = self.client.delete(self.url + "?movie_id=1",
-            HTTP_AUTHORIZATION=self.token
+        response = self.client.delete(
+            self.url + "?movie_id=1", HTTP_AUTHORIZATION=self.token
         )
         self.assertEqual(response.status_code, 204)
 
@@ -101,7 +105,7 @@ class MovieVoteTest(TestCase):
             value=4,
             movie_id="1",
             movie_name="movie name",
-            platform="movie"
+            platform="movie",
         )
         self.assertEqual(status_code, 201)
         _, status_code = self.service.create(
@@ -109,7 +113,7 @@ class MovieVoteTest(TestCase):
             value=4,
             movie_id="1",
             movie_name="movie name",
-            platform="movie"
+            platform="movie",
         )
         self.assertEqual(status_code, 400)
 
@@ -133,23 +137,26 @@ class MovieCriticTest(TestCase):
 
     def test_critic_views(self):
         # Create
-        response = self.client.post(self.url, {
-            "movie_id": "1",
-            "movie_name": "movie name",
-            "content": "test critic",
-            "platform": "movie"
-        },
-        HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            self.url,
+            {
+                "movie_id": "1",
+                "movie_name": "movie name",
+                "content": "test critic",
+                "platform": "movie",
+            },
+            HTTP_AUTHORIZATION=self.token,
+        )
         self.assertEqual(response.status_code, 201)
 
         # Retrieve
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json().get('total'), 1)
+        self.assertEqual(response.json().get("total"), 1)
 
         # Delete
-        response = self.client.delete(self.url + "?movie_id=1",
-            HTTP_AUTHORIZATION=self.token
+        response = self.client.delete(
+            self.url + "?movie_id=1", HTTP_AUTHORIZATION=self.token
         )
         self.assertEqual(response.status_code, 204)
 
@@ -160,7 +167,7 @@ class MovieCriticTest(TestCase):
             content="test critic",
             movie_id="1",
             movie_name="movie name",
-            platform="movie"
+            platform="movie",
         )
         self.assertEqual(status_code, 201)
         _, status_code = self.service.create(
@@ -168,7 +175,7 @@ class MovieCriticTest(TestCase):
             content="test critic",
             movie_id="1",
             movie_name="movie name",
-            platform="movie"
+            platform="movie",
         )
         self.assertEqual(status_code, 400)
 
@@ -194,39 +201,32 @@ class MovieWatchlistTest(TestCase):
 
     def test_watchlist_views(self):
         # Create
-        response = self.client.post(self.url, {
-            "movie_id": "872585",
-            "movie_name": "movie name",
-            "platform": "movie"
-        },
-        HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            self.url,
+            {"movie_id": "872585", "movie_name": "movie name", "platform": "movie"},
+            HTTP_AUTHORIZATION=self.token,
+        )
         self.assertEqual(response.status_code, 201)
 
         # Retrieve
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json().get('total'), 1)
+        self.assertEqual(response.json().get("total"), 1)
 
         # Delete
-        response = self.client.delete(self.url + "?movie_id=872585",
-            HTTP_AUTHORIZATION=self.token
+        response = self.client.delete(
+            self.url + "?movie_id=872585", HTTP_AUTHORIZATION=self.token
         )
         self.assertEqual(response.status_code, 204)
 
     def test_watchlist_service(self):
         # create()
         _, status_code = self.service.create(
-            user=self.user,
-            movie_id="872585",
-            movie_name="movie name",
-            platform="movie"
+            user=self.user, movie_id="872585", movie_name="movie name", platform="movie"
         )
         self.assertEqual(status_code, 201)
         _, status_code = self.service.create(
-            user=self.user,
-            movie_id="872585",
-            movie_name="movie name",
-            platform="movie"
+            user=self.user, movie_id="872585", movie_name="movie name", platform="movie"
         )
         self.assertEqual(status_code, 400)
 
@@ -248,39 +248,32 @@ class MovieMasterpieceTest(TestCase):
 
     def test_masterpiece_views(self):
         # Create
-        response = self.client.post(self.url, {
-            "movie_id": "872585",
-            "movie_name": "movie name",
-            "platform": "movie"
-        },
-        HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            self.url,
+            {"movie_id": "872585", "movie_name": "movie name", "platform": "movie"},
+            HTTP_AUTHORIZATION=self.token,
+        )
         self.assertEqual(response.status_code, 201)
 
         # Retrieve
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json().get('total'), 1)
+        self.assertEqual(response.json().get("total"), 1)
 
         # Delete
-        response = self.client.delete(self.url + "?movie_id=872585",
-            HTTP_AUTHORIZATION=self.token
+        response = self.client.delete(
+            self.url + "?movie_id=872585", HTTP_AUTHORIZATION=self.token
         )
         self.assertEqual(response.status_code, 204)
 
     def test_masterpiece_service(self):
         # create()
         _, status_code = self.service.create(
-            user=self.user,
-            movie_id="872585",
-            movie_name="movie name",
-            platform="movie"
+            user=self.user, movie_id="872585", movie_name="movie name", platform="movie"
         )
         self.assertEqual(status_code, 201)
         _, status_code = self.service.create(
-            user=self.user,
-            movie_id="872585",
-            movie_name="movie name",
-            platform="movie"
+            user=self.user, movie_id="872585", movie_name="movie name", platform="movie"
         )
         self.assertEqual(status_code, 400)
 

@@ -191,6 +191,16 @@ class VoteService:
         }, status.HTTP_201_CREATED
 
     @staticmethod
+    def check_enum_value(*, value: float):
+        """
+        Check if value is in enum_values
+        """
+        enum_values = [x * 0.5 for x in range(0, 11)]
+        if value in enum_values:
+            return True
+        return False
+
+    @staticmethod
     def delete(*, id: str, user: str):
         """
         Delete a row by id (called by user)
