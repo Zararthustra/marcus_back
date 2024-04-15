@@ -64,6 +64,7 @@ class MasterpieceSerializer(serializers.ModelSerializer):
             "user_name",
             "platform",
             "movie_details",
+            "tags",
         )
 
     def get_movie_details(self, obj):
@@ -87,7 +88,12 @@ class MasterpieceSerializer(serializers.ModelSerializer):
 class CreateMasterpieceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Masterpiece
-        fields = ("movie_id", "movie_name", "platform")
+        fields = (
+            "movie_id",
+            "movie_name",
+            "platform",
+            "tags",
+        )
 
 
 class WatchlistSerializer(serializers.ModelSerializer):
@@ -103,6 +109,7 @@ class WatchlistSerializer(serializers.ModelSerializer):
             "user_id",
             "platform",
             "movie_details",
+            "tags",
         )
 
     def get_movie_details(self, obj):
@@ -127,19 +134,38 @@ class WatchlistSerializer(serializers.ModelSerializer):
 class CreateWatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Watchlist
-        fields = ("movie_id", "movie_name", "platform")
+        fields = (
+            "movie_id",
+            "movie_name",
+            "platform",
+            "tags",
+        )
 
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ("movie_id", "movie_name", "value", "user_id", "user_name", "platform")
+        fields = (
+            "movie_id",
+            "movie_name",
+            "value",
+            "user_id",
+            "user_name",
+            "platform",
+            "tags",
+        )
 
 
 class CreateVoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ("movie_id", "movie_name", "value", "platform")
+        fields = (
+            "movie_id",
+            "movie_name",
+            "value",
+            "platform",
+            "tags",
+        )
 
 
 class CriticVoteSerializer(serializers.Serializer):
@@ -159,10 +185,11 @@ class CriticSerializer(serializers.ModelSerializer):
             "user_id",
             "user_name",
             "platform",
+            "tags",
         )
 
 
 class CreateCriticSerializer(serializers.ModelSerializer):
     class Meta:
         model = Critic
-        fields = ("movie_id", "movie_name", "content", "platform")
+        fields = ("movie_id", "movie_name", "content", "platform", "tags")

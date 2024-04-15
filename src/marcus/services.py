@@ -47,21 +47,23 @@ class MasterpieceService:
     """
 
     @staticmethod
-    def list(*, user: int, page: int):
+    def list(*, user: int, tag: str):
         """
         Paginated list (optional : by user)
         """
         range = 10
-        if not user:
-            masterpieces = Masterpiece.objects.all().order_by("-created_at")
-        else:
-            if not page:
-                range = None
-            masterpieces = Masterpiece.objects.filter(user=user).order_by("-created_at")
+        masterpieces = Masterpiece.objects.all().order_by("-created_at")
+
+        if user:
+            masterpieces = masterpieces.filter(user=user)
+
+        if tag not in ("Tous", None):
+            masterpieces = masterpieces.filter(tags__contains=tag)
+
         return masterpieces, range
 
     @staticmethod
-    def create(*, movie_id: int, movie_name: str, platform: str, user: User):
+    def create(*, movie_id: int, movie_name: str, tags: str, platform: str, user: User):
         """
         Create if (user & movie_id) does not exist
         """
@@ -71,6 +73,7 @@ class MasterpieceService:
             defaults={
                 "movie_name": movie_name,
                 "platform": platform,
+                "tags": tags,
             },
         )
         if not created:
@@ -101,22 +104,23 @@ class WatchlistService:
     """
 
     @staticmethod
-    def list(*, user: int, page: int):
+    def list(*, user: int, tag: str):
         """
         Paginated list (optional : by user)
         """
         range = 10
-        if not user:
-            watchlists = Watchlist.objects.all().order_by("-created_at")
-        else:
-            if not page:
-                range = None
+        watchlists = Watchlist.objects.all().order_by("-created_at")
 
-            watchlists = Watchlist.objects.filter(user=user).order_by("-created_at")
+        if user:
+            watchlists = watchlists.filter(user=user)
+
+        if tag not in ("Tous", None):
+            watchlists = watchlists.filter(tags__contains=tag)
+
         return watchlists, range
 
     @staticmethod
-    def create(*, movie_id: int, movie_name: str, platform: str, user: User):
+    def create(*, movie_id: int, movie_name: str, tags: str, platform: str, user: User):
         """
         Create if (user & movie_id) does not exist
         """
@@ -126,6 +130,7 @@ class WatchlistService:
             defaults={
                 "movie_name": movie_name,
                 "platform": platform,
+                "tags": tags,
             },
         )
         if not created:
@@ -156,30 +161,36 @@ class VoteService:
     """
 
     @staticmethod
-    def list(*, user: int, stars: int, movie_id: int):
+    def list(*, user: int, stars: int, movie_id: int, tag: str):
         """
         Paginated list (optional filters : by user, by stars)
         """
-        range = 10
-        if not user:
-            if stars:
-                votes = Vote.objects.filter(value=stars).order_by("-created_at")
-            elif movie_id:
-                votes = Vote.objects.filter(movie_id=movie_id).order_by("-created_at")
-            else:
-                votes = Vote.objects.all().order_by("-created_at")
-        else:
-            if stars:
-                votes = Vote.objects.filter(user=user, value=stars).order_by(
-                    "-created_at"
-                )
-            else:
-                votes = Vote.objects.filter(user=user).order_by("-created_at")
+        range = 20
+        votes = Vote.objects.all().order_by("-created_at")
+
+        if user:
+            votes = votes.filter(user=user)
+
+        if stars:
+            votes = votes.filter(value=stars)
+
+        if movie_id:
+            votes = votes.filter(movie_id=movie_id)
+
+        if tag not in ("Tous", None):
+            votes = votes.filter(tags__contains=tag)
+
         return votes, range
 
     @staticmethod
     def create(
-        *, movie_id: int, movie_name: str, value: float, platform: str, user: User
+        *,
+        movie_id: int,
+        movie_name: str,
+        value: float,
+        platform: str,
+        tags: str,
+        user: User,
     ):
         """
         Create if (user & movie_id) does not exist
@@ -191,6 +202,7 @@ class VoteService:
                 "movie_name": movie_name,
                 "platform": platform,
                 "value": value,
+                "tags": tags,
             },
         )
         if not created:
@@ -231,16 +243,19 @@ class CriticService:
     """
 
     @staticmethod
-    def list(*, user: int):
+    def list(*, user: int, tag: str):
         """
-        Paginated list (optional : by user)
+        Paginated list of critics (optional : by user, by gender_tag)
         """
-        if not user:
-            range = 10
-            critics = Critic.objects.all().order_by("-created_at")
-        else:
-            range = 5
-            critics = Critic.objects.filter(user=user).order_by("-created_at")
+        range = 10
+        critics = Critic.objects.all().order_by("-created_at")
+
+        if user:
+            critics = critics.filter(user=user)
+
+        if tag not in ("Tous", None):
+            critics = critics.filter(tags__contains=tag)
+
         return critics, range
 
     @staticmethod
@@ -269,7 +284,13 @@ class CriticService:
 
     @staticmethod
     def create(
-        *, movie_id: int, movie_name: str, content: str, platform: str, user: User
+        *,
+        movie_id: int,
+        movie_name: str,
+        content: str,
+        platform: str,
+        tags: str,
+        user: User,
     ):
         """
         Create if (user & movie_id) does not exist
@@ -281,6 +302,7 @@ class CriticService:
                 "movie_name": movie_name,
                 "content": content,
                 "platform": platform,
+                "tags": tags,
             },
         )
         if not created:

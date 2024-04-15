@@ -14,6 +14,7 @@ class MovieBaseModel(models.Model):
     movie_id = models.IntegerField()
     movie_name = models.CharField(max_length=100)
     platform = models.CharField(max_length=50, choices=PLATFORMS)
+    tags = models.CharField(max_length=999, null=True)
 
     class Meta:
         abstract = True

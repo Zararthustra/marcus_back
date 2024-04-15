@@ -85,6 +85,7 @@ class BaseView(APIView):
     def get(self, request):
         user_param = request.query_params.get("user_id")
         page_param = request.query_params.get("page")
+        gender_tag_param = request.query_params.get("tag")
         # Sanity check
         if user_param:
             try:
@@ -92,7 +93,7 @@ class BaseView(APIView):
             except ValueError as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Services (list & paginate)
-        objects, range = self.service.list(user=user_param, page=page_param)
+        objects, range = self.service.list(user=user_param, tag=gender_tag_param)
         page, has_next, start_index, end_index, total_objects = ToolkitService.paginate(
             page_number=page_param, range=range, objects=objects
         )
@@ -122,6 +123,7 @@ class BaseView(APIView):
             movie_id=payload["movie_id"],
             movie_name=payload["movie_name"],
             platform=payload["platform"],
+            tags=payload["tags"],
             user=request.user,
         )
         # Response
@@ -159,6 +161,7 @@ class VotesView(BaseView):
         page_param = request.query_params.get("page")
         stars_param = request.query_params.get("stars")
         movie_param = request.query_params.get("movie_id")
+        gender_tag_param = request.query_params.get("tag")
 
         # Sanity check
         if user_param:
@@ -168,7 +171,10 @@ class VotesView(BaseView):
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Services (list & paginate)
         objects, range = self.service.list(
-            user=user_param, stars=stars_param, movie_id=movie_param
+            user=user_param,
+            stars=stars_param,
+            movie_id=movie_param,
+            tag=gender_tag_param,
         )
         page, has_next, start_index, end_index, total_objects = ToolkitService.paginate(
             page_number=page_param, range=range, objects=objects
@@ -210,6 +216,7 @@ class VotesView(BaseView):
             value=payload["value"],
             platform=payload["platform"],
             user=request.user,
+            tags=payload["tags"],
         )
         # Response
         return Response(data, status=status_code)
@@ -221,6 +228,7 @@ class CriticsView(BaseView):
     def get(self, request):
         user_param = request.query_params.get("user_id")
         movie_param = request.query_params.get("movie_id")
+        gender_tag_param = request.query_params.get("tag")
         page_param = request.query_params.get("page")
         # Sanity check
         if user_param:
@@ -237,7 +245,7 @@ class CriticsView(BaseView):
             # Serialize
             serialized_data = CriticVoteSerializer(objects, many=True)
         else:
-            critics, range = CriticService.list(user=user_param)
+            critics, range = CriticService.list(user=user_param, tag=gender_tag_param)
             # Paginate
             page, has_next, start_index, end_index, count = ToolkitService.paginate(
                 page_number=page_param, range=range, objects=critics
@@ -269,6 +277,7 @@ class CriticsView(BaseView):
             movie_name=payload["movie_name"],
             content=payload["content"],
             platform=payload["platform"],
+            tags=payload["tags"],
             user=request.user,
         )
         # Response

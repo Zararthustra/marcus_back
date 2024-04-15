@@ -76,6 +76,7 @@ class MovieVoteTest(TestCase):
                 "movie_name": "movie name",
                 "value": 2.5,
                 "platform": "movie",
+                "tags": "Action,Aventure",
             },
             HTTP_AUTHORIZATION=self.token,
         )
@@ -106,6 +107,7 @@ class MovieVoteTest(TestCase):
             movie_id="1",
             movie_name="movie name",
             platform="movie",
+            tags="Action,Aventure",
         )
         self.assertEqual(status_code, 201)
         _, status_code = self.service.create(
@@ -114,13 +116,14 @@ class MovieVoteTest(TestCase):
             movie_id="1",
             movie_name="movie name",
             platform="movie",
+            tags="Action,Aventure",
         )
         self.assertEqual(status_code, 400)
 
         # list()
-        list, _ = self.service.list(user=self.user, stars=3, movie_id="1")
+        list, _ = self.service.list(user=self.user, stars=3, movie_id="1", tag="Action")
         self.assertEqual(len(list), 0)
-        list, _ = self.service.list(user=self.user, stars=4, movie_id="1")
+        list, _ = self.service.list(user=self.user, stars=4, movie_id="1", tag="Action")
         self.assertEqual(len(list), 1)
 
         # delete()
@@ -144,6 +147,7 @@ class MovieCriticTest(TestCase):
                 "movie_name": "movie name",
                 "content": "test critic",
                 "platform": "movie",
+                "tags": "Action,Aventure",
             },
             HTTP_AUTHORIZATION=self.token,
         )
@@ -168,6 +172,7 @@ class MovieCriticTest(TestCase):
             movie_id="1",
             movie_name="movie name",
             platform="movie",
+            tags="Action,Aventure",
         )
         self.assertEqual(status_code, 201)
         _, status_code = self.service.create(
@@ -176,11 +181,12 @@ class MovieCriticTest(TestCase):
             movie_id="1",
             movie_name="movie name",
             platform="movie",
+            tags="Action,Aventure",
         )
         self.assertEqual(status_code, 400)
 
         # list()
-        list, _ = self.service.list(user=self.user)
+        list, _ = self.service.list(user=self.user, tag="Action")
         self.assertEqual(len(list), 1)
 
         # list_by_movie_id_and_aggregate_votes()
@@ -203,7 +209,12 @@ class MovieWatchlistTest(TestCase):
         # Create
         response = self.client.post(
             self.url,
-            {"movie_id": "872585", "movie_name": "movie name", "platform": "movie"},
+            {
+                "movie_id": "872585",
+                "movie_name": "movie name",
+                "platform": "movie",
+                "tags": "Action,Aventure",
+            },
             HTTP_AUTHORIZATION=self.token,
         )
         self.assertEqual(response.status_code, 201)
@@ -222,16 +233,24 @@ class MovieWatchlistTest(TestCase):
     def test_watchlist_service(self):
         # create()
         _, status_code = self.service.create(
-            user=self.user, movie_id="872585", movie_name="movie name", platform="movie"
+            user=self.user,
+            movie_id="872585",
+            movie_name="movie name",
+            platform="movie",
+            tags="Action,Aventure",
         )
         self.assertEqual(status_code, 201)
         _, status_code = self.service.create(
-            user=self.user, movie_id="872585", movie_name="movie name", platform="movie"
+            user=self.user,
+            movie_id="872585",
+            movie_name="movie name",
+            platform="movie",
+            tags="Action,Aventure",
         )
         self.assertEqual(status_code, 400)
 
         # list()
-        list, _ = self.service.list(user=self.user, page=None)
+        list, _ = self.service.list(user=self.user, tag="Action")
         self.assertEqual(len(list), 1)
 
         # delete()
@@ -250,7 +269,12 @@ class MovieMasterpieceTest(TestCase):
         # Create
         response = self.client.post(
             self.url,
-            {"movie_id": "872585", "movie_name": "movie name", "platform": "movie"},
+            {
+                "movie_id": "872585",
+                "movie_name": "movie name",
+                "platform": "movie",
+                "tags": "Action,Aventure",
+            },
             HTTP_AUTHORIZATION=self.token,
         )
         self.assertEqual(response.status_code, 201)
@@ -269,16 +293,24 @@ class MovieMasterpieceTest(TestCase):
     def test_masterpiece_service(self):
         # create()
         _, status_code = self.service.create(
-            user=self.user, movie_id="872585", movie_name="movie name", platform="movie"
+            user=self.user,
+            movie_id="872585",
+            movie_name="movie name",
+            platform="movie",
+            tags="Action,Aventure",
         )
         self.assertEqual(status_code, 201)
         _, status_code = self.service.create(
-            user=self.user, movie_id="872585", movie_name="movie name", platform="movie"
+            user=self.user,
+            movie_id="872585",
+            movie_name="movie name",
+            platform="movie",
+            tags="Action,Aventure",
         )
         self.assertEqual(status_code, 400)
 
         # list()
-        list, _ = self.service.list(user=self.user, page=None)
+        list, _ = self.service.list(user=self.user, tag="Action")
         self.assertEqual(len(list), 1)
 
         # delete()
