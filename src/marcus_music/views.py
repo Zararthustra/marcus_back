@@ -1,3 +1,4 @@
+from django.http import FileResponse
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -140,6 +141,17 @@ class MasterpiecesView(BaseView):
         )
         # Response
         return Response(data, status=status_code)
+
+
+class CriticsExportView(BaseView):
+    service = CriticService
+
+    def get(self, request):
+        # Service
+        document = CriticService.export(user=request.user)
+        return FileResponse(
+            document, as_attachment=True, filename="mes_critiques_musique.xlsx"
+        )
 
 
 class CriticsView(BaseView):

@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.views import APIView
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.http import FileResponse
+
 
 # , movie_details, movie_search
 from .services import (
@@ -220,6 +222,17 @@ class VotesView(BaseView):
         )
         # Response
         return Response(data, status=status_code)
+
+
+class CriticsExportView(BaseView):
+    service = CriticService
+
+    def get(self, request):
+        # Service
+        document = CriticService.export(user=request.user)
+        return FileResponse(
+            document, as_attachment=True, filename="mes_critiques_cinema.xlsx"
+        )
 
 
 class CriticsView(BaseView):

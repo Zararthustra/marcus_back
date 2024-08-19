@@ -1,6 +1,9 @@
 from rest_framework import status
 from django.contrib.auth.models import User
 
+import io
+import xlsxwriter
+
 from .models import Critic, Masterpiece, Playlist, Vote
 
 
@@ -70,6 +73,30 @@ class CriticService:
     """
     Critic service class
     """
+
+    @staticmethod
+    def export(*, user: int):
+        critics = Critic.objects.all().order_by("-created_at")
+
+        buffer = io.BytesIO()
+        workbook = xlsxwriter.Workbook(buffer)
+        worksheet = workbook.add_worksheet()
+
+        headers = ["ID", "Album", "Artiste", "Critique", "Date d'ajout"]
+        for col_num, header in enumerate(headers):
+            worksheet.write(0, col_num, header)
+
+        for row_num, critic in enumerate(critics.filter(user=user), start=1):
+            worksheet.write(row_num, 0, str(critic.id))
+            worksheet.write(row_num, 1, critic.album_name)
+            worksheet.write(row_num, 2, critic.artist_name)
+            worksheet.write(row_num, 3, critic.content)
+            worksheet.write(row_num, 4, critic.created_at.strftime("%d-%m-%Y"))
+
+        workbook.close()
+        buffer.seek(0)
+
+        return buffer
 
     @staticmethod
     def list(*, user: int, page: int, artist_id: str):

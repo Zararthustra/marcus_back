@@ -6,6 +6,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from marcus.models import Critic, Masterpiece, Watchlist, Vote
 
+import io
+import xlsxwriter
+
 # from django.db.models import Q
 
 from django.conf import settings
@@ -241,6 +244,32 @@ class CriticService:
     """
     Critic service class
     """
+
+    @staticmethod
+    def export(*, user: int):
+        critics = Critic.objects.all().order_by("-created_at")
+
+        buffer = io.BytesIO()
+        workbook = xlsxwriter.Workbook(buffer)
+        worksheet = workbook.add_worksheet()
+
+        headers = ["ID", "TMDB ID", "Nom", "Type", "Genres", "Critique", "Date d'ajout"]
+        for col_num, header in enumerate(headers):
+            worksheet.write(0, col_num, header)
+
+        for row_num, critic in enumerate(critics.filter(user=user), start=1):
+            worksheet.write(row_num, 0, str(critic.id))
+            worksheet.write(row_num, 1, critic.movie_id)
+            worksheet.write(row_num, 2, critic.movie_name)
+            worksheet.write(row_num, 3, "Série" if critic.platform == "tv" else "Film")
+            worksheet.write(row_num, 4, critic.tags)
+            worksheet.write(row_num, 5, critic.content)
+            worksheet.write(row_num, 6, critic.created_at.strftime("%d-%m-%Y"))
+
+        workbook.close()
+        buffer.seek(0)
+
+        return buffer
 
     @staticmethod
     def list(*, user: int, tag: str):
