@@ -228,8 +228,15 @@ class CriticsExportView(BaseView):
     service = CriticService
 
     def get(self, request):
+        user_param = request.query_params.get("user_id")
+        # Sanity check
+        if user_param:
+            try:
+                int(user_param)
+            except ValueError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         # Service
-        document = CriticService.export(user=request.user)
+        document = CriticService.export(user=user_param)
         return FileResponse(
             document, as_attachment=True, filename="mes_critiques_cinema.xlsx"
         )
